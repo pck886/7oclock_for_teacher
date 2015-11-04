@@ -11,7 +11,7 @@ $(window).load(function(){
 function redirect(){
     var str_url = window.location.href;
 
-    if((str_url.indexOf("mathforall") < 0)||(str_url.indexOf("www") < 0)) window.location.href = "http://www.mathforall.net/";
+    if(str_url.indexOf("www.mathforall") < 0) window.location.href = "http://www.mathforall.net/";
 }
 
 function link(src){
