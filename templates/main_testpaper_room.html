@@ -1,0 +1,54 @@
+{% if user.id %}
+    {% load home_extras %}
+    <p class="p_testpaper_btntitle">{{ testpaper.school.title }} {{ testpaper.year }}학년</p>
+    {% if testpaper.is_exported  %}
+        {% for room in rooms %}
+            <button class="btn btn-default btn_testpaper_room {% if room|get_room_checked:testpaper %}select{% endif %}" room_id="{{ room.id }}">{{ room.room }}반</button>
+        {% endfor %}
+        <script>
+            $("#div_testpaper_room{{ testpaper.id }} .btn_testpaper_room").click(function(){
+                var rooms = "";
+
+                if($(this).hasClass('select')){
+                    $(this).removeClass('select');
+                }else{
+                    $(this).addClass('select');
+                }
+
+                $("#div_testpaper_room{{ testpaper.id }} .btn_testpaper_room.select").each(function(i){
+                    rooms += $(this).attr('room_id')+",";
+                });
+                rooms = rooms.substring(0,rooms.length-1);
+                if(rooms == '') rooms = 0;
+
+                $('#div_testpaper_room{{ testpaper.id }}').load("/testpaper/post/room/",{
+                    'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                    'tpid':'{{ testpaper.id }}',
+                    'rooms':rooms
+                });
+                return false;
+            });
+        </script>
+    {% else %}
+        <button class="btn btn-default btn_testpaper_open">모바일 공개하기</button>
+        <script>
+            $("#div_testpaper_room{{ testpaper.id }} .btn_testpaper_open").click(function(){
+                alert_show({
+                    "type":"testpaper_room_open",
+                    "title":"모바일 공개",
+                    "contents":"모바일 공개 시 해당 출제문제는 수정할 수 없습니다.<br/>모바일 공개하시겠습니까?",
+                    "load_id":'#div_testpaper_room{{ testpaper.id }}',
+                    "url":"/testpaper/post/room/",
+                    "data":{
+                        'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                        'tpid':'{{ testpaper.id }}',
+                        'is_exported':'True'
+                    },
+                    "function":function(){
+                    }
+                });
+                return false;
+            });
+        </script>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,564 @@
+{% if user.id %}
+    {% load home_extras %}
+    <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
+    {% if mode == "main_testpaper" %}
+        <p class="p_content_title"><a href="javascript:;" onclick="link_content({'link':'testpaper','tpid':'{{testpaper.id}}'})">{{ testpaper.title }}</a> <span class="span_content_subtitle">총 {{testpaper.get_questions|length}}문제가 있습니다.</span></p>
+    {% elif mode == "main_testpaper_similar" %}
+        <p class="p_content_title"><a href="javascript:;" onclick="link_content({'link':'testpaper_similar','tpid':'{{testpaper.id}}'})">{{ testpaper.title }}</a> <span class="span_content_subtitle">총 {{testpaper.get_questions|length}}문제가 있습니다.</span></p>
+    {% endif %}
+    <div id="div_testpaper_mode">
+        {% if testpaper.user == user %}
+            {% if mode == "main_testpaper" %}
+                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_question"><i class="xi-paper"></i> 문제</button>
+                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_explain"><i class="xi-lecture"></i> 해설</button>
+                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_answer"><i class="xi-book-spread"></i> 답안</button>
+                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_stats"><i class="xi-chart-circle"></i> 통계</button>
+            {% endif %}
+        {% endif %}
+    </div>
+    <div id="div_testpaper_select">
+        {% if testpaper.user == user %}
+            {% if mode == "main_testpaper" %}
+                {% if testpaper.is_exported == False %}
+                    <button class="btn btn-default btn_testpaper_topbtn" onclick="link_content({'link':'testpaper_form','tpid':'{{ testpaper.id }}'})"><i class="xi-layout-top-center"></i> 서식 설정</button>
+                    <button class="btn btn-default btn_testpaper_topbtn" onclick="link_content({'link':'testpaper_similar','tpid':'{{ testpaper.id }}'})"><i class="xi-sitemap"></i> 유사문제 출제</button>
+                    <button class="btn btn-default btn_testpaper_topbtn" onclick="link_content({'link':'testpaper_modify','tpid':'{{ testpaper.id }}'})"><i class="xi-eraser"></i> 출제 수정</button>
+                {% endif %}
+                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_remake"><i class="xi-refresh"></i> 재출제</button>
+                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_print"><i class="xi-print"></i> 인쇄</button>
+                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_delete"><i class="xi-trash"></i> 삭제</button>
+                <button class="btn btn-default btn_testpaper_topbtn" onclick="link_content({'link':'home'})"><i class="xi-rollback"></i> 뒤로가기</button>
+            {% elif mode == "main_testpaper_similar" %}
+                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpapersimilar_change"><i class="xi-refresh"></i> 전체변경</button>
+                <button class="btn btn-success btn_testpaper_topbtn" id="btn_testpapersimilar_save"><i class="xi-check-circleout"></i> 출제완료</button>
+                <button class="btn btn-default btn_testpaper_topbtn" onclick="link_content({'link':'testpaper','tpid':'{{testpaper.id}}'})"><i class="xi-rollback"></i> 뒤로가기</button>
+            {% endif %}
+        {% else %}
+            <button class="btn btn-success btn_testpaper_topbtn" id="btn_progress_save"><i class="xi-download-my"></i> 보관함에 담기</button>
+            <button class="btn btn-default btn_testpaper_topbtn" onclick="link_content({'link':'progress'})"><i class="xi-rollback"></i> 뒤로가기</button>
+        {% endif %}
+    </div>
+    <div class="div_content_board_testpaper">
+        <div class="div_testpaper_board" id="div_testpaper_question">
+            <style>
+                @page {size: auto;margin:20px 30px}
+                .div_testpaper_board {width:100%}
+                {% if testpaper.form.outline == True %}.div_testpaper_board .div_testpaper_paper {outline: 1px solid #000} {% endif %}
+                .div_testpaper_board .div_testpaper_paper .table_testpaper_page .p_testpaper_qno {font-size:12px;margin-left:5px}
+                .div_testpaper_board .div_testpaper_paper .table_testpaper_page {position: relative;width: 100%;height:97.5%;text-align: left;border-bottom: 1px solid #bbb;}
+                {% if testpaper.form.outline == True %}.div_testpaper_board .div_testpaper_paper .table_testpaper_page {border-bottom: 0px solid #bbb;} {% endif %}
+            </style>
+            {% for page in pages %}
+                <div class="div_testpaper_paper">
+                    <table class="table_testpaper_page" border="0" {% if forloop.counter0 != 0 %}style="border-top: 1px solid #bbb;margin-top:2.5%;height:96%;"{% endif %}>
+                        {% if forloop.counter0 == 0 %}
+                            {{ testpaper.form.html|set_testpaper_head:testpaper|safe }}
+                        {% endif %}
+                        <tr>
+                            <td style="width:50%;height:100%;border-right: 1px solid #bbb;padding:0 10px 0 5px;">
+                                <table width="100%" height="100%" style="margin-top:10px;">
+                                    <tr>
+                                        <td style="width:100%;vertical-align: top;">
+                                            {% if page.0 %}
+                                                <div id="div_testpaper_question{{ forloop.counter0|times:6|add:1 }}">
+                                                    <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:1 }}.</p>
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.0.src.url }}">
+                                                    {% if mode == "main_testpaper_similar" %}
+                                                        <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
+                                                            <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:1 }}"><i class="xi-angle-left"></i></button>
+                                                            <button type="button" class="btn btn-default btn_chooser_info" disabled="" qtitle="{{ page.0.unit.title }}">-</button>
+                                                            <button type="button" class="btn btn-default btn_chooser_next" qno="{{ forloop.counter0|times:6|add:1 }}"><i class="xi-angle-right"></i></button>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:100%;vertical-align: top;">
+                                            {% if page.1 %}
+                                                <div id="div_testpaper_question{{ forloop.counter0|times:6|add:2 }}">
+                                                    <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:2 }}.</p>
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.1.src.url }}">
+                                                    {% if mode == "main_testpaper_similar" %}
+                                                        <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
+                                                            <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:2 }}"><i class="xi-angle-left"></i></button>
+                                                            <button type="button" class="btn btn-default btn_chooser_info" disabled="" qtitle="{{ page.1.unit.title }}">-</button>
+                                                            <button type="button" class="btn btn-default btn_chooser_next" qno="{{ forloop.counter0|times:6|add:2 }}"><i class="xi-angle-right"></i></button>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:100%;vertical-align: top;">
+                                            {% if page.2 %}
+                                                <div id="div_testpaper_question{{ forloop.counter0|times:6|add:3 }}">
+                                                    <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:3}}.</p>
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.2.src.url }}">
+                                                    {% if mode == "main_testpaper_similar" %}
+                                                        <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
+                                                            <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:3 }}"><i class="xi-angle-left"></i></button>
+                                                            <button type="button" class="btn btn-default btn_chooser_info" disabled="" qtitle="{{ page.2.unit.title }}">-</button>
+                                                            <button type="button" class="btn btn-default btn_chooser_next" qno="{{ forloop.counter0|times:6|add:3 }}"><i class="xi-angle-right"></i></button>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width:50%;height:100%;padding:0 5px 0 10px;">
+                                <table width="100%" height="100%" style="margin-top:10px;">
+                                    <tr>
+                                        <td style="width:100%;vertical-align: top;">
+                                            {% if page.3 %}
+                                                <div id="div_testpaper_question{{ forloop.counter0|times:6|add:4 }}">
+                                                    <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:4}}.</p>
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.3.src.url }}">
+                                                    {% if mode == "main_testpaper_similar" %}
+                                                        <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
+                                                            <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:4 }}"><i class="xi-angle-left"></i></button>
+                                                            <button type="button" class="btn btn-default btn_chooser_info" disabled="" qtitle="{{ page.3.unit.title }}">-</button>
+                                                            <button type="button" class="btn btn-default btn_chooser_next" qno="{{ forloop.counter0|times:6|add:4 }}"><i class="xi-angle-right"></i></button>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:100%;vertical-align: top;">
+                                            {% if page.4 %}
+                                                <div id="div_testpaper_question{{ forloop.counter0|times:6|add:5 }}">
+                                                    <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:5}}.</p>
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.4.src.url }}">
+                                                    {% if mode == "main_testpaper_similar" %}
+                                                        <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
+                                                            <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:5 }}"><i class="xi-angle-left"></i></button>
+                                                            <button type="button" class="btn btn-default btn_chooser_info" disabled="" qtitle="{{ page.4.unit.title }}">-</button>
+                                                            <button type="button" class="btn btn-default btn_chooser_next" qno="{{ forloop.counter0|times:6|add:5 }}"><i class="xi-angle-right"></i></button>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:100%;vertical-align: top;">
+                                            {% if page.5 %}
+                                                <div id="div_testpaper_question{{ forloop.counter0|times:6|add:6 }}">
+                                                    <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:6}}.</p>
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.5.src.url }}">
+                                                    {% if mode == "main_testpaper_similar" %}
+                                                        <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
+                                                            <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:6 }}"><i class="xi-angle-left"></i></button>
+                                                            <button type="button" class="btn btn-default btn_chooser_info" disabled="" qtitle="{{ page.5.unit.title }}">-</button>
+                                                            <button type="button" class="btn btn-default btn_chooser_next" qno="{{ forloop.counter0|times:6|add:6 }}"><i class="xi-angle-right"></i></button>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <p class="p_testpaper_pagenum" style="text-align:center;page-break-after: always;">- {{ forloop.counter }} -</p>
+                </div>
+            {% endfor %}
+        </div>
+        {% if testpaper.user == user %}
+            <div class="div_testpaper_board" id="div_testpaper_explain" style="display:none">
+                <style>
+                    @page {size: auto;margin:20px 30px}
+                    .div_testpaper_board {width:100%}
+                    {% if testpaper.form.outline == True %}.div_testpaper_board .div_testpaper_paper {outline: 1px solid #000} {% endif %}
+                    .div_testpaper_board .div_testpaper_paper .table_testpaper_page .p_testpaper_qno {font-size:12px;margin-left:5px}
+                    .div_testpaper_board .div_testpaper_paper .table_testpaper_page {position: relative;width: 100%;height:97.5%;text-align: left;border-bottom: 1px solid #bbb;}
+                    {% if testpaper.form.outline == True %}.div_testpaper_board .div_testpaper_paper .table_testpaper_page {border-bottom: 0px solid #bbb;} {% endif %}
+                </style>
+                {% for page in explain_pages %}
+                    <div class="div_testpaper_paper">
+                        <table class="table_testpaper_page" border="0" {% if forloop.counter0 != 0 %}style="border-top: 1px solid #bbb;margin-top:2.5%;height:96%;"{% endif %}>
+                            {% if forloop.counter0 == 0 %}
+                                {{ testpaper.form.html|set_testpaper_type:"explain"|set_testpaper_head:testpaper|safe }}
+                            {% endif %}
+                            <tr>
+                                {% for line in page %}
+                                    {% if forloop.counter0 == 0 %}
+                                        <td style="width:50%;height:100%;border-right: 1px solid #bbb;padding:0 10px 0 5px;">
+                                            <table width="100%" height="100%" style="margin-top:10px;">
+                                                {% for question in line %}
+                                                    <tr><td style="width:100%;vertical-align: top;">{% if question %}<p class="p_testpaper_qno">{{ question.no }}.</p><img width="100%" src="{{ question.explain.url }}">{% endif %}</td></tr>
+                                                {% endfor %}
+                                            </table>
+                                        </td>
+                                    {% else %}
+                                        <td style="width:50%;height:100%;padding:0 5px 0 10px;">
+                                            <table width="100%" height="100%" style="margin-top:10px;">
+                                                {% for question in line %}
+                                                    <tr><td style="width:100%;vertical-align: top;">{% if question %}<p class="p_testpaper_qno">{{ question.no }}.</p><img width="100%" src="{{ question.explain.url }}">{% endif %}</td></tr>
+                                                {% endfor %}
+                                            </table>
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        </table>
+                        <p class="p_testpaper_pagenum" style="text-align:center;page-break-after: always;">- {{ forloop.counter }} -</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="div_testpaper_board" id="div_testpaper_answer" style="display:none">
+                <style>
+                    @page {size: auto;margin:20px 30px}
+                    .div_testpaper_board {width:100%}
+                    {% if testpaper.form.outline == True %}.div_testpaper_board .div_testpaper_paper {outline: 1px solid #000} {% endif %}
+                    .div_testpaper_board .div_testpaper_paper .table_testpaper_page .p_testpaper_qno {font-size:12px;margin-left:5px}
+                    .div_testpaper_board .div_testpaper_paper .table_testpaper_page {position: relative;width: 100%;height:97.5%;text-align: left;border-bottom: 1px solid #bbb}
+                    {% if testpaper.form.outline == True %}.div_testpaper_board .div_testpaper_paper .table_testpaper_page {border-bottom: 0px solid #bbb;} {% endif %}
+                </style>
+                <div class="div_testpaper_paper">
+                    <table class="table_testpaper_page" border="0">
+                        {{ testpaper.form.html|set_testpaper_type:'answer'|set_testpaper_head:testpaper|safe }}
+                        <tr>
+                            <td valign="top" style="width:50%;height:100%;border-right: 1px solid #bbb;padding:20px;">
+                                <p style="font-size: 14px;font-weight:700;margin-bottom:10px">빠른 답안</p>
+                                <table width="100%" border="1" style="text-align: center;border:2px solid #000;">
+                                    {% for question in testpaper.get_questions|slice:":25" %}{% if question.answer %}<tr><td width="30" height="30">{{ forloop.counter }}</td><td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif!important;font-size:12px!important">{{ question.get_answer|safe }}</td></tr>{% endif %}{% endfor %}
+                                </table>
+                            </td>
+                            <td valign="top" style="width:50%;height:100%;padding:20px;">
+                                <table width="100%" border="1" style="text-align: center;border:2px solid #000;">
+                                    {% for question in testpaper.get_questions|slice:"25:50" %}{% if question.answer %}<tr><td width="30" height="30">{{ forloop.counter|add:"25" }}</td><td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif!important;font-size:12px!important">{{ question.get_answer|safe }}</td></tr>{% endif %}{% endfor %}
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <p class="p_testpaper_pagenum" style="text-align:center;page-break-after: always;">- 1 -</p>
+                </div>
+            </div>
+            <div class="div_testpaper_board" id="div_testpaper_stats" style="display:none">
+                <style>
+                    @page {size: auto;margin:20px 30px}
+                    .div_testpaper_board {width:100%}
+                    {% if testpaper.form.outline == True %}.div_testpaper_board .div_testpaper_paper {outline: 1px solid #000} {% endif %}
+                    .div_testpaper_board .div_testpaper_paper .table_testpaper_page .p_testpaper_qno {font-size:12px;margin-left:5px}
+                    .div_testpaper_board .div_testpaper_paper .table_testpaper_page {position: relative;width: 100%;height:97.5%;text-align: left;border-bottom: 1px solid #bbb;}
+                    .div_testpaper_board .div_testpaper_paper .table_testpaper_page .div_question_stats {border:1px solid #dddddd;padding:2px;margin-bottom:5px;display: none}
+                    .div_testpaper_board .div_testpaper_paper .table_testpaper_page .div_question_answer {float:left;font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif!important;font-size:11px!important}
+                    .div_testpaper_board .div_testpaper_paper .table_testpaper_page .div_question_percent {text-align: right;font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif!important;font-size:7px!important;letter-spacing:-1px;}
+                    .div_testpaper_board .div_testpaper_paper .table_testpaper_page .div_question_wrong {margin-top:10px;font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif!important;font-size:5px!important;letter-spacing:-1px}
+                    {% if testpaper.form.outline == True %}.div_testpaper_board .div_testpaper_paper .table_testpaper_page {border-bottom: 0px solid #bbb;} {% endif %}
+                </style>
+                {% for page in pages %}
+                    <div class="div_testpaper_paper">
+                        <table class="table_testpaper_page" border="0" {% if forloop.counter0 != 0 %}style="border-top: 1px solid #bbb;margin-top:2.5%;height:96%;"{% endif %}>
+                            {% if forloop.counter0 == 0 %}
+                                {{ testpaper.form.html|set_testpaper_type:'stats'|set_testpaper_head:testpaper|safe }}
+                            {% endif %}
+                            <tr>
+                                <td style="width:50%;height:100%;border-right: 1px solid #bbb;padding:0 10px 0 5px;">
+                                    <table width="100%" height="100%" style="margin-top:10px;">
+                                        <tr>
+                                            <td style="width:100%;vertical-align: top;">
+                                                {% if page.0 %}
+                                                    <div id="div_testpaper_question{{ forloop.counter0|times:6|add:1 }}">
+                                                        <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:1 }}.</p>
+                                                        <img width="100%" class="img_testpaper_question" src="{{ page.0.src.url }}">
+                                                        {% for room in rooms %}
+                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                                <div class="div_question_answer">정답 : {{ page.0.get_answer|safe }}</div>
+                                                                <div class="div_question_percent">{{ room.room }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.0|get_testpapersubmit_room:room|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.0|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:100%;vertical-align: top;">
+                                                {% if page.1 %}
+                                                    <div id="div_testpaper_question{{ forloop.counter0|times:6|add:2 }}">
+                                                        <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:2 }}.</p>
+                                                        <img width="100%" class="img_testpaper_question" src="{{ page.1.src.url }}">
+                                                        {% for room in rooms %}
+                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                                <div class="div_question_answer">정답 : {{ page.1.get_answer|safe }}</div>
+                                                                <div class="div_question_percent">{{ room.room }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.1|get_testpapersubmit_room:room|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.1|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:100%;vertical-align: top;">
+                                                {% if page.2 %}
+                                                    <div id="div_testpaper_question{{ forloop.counter0|times:6|add:3 }}">
+                                                        <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:3}}.</p>
+                                                        <img width="100%" class="img_testpaper_question" src="{{ page.2.src.url }}">
+                                                        {% for room in rooms %}
+                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                                <div class="div_question_answer">정답 : {{ page.2.get_answer|safe }}</div>
+                                                                <div class="div_question_percent">{{ room.room }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.2|get_testpapersubmit_room:room|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.2|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td style="width:50%;height:100%;padding:0 5px 0 10px;">
+                                    <table width="100%" height="100%" style="margin-top:10px;">
+                                        <tr>
+                                            <td style="width:100%;vertical-align: top;">
+                                                {% if page.3 %}
+                                                    <div id="div_testpaper_question{{ forloop.counter0|times:6|add:4 }}">
+                                                        <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:4}}.</p>
+                                                        <img width="100%" class="img_testpaper_question" src="{{ page.3.src.url }}">
+                                                        {% for room in rooms %}
+                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                                <div class="div_question_answer">정답 : {{ page.3.get_answer|safe }}</div>
+                                                                <div class="div_question_percent">{{ room.room }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.3|get_testpapersubmit_room:room|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.3|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:100%;vertical-align: top;">
+                                                {% if page.4 %}
+                                                    <div id="div_testpaper_question{{ forloop.counter0|times:6|add:5 }}">
+                                                        <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:5}}.</p>
+                                                        <img width="100%" class="img_testpaper_question" src="{{ page.4.src.url }}">
+                                                        {% for room in rooms %}
+                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                                <div class="div_question_answer">정답 : {{ page.4.get_answer|safe }}</div>
+                                                                <div class="div_question_percent">{{ room.room }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.4|get_testpapersubmit_room:room|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.4|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:100%;vertical-align: top;">
+                                                {% if page.5 %}
+                                                    <div id="div_testpaper_question{{ forloop.counter0|times:6|add:6 }}">
+                                                        <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:6}}.</p>
+                                                        <img width="100%" class="img_testpaper_question" src="{{ page.5.src.url }}">
+                                                        {% for room in rooms %}
+                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                                <div class="div_question_answer">정답 : {{ page.5.get_answer|safe }}</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.5|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <p class="p_testpaper_pagenum" style="text-align:center;page-break-after: always;">- {{ forloop.counter }} -</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div id="div_testpaper_zoom" class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default" id="btn_zoom_in"><i class="xi-plus"></i></button>
+        <button type="button" class="btn btn-default" id="btn_zoom_no" disabled>0</button>
+        <button type="button" class="btn btn-default" id="btn_zoom_out"><i class="xi-minus"></i></button>
+    </div>
+    <div id="div_testpaper_room" class="btn-group" role="group" aria-label="..." style="display: none">
+        <button type="button" class="btn btn-default" id="btn_room_year" disabled>{{ rooms.0.year }}학년</button><br/>
+        {% for room in rooms %}<button type="button" class="btn btn-default btn_rooms" id="btn_room_{{ room.room }}">{{ room.room }}</button><br/>
+        {% endfor %}
+    </div>
+    <script>
+
+        $("#btn_testpaper_delete").click(function(){
+            alert_show({
+                "type":"testpaper_delete",
+                "title":"삭제",
+                "contents":"정말 삭제하시겠습니까?",
+                "load_id":'#content',
+                "url":"/testpaper/post/delete/?tpid={{testpaper.id}}",
+                "data":{
+                    'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                },
+                "function":function(){
+                    $("#div_main_loading").fadeOut();
+                }
+            });
+        });
+
+        $("#btn_testpaper_question").click(function(){
+            $("#div_testpaper_room").hide();
+            $(".div_testpaper_board").hide();
+            $("#div_testpaper_question").show();
+        });
+
+        $("#btn_testpaper_explain").click(function(){
+            $("#div_testpaper_room").hide();
+            $(".div_testpaper_board").hide();
+            $("#div_testpaper_explain").show();
+        });
+
+        $("#btn_testpaper_answer").click(function(){
+            $("#div_testpaper_room").hide();
+            $(".div_testpaper_board").hide();
+            $("#div_testpaper_answer").show();
+            MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} });
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "div_testpaper_answer"]);
+        });
+
+        $("#btn_testpaper_stats").click(function(){
+            $("#div_testpaper_room").show();
+            $(".div_testpaper_board").hide();
+            $("#div_testpaper_stats").show();
+            MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} });
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "div_testpaper_stats"]);
+        });
+
+        $("#btn_testpaper_print").click(function(){
+            zoom_no = 100;
+            setZoomInfo();
+            $(".div_testpaper_board:visible").print({globalStyles: true});
+        });
+
+        $("#btn_testpaper_remake").click(function(){
+            $("#div_modal_maketest #input_maketest_tpid").val("{{ testpaper.id }}");
+            $("#div_modal_maketest").modal('show');
+        });
+
+        $("#btn_progress_save").click(function(){
+            $("#div_modal_maketest #input_maketest_tpid").val("{{ testpaper.id }}");
+            $("#div_modal_maketest #input_maketest_title").val("{{ testpaper.title }}");
+            $("#div_modal_maketest").modal('show');
+        });
+
+    </script>
+    <script>
+        $(".div_question_stats1").show();
+
+        $(".btn_rooms").click(function(){
+            var stats_no = $(this).text();
+            $(".div_question_stats").hide();
+            $(".div_question_stats"+stats_no).show();
+        });
+    </script>
+    <script>
+        var zoom_no = 100;
+
+        $("#btn_zoom_in").click(function(){
+            if(zoom_no<200){
+                zoom_no+=10;
+            }
+            setZoomInfo();
+        });
+
+        $("#btn_zoom_out").click(function(){
+            if(zoom_no>30){
+                zoom_no-=10;
+            }
+            setZoomInfo();
+        });
+
+        function setZoomInfo(){
+            $('#btn_zoom_no').text(zoom_no+"%");
+            $('.div_testpaper_board').css('zoom',zoom_no+'%'); /* Webkit browsers */
+            $('.div_testpaper_board').css('zoom',zoom_no/100); /* Other non-webkit browsers */
+        }
+
+        $(document).ready(function(){
+            setZoomInfo();
+        });
+    </script>
+    {% if mode == "main_testpaper_similar" %}
+        <script>
+            var q_no_arr = [];
+            var q_id_arr = [];
+            var q_submit_arr = [];
+            {% for qeustion in testpaper.get_questions %}
+                q_id_arr[{{ forloop.counter }}] = [{% for q in qeustion.get_unit_questions %}"{{ q.id }}",{% endfor %}];
+                q_no_arr[{{ forloop.counter }}] = [{% for q in qeustion.get_unit_questions %}"{{ q.src.url }}",{% endfor %}];
+                setChooserInfo('{{ forloop.counter }}');
+            {% endfor %}
+            $(".btn_chooser_prev").click(function(){
+                var str_qno = Number($(this).attr("qno"));
+                var str_src = $('#div_testpaper_question'+str_qno+' .img_testpaper_question').attr("src");
+                var index = q_no_arr[str_qno].indexOf(str_src)-1;
+                if(index<0) index = q_no_arr[str_qno].length-1;
+                var int_new_src = index%q_no_arr[str_qno].length;
+                var str_new_src = q_no_arr[str_qno][int_new_src];
+                $('#div_testpaper_question'+str_qno+' .img_testpaper_question').attr("src",str_new_src);
+                setChooserInfo(str_qno);
+            });
+
+            $(".btn_chooser_next").click(function(){
+                var str_qno = Number($(this).attr("qno"));
+                var str_src = $('#div_testpaper_question'+str_qno+' .img_testpaper_question').attr("src");
+                var index = q_no_arr[str_qno].indexOf(str_src)+1;
+                var int_new_src = index%q_no_arr[str_qno].length;
+                var str_new_src = q_no_arr[str_qno][int_new_src];
+                $('#div_testpaper_question'+str_qno+' .img_testpaper_question').attr("src",str_new_src);
+                setChooserInfo(str_qno);
+            });
+
+            {% if testpaper.get_questions %}
+                $("#btn_testpapersimilar_change").click(function(){
+                    for(i=1;i<{{ testpaper.get_questions|length }};i++){
+                        var str_qno = i;
+                        var str_src = $('#div_testpaper_question'+str_qno+' .img_testpaper_question').attr("src");
+                        var index = q_no_arr[str_qno].indexOf(str_src)+1;
+                        var int_new_src = index%q_no_arr[str_qno].length;
+                        var str_new_src = q_no_arr[str_qno][int_new_src];
+                        $('#div_testpaper_question'+str_qno+' .img_testpaper_question').attr("src",str_new_src);
+                        setChooserInfo(str_qno);
+                    }
+                });
+            {% endif %}
+
+            $("#btn_testpapersimilar_save").click(function(){
+                question_ids = "";
+                q_submit_arr.forEach(function(v) {
+                    question_ids += v+",";
+                });
+                question_ids = question_ids.substring(0,question_ids.length-1);
+
+                $("#div_main_loading").show();
+                select_url = "/testpaper/post/similar/";
+                $("#content").load(select_url,{
+                    'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                    'tpid':'{{ testpaper.id }}',
+                    'question_ids':question_ids
+                },function(){
+                    $("#div_main_loading").fadeOut();
+                });
+            });
+
+            function setChooserInfo(qno){
+                var str_title = $('#div_testpaper_question'+qno+" .btn_chooser_info").attr('qtitle');
+                var str_src = $('#div_testpaper_question'+qno+' .img_testpaper_question').attr("src");
+                var int_new_src = q_no_arr[qno].indexOf(str_src);
+                q_submit_arr[qno]=q_id_arr[qno][int_new_src];
+                $('#div_testpaper_question'+qno+' .btn_chooser_info').text(str_title+" - "+(int_new_src+1));
+            }
+        </script>
+    {% endif %}
+{% endif %}

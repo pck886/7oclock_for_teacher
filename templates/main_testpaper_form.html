@@ -1,0 +1,47 @@
+{% if user.id %}
+    <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" placeholder="검색어를 입력해주세요." {% if query %}value="{{ query }}"{% endif %} onkeypress="if(event.which == 13) {set_search();}"></p>
+    <p class="p_content_title"><a href="javascript:;" onclick="link_content({'link':'testpaper_form','tpid':'{{ testpaper.id }}'})">서식 설정</a> <span class="span_content_subtitle">총 {{ forms|length }}개의 서식이 있습니다.</span></p>
+    <div id="div_testpaperform_select">
+        <button class="btn btn-success btn_testpaperform_topbtn" id="btn_testpaperform_save" disabled="disabled"><i class="xi-check-circleout"></i> 수정완료</button>
+        <button class="btn btn-default btn_testpaperform_topbtn" onclick="link_content({'link':'testpaper','tpid':'{{ testpaper.id }}'})"><i class="xi-rollback"></i> 뒤로가기</button>
+    </div>
+    <div class="div_content_board">
+        <div id="div_testpaperform_board">
+            {% if query %}<div style="padding-bottom:20px;"><b>"{{ query }}"</b>에 대한 검색결과 <span id="span_search_del" onclick="del_search()">취소</span></div>{% endif %}
+            {% if forms %}
+                {% for form in forms %}
+                    <div class="div_testpaperform_form {% if testpaper.form == form %}select{% endif %}" form_id="{{ form.id }}" style="background-image:url({{ form.view.url }})">
+                        <p class="p_form_title">{{ form.title }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-data">해당하는 데이터가 없습니다.</div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        var form_id = 0;
+
+        $("#btn_testpaperform_save").click(function(){
+            $("#div_main_loading").show();
+            select_url = "/testpaper/post/form/";
+            $("#content").load(select_url, {
+                'csrfmiddlewaretoken': $("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                'tpid': '{{ testpaper.id }}',
+                'fid': form_id
+            },function(){
+                $("#div_main_loading").fadeOut();
+            });
+            $("#wrap #container #div_select_box").hide();
+            is_changed = false;
+        });
+
+        $(".div_testpaperform_form").click(function(){
+            form_id = $(this).attr('form_id');
+            $(".div_testpaperform_form").removeClass('select');
+            $(this).addClass('select');
+            $("#btn_testpaperform_save").removeAttr('disabled');
+            is_changed = true;
+        });
+    </script>
+{% endif %}

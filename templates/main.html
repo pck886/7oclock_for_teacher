@@ -1,0 +1,63 @@
+{% load home_extras %}
+<!DOCTYPE html>
+<html>
+<head lang="kr">
+    <meta charset="UTF-8">
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>모두를 위한 수학</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/xeicon/1.0.4/xeicon.min.css">
+    <link href="/static/css/square/green.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+</head>
+<body>
+<div id="wrap">
+    {% csrf_token %}
+    <div id="container">
+        <div id="header">
+            <button class="btn" id="btn_head_home" onclick="link_content({'link':'home'});"><i class="xi-home"></i></button>
+            <div id="div_header_profile" class="dropdown navbar-right">
+                <p data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="xi-user"></i> {{ user.first_name }} <span class="caret"></span></p>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick="link_content({'link':'mypage'});">마이페이지</a></li>
+                    {% if user.is_superuser  %}<li role="presentation"><a role="menuitem" tabindex="-1" href="/admin/" target="_blank">관리자 페이지</a></li>{% endif %}
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick="location.reload(true)">업데이트</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/logout/">로그아웃</a></li>
+                </ul>
+            </div>
+            <div id="div_header_school" href="javascript:;" onclick="link_content({'link':'manager'});">
+                <div id="div_school_icon" style="background-image: url('{{ user.profile.school.icon.url }}')"></div> {{ user.profile.school.title }}
+            </div>
+            <p id="p_header_logo"><a href="javascript:;" onclick="link_content({'link':'home'});"><img id="img_header_logo" src="/static/img/main/head_logo.png"></a></p>
+        </div>
+        <div id="div_main_loading"><i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i></div>
+        <div id="div_select_box">
+            <div id="div_box_contents"></div>
+            <p id="p_box_title">총 0문제</p>
+        </div>
+        <div id="content"></div>
+    </div>
+</div>
+
+{% include "modals.html" %}
+
+<script type="text/javascript" src="/static/js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+<script type="text/javascript" src="/static/js/jquery.ajax-progress.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/icheck.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="/static/js/dragdrop.js"></script>
+<script type="text/javascript" src="/static/js/jQuery.print.js"></script>
+<script type="text/javascript" src="/static/js/common.js"></script>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} });
+</script>
+</body>
+</html>

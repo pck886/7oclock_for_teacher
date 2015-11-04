@@ -1,0 +1,228 @@
+{% if user.id %}
+    {% load home_extras %}
+    <p class="p_content_title"><a href="javascript:;"  onclick="link_content({'link':'mypage'})">마이페이지</a> <span class="span_content_subtitle">{{ user.first_name }}님의 마이페이지입니다.</span></p>
+    <div class="div_content_board div_content_board_mypage">
+        <div id="div_mypage_board" class="row">
+            {#            <div class="col-sm-4">#}
+            {#                <div class="div_mypage_element" id="div_mypage_element1">#}
+            {#                    <p class="next"><img src="/static/img/main/main_mypage_next.png"></p>#}
+            {#                    <p class="p_element_icon" style="background-color:#f39c12"><i class="xi-sitemap"></i></p>#}
+            {#                    <H1>소속 변경</H1>#}
+            {#                    <p class="con">현재 등록된 소속을 변경합니다.</p>#}
+            {#                </div>#}
+            {#            </div>#}
+            <div class="col-sm-6">
+                <div class="div_mypage_element" id="div_mypage_element2">
+                    <p class="next"><img src="/static/img/main/main_mypage_next.png"></p>
+                    <p class="p_element_icon" style="background-color:#f39c12"><i class="xi-user-lock"></i></p>
+                    <H1>비밀번호 재설정</H1>
+                    <p class="con">나만의 비밀번호를 설정하여 보다 안전하게 계정을 보호하세요.</p>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="div_mypage_element" id="div_mypage_element3">
+                    <p class="next"><img src="/static/img/main/main_mypage_next.png"></p>
+                    <p class="p_element_icon" style="background-color:#2cc26b"><i class="xi-user-info"></i></p>
+                    <H1>개인정보 수정</H1>
+                    <p class="con">정확한 정보를 입력하여 보다 많은 서비스를 받아보세요.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="div_mypage_ele2" class="hidden">
+        <div class="modal-body">
+            <p class="p_page_title">비밀번호 재설정</p>
+            <hr/>
+            <div class="div_page_contents">
+                <label for="input_maketest_title">현재 비밀번호</label>
+                <input type="password" class="form-control input_mypage_ele_form" onkeyup="chk_mypage_ele2_pw()" id="input_mypage_ele_now" placeholder="현재 비밀번호">
+                <label for="input_maketest_title">새 비밀번호</label>
+                <input type="password" class="form-control input_mypage_ele_form" onkeyup="chk_mypage_ele2_pw()" id="input_mypage_ele_change" placeholder="새 비밀번호">
+                <input type="password" class="form-control input_mypage_ele_form" onkeyup="chk_mypage_ele2_pw()" id="input_mypage_ele_change_" placeholder="새 비밀번호 확인">
+            </div>
+            <p align="right">
+                <button class="btn btn-success input_mypage_ele_form" id="btn_mypage_ele_submit" onclick="submit_mypage_ele2();" disabled><i class="xi-check-circleout"></i> 변경</button>
+                <button class="btn btn-default input_mypage_ele_form" data-dismiss="modal" aria-label="Close"><i class="xi-close"></i> 취소</button>
+            </p>
+        </div>
+    </div>
+    <div id="div_mypage_ele2_success" class="hidden">
+        <div class="modal-body">
+            <p class="p_page_title">비밀번호 재설정 완료</p>
+            <hr/>
+            <div class="div_page_contents text-center">
+                <i class="xi-check-circle" style="color: #2ecc71"></i>
+                <p class="p_mypate_msg">비밀번호 재설정을 완료하였습니다.<br/>다시 로그인 해주시기 바랍니다.</p>
+            </div>
+            <p align="right">
+                <button class="btn btn-success input_mypage_ele_form" onclick="location.reload(true)">다시 로그인</button>
+            </p>
+        </div>
+    </div>
+    <div id="div_mypage_ele2_fail" class="hidden">
+        <div class="modal-body">
+            <p class="p_page_title">비밀번호 재설정 실패</p>
+            <hr/>
+            <div class="div_page_contents text-center">
+                <i class="xi-ban-circle" style="color: #e74c3c"></i>
+                <p class="p_mypate_msg">비밀번호 재설정에 실패하였습니다.<br/>현재 비밀번호 및 새 비밀번호를 다시 확인해주세요.</p>
+            </div>
+            <p align="right">
+                <button class="btn btn-default input_mypage_ele_form" data-dismiss="modal" aria-label="Close">다시 설정하기</button>
+            </p>
+        </div>
+    </div>
+
+    <div id="div_mypage_ele3" class="hidden">
+        <div class="modal-body">
+            <p class="p_page_title">개인정보 수정</p>
+            <hr/>
+            <div class="div_page_contents">
+                <form>
+                    <label for="input_maketest_title">이름</label>
+                    <input type="text" class="form-control input_mypage_ele_form" id="input_mypage_ele_name" onkeyup="chk_mypage_ele3_blank()" placeholder="이름" value="{{ user.first_name }}">
+                    <label for="input_maketest_title">이메일</label>
+                    <input type="text" class="form-control input_mypage_ele_form" id="input_mypage_ele_email" onkeyup="chk_mypage_ele3_blank()" placeholder="이메일" value="{{ user.email }}">
+                    <label for="input_maketest_title">연락처</label>
+                    <input type="text" class="form-control input_mypage_ele_form" id="input_mypage_ele_phone" onkeyup="chk_mypage_ele3_blank()" placeholder="연락처" value="{{ user.profile.phone }}">
+                    <label for="input_maketest_title">성별</label>
+                    <label class="checkbox-inline">
+                        <input type="radio" id="input_mypage_ele_gender0" name="user_gender" value="0" {% if user.profile.gender == 0 %}checked{% endif %}> 남자
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" id="input_mypage_ele_gender1" name="user_gender" value="1" {% if user.profile.gender == 1 %}checked{% endif %}> 여자
+                    </label>
+                </form>
+            </div>
+            <p align="right">
+                <button class="btn btn-success input_mypage_ele_form" id="btn_mypage_ele_submit" onclick="submit_mypage_ele3();"><i class="xi-check-circleout"></i> 저장</button>
+                <button class="btn btn-default input_mypage_ele_form" data-dismiss="modal" aria-label="Close"><i class="xi-close"></i> 취소</button>
+            </p>
+        </div>
+    </div>
+    <div id="div_mypage_ele3_success" class="hidden">
+        <div class="modal-body">
+            <p class="p_page_title">개인정보 수정 완료</p>
+            <hr/>
+            <div class="div_page_contents text-center">
+                <i class="xi-check-circle" style="color: #2ecc71"></i>
+                <p class="p_mypate_msg">개인정보 수정을 완료하였습니다.<br/>새로고침 해주시기 바랍니다.</p>
+            </div>
+            <p align="right">
+                <button class="btn btn-success input_mypage_ele_form" onclick="location.reload(true)">새로고침</button>
+            </p>
+        </div>
+    </div>
+    <div id="div_mypage_ele3_fail" class="hidden">
+        <div class="modal-body">
+            <p class="p_page_title">개인정보 수정 실패</p>
+            <hr/>
+            <div class="div_page_contents text-center">
+                <i class="xi-ban-circle" style="color: #e74c3c"></i>
+                <p class="p_mypate_msg">개인정보 수정에 실패하였습니다.<br/>입력을 다시 확인해주세요.</p>
+            </div>
+            <p align="right">
+                <button class="btn btn-default input_mypage_ele_form" data-dismiss="modal" aria-label="Close">다시 설정하기</button>
+            </p>
+        </div>
+    </div>
+    <script>
+        {#    $("#div_mypage_element1").click(function(){#}
+        {#        $("#div_modal_mypage_ele1").modal("show");#}
+        {#    });#}
+
+        $("#div_mypage_element2").click(function(){
+            $("#div_modal_mypage .modal-content").html($("#div_mypage_ele2").html());
+            $("#div_modal_mypage").modal("show");
+        });
+
+        $("#div_mypage_element3").click(function(){
+            $("#div_modal_mypage .modal-content").html($("#div_mypage_ele3").html());
+            $("#div_modal_mypage").modal("show");
+            $('input[type=radio], input[type=checkbox]').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+        });
+
+        function submit_mypage_ele2(){
+            var pw_now = $("#div_modal_mypage #input_mypage_ele_now").val()
+            var pw_c = $('#div_modal_mypage #input_mypage_ele_change').val();
+
+            $.post("/main/mypage/post/pw/change/",{
+                'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                'pw_now':pw_now,
+                'pw_c':pw_c
+            },function(data){
+                if(data == "True"){
+                    $("#div_modal_mypage .modal-content").html($("#div_mypage_ele2_success").html());
+                }else{
+                    $("#div_modal_mypage .modal-content").html($("#div_mypage_ele2_fail").html());
+                }
+            });
+        }
+
+        function chk_mypage_ele2_pw(){
+            var c_now = $("#div_modal_mypage #input_mypage_ele_now").val()
+            var c1 = $('#div_modal_mypage #input_mypage_ele_change').val();
+            var c2 = $('#div_modal_mypage #input_mypage_ele_change_').val();
+            if(c1.length > 5 && c2.length > 5){
+                if(c1 == c2){
+                    if(c_now != ""){
+                        $("#div_modal_mypage #btn_mypage_ele_submit").removeAttr("disabled");
+                        return;
+                    }
+                }
+                $("#div_modal_mypage #btn_mypage_ele_submit").attr("disabled","disabled");
+            }else{
+                $("#div_modal_mypage #btn_mypage_ele_submit").attr("disabled","disabled");
+            }
+        }
+
+        function submit_mypage_ele3(){
+            var first_name = $("#div_modal_mypage #input_mypage_ele_name").val();
+            var email = $('#div_modal_mypage #input_mypage_ele_email').val();
+            var phone = $('#div_modal_mypage #input_mypage_ele_phone').val();
+            var gender = $('#div_modal_mypage #input_mypage_ele_gender1').is(":checked")|0;
+
+            $.post("/main/mypage/post/info/change/",{
+                'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                'first_name':first_name,
+                'email':email,
+                'phone':phone,
+                'gender':gender
+            },function(data){
+                if(data == "True"){
+                    $("#div_modal_mypage .modal-content").html($("#div_mypage_ele3_success").html());
+                }else{
+                    $("#div_modal_mypage .modal-content").html($("#div_mypage_ele3_fail").html());
+                }
+            });
+        }
+
+        function chk_mypage_ele3_blank(){
+            var first_name = $("#div_modal_mypage #input_mypage_ele_name").val();
+            var email = $('#div_modal_mypage #input_mypage_ele_email').val();
+            var phone = $('#div_modal_mypage #input_mypage_ele_phone').val();
+
+            if(first_name  == ""){
+                $("#div_modal_mypage #btn_mypage_ele_submit").attr("disabled","disabled");
+                return;
+            }
+            else $("#div_modal_mypage #btn_mypage_ele_submit").removeAttr("disabled");
+
+            if(email  == ""){
+                $("#div_modal_mypage #btn_mypage_ele_submit").attr("disabled","disabled");
+                return;
+            }
+            else $("#div_modal_mypage #btn_mypage_ele_submit").removeAttr("disabled");
+
+            if(phone  == ""){
+                $("#div_modal_mypage #btn_mypage_ele_submit").attr("disabled","disabled");
+                return;
+            }
+            else $("#div_modal_mypage #btn_mypage_ele_submit").removeAttr("disabled");
+
+        }
+    </script>
+{% endif %}

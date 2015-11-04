@@ -1,0 +1,91 @@
+<div class="modal fade" id="div_modal_maketest" tabindex="-1" role="dialog" aria-labelledby="div_modal_maketest" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="p_page_title">테스트 저장</p>
+                <hr/>
+                <input type="hidden" id="input_maketest_school" value="{{ user.profile.school.id }}">
+                <div class="form-group">
+                    <input type="hidden" id="input_maketest_tpid" value=""/>
+                    <label for="input_maketest_title">테스트명</label>
+                    <input type="text" class="form-control input_maketest_form" id="input_maketest_title" placeholder="ex) 1학기 중간고사">
+                    <span id="span_maketest_chkname">
+                        <i class="xi-unknown-circle default" data-toggle="tooltip" data-placement="bottom" title="새로운 테스트명을 지어주세요."></i>
+                        <i class="xi-check-circle success" data-toggle="tooltip" data-placement="bottom" title="사용가능한 테스트명입니다."></i>
+                        <i class="xi-close-circle fail" data-toggle="tooltip" data-placement="bottom" title="이미 존재하는 테스트명입니다."></i>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="select_inventory_year">학년</label>
+                    <select id="select_inventory_year" class="form-control input_maketest_form">
+                        {% for year in user.profile.school.get_years %}
+                            <option value="{{ year.year }}" {% if forloop.counter0 == 0 %}selected{% endif %}>{{ user.profile.school.title }} {{ year.year }}학년</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="select_inventory_purpose">출제 용도</label>
+                    <label class="checkbox-inline">
+                        <input type="radio" id="purpose_0" name="maketest_purpose" value="0" checked> 테스트용
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" id="purpose_1" name="maketest_purpose" value="1"> 열람용
+                    </label>
+                </div>
+                <hr/>
+                <p align="right">
+                    <button class="btn btn-success input_maketest_form" id="btn_maketest_submit" disabled><i class="xi-check-circleout"></i> 생성</button>
+                    <button class="btn btn-default input_maketest_form" data-dismiss="modal" aria-label="Close"><i class="xi-close"></i> 취소</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="div_modal_alert" tabindex="-1" role="dialog" aria-labelledby="div_modal_alert" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="p_page_title">경고!</p>
+                <hr/>
+                <div class="div_page_contents">
+                    내용
+                </div>
+                <p align="right">
+                    <button class="btn btn-success input_alert_form" id="btn_alert_submit"><i class="xi-check-circleout"></i> 확인</button>
+                    <button class="btn btn-default input_alert_form" data-dismiss="modal" aria-label="Close"><i class="xi-close"></i> 취소</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{#<div class="modal fade" id="div_modal_mypage_ele1" tabindex="-1" role="dialog" aria-labelledby="div_modal_mypage_ele1" aria-hidden="true">#}
+{#    <div class="modal-dialog">#}
+{#        <div class="modal-content">#}
+{#            <div class="modal-body">#}
+{#                <p class="p_page_title">소속 변경</p>#}
+{#                <hr/>#}
+{#                <div class="div_page_contents">#}
+{#                    <label for="input_maketest_title">현재 소속</label>#}
+{#                    <input type="text" class="form-control input_mypage_ele_form" id="input_mypage_ele1_now" value="{{ user.profile.school.title }}" disabled>#}
+{#                    <label for="input_maketest_title">변경할 소속</label>#}
+{#                    <input type="text" class="form-control input_mypage_ele_form uschool" id="input_mypage_ele1_change" placeholder="학교명">#}
+{#                    <input type="hidden" name="school_id" class="uschoolid" id="uschoolid" value="0">#}
+{#                    <div class="div_list_school"></div>#}
+{#                </div>#}
+{#                <p align="right">#}
+{#                    <button class="btn btn-success input_mypage_ele_form" id="btn_mypage_ele_submit" disabled><i class="xi-check-circleout"></i> 변경</button>#}
+{#                    <button class="btn btn-default input_mypage_ele_form" data-dismiss="modal" aria-label="Close"><i class="xi-close"></i> 취소</button>#}
+{#                </p>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+
+<div class="modal fade" id="div_modal_mypage" tabindex="-1" role="dialog" aria-labelledby="div_modal_mypage" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,243 @@
+{% if user.id %}
+    <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" placeholder="검색어를 입력해주세요." {% if query %}value="{{ query }}"{% endif %} onkeypress="if(event.which == 13) {set_search();}"></p>
+    <p class="p_content_title"><a href="javascript:;" onclick="link_content({'link':'testpaper_modify','tpid':'{{ testpaper.id }}'})">출제 수정</a> <span class="span_content_subtitle">총 {{ questions|length }}개의 유형이 있습니다.</span></p>
+    <div id="div_select_select">
+        {% if unit1 %}
+            <select id="select_inventory_unit1" class="select_inventory_form">
+                <option value="">선택</option>
+                {% for unit in unit1 %}
+                    {% if unit == u1 %}
+                        <option value="{{ unit.id }}" selected>{{ unit.title }}</option>
+                    {% else %}
+                        <option value="{{ unit.id }}">{{ unit.title }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        {% endif %}
+        {% if unit2 %}
+            <select id="select_inventory_unit2" class="select_inventory_form">
+                <option value="">선택</option>
+                {% for unit in unit2 %}
+                    {% if unit == u2 %}
+                        <option value="{{ unit.id }}" selected>{{ unit.title }}</option>
+                    {% else %}
+                        <option value="{{ unit.id }}">{{ unit.title }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        {% endif %}
+        {% if unit3 %}
+            <select id="select_inventory_unit3" class="select_inventory_form">
+                <option value="">전체</option>
+                {% for unit in unit3 %}
+                    {% if unit == u3 %}
+                        <option value="{{ unit.id }}" selected>{{ unit.title }}</option>
+                    {% else %}
+                        <option value="{{ unit.id }}">{{ unit.title }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        {% endif %}
+        {% if unit4 %}
+            <select id="select_inventory_unit4" class="select_inventory_form">
+                <option value="">전체</option>
+                {% for unit in unit4 %}
+                    {% if unit == u4 %}
+                        <option value="{{ unit.id }}" selected>{{ unit.title }}</option>
+                    {% else %}
+                        <option value="{{ unit.id }}">{{ unit.title }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        {% endif %}
+        <button class="btn btn-default btn_inventory_topbtn" onclick="link_content({'link':'testpaper','tpid':'{{ testpaper.id }}'})"><i class="xi-rollback"></i> 뒤로가기</button>
+        <button class="btn btn-success btn_inventory_topbtn" id="btn_select_save"><i class="xi-check-circleout"></i> 수정완료</button>
+    </div>
+    <div class="div_content_board">
+        <div id="div_select_board">
+            {% if query %}<div style="padding-bottom:20px;"><b>"{{ query }}"</b>에 대한 검색결과 <span id="span_search_del" onclick="del_search()">취소</span></div>{% endif %}
+            {% if questions %}
+                {% for question in questions %}
+                    <div class="div_select_question" unit_id="{{ question.element.unit.id }}" title="{{ question.element.unit }}" unit="{{ question.element.unit.title }}" style="background-image:url({{ question.element.src.url }})">
+                        <div class="div_question_info">
+                            <p class="p_info_title">{{ question.element.unit.title }}</p>
+                            <p class="p_info_count">선택된 문제 : <span class="span_info_count">{{ question.type_0|length }}</span>/<span class="span_info_max">{{ question.type_0|length }}</span></p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% if unit3 %} <div class="no-data">해당하는 데이터가 없습니다.</div>
+                {% elif unit2 %}<div class="no-data">단원을 선택해주세요.</div>
+                {% else %}<div class="no-data">학년을 선택해주세요.</div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        var arr_questions = [];
+        {% for question in questions %}
+            arr_questions['{{ question.element.unit.id }}'] = [{% for q in question.type_0 %}'{{ q.id }}',{% endfor %}];{% endfor %}
+
+        {% if testpaper and u1 == None %}
+            if($("#div_select_box #div_box_contents").children().length <= 0 ) {
+                item_no = 1;
+                {% for question in testpaper.get_questions %}
+                    $("#div_select_box #div_box_contents").append("<div id='div_selectitem_" + item_no + "' class='list' title='{{ question.title }}'unit_id='{{ question.unit.id }}' question_id='{{ question.id }}' style='height:30px;'><span class='list_no'>"+item_no+"</span>. {{ question.unit.title }}<i class='xi-close' onclick='del_select_item(" + item_no + ")'></i></div>");
+                    new dragObject("div_selectitem_" + item_no, null, null, null, itemDragBegin, itemMoved, itemDragEnd, false);
+                    item_no++;
+                {% endfor %}
+            }
+        {% endif %}
+
+    </script>
+    <script>
+        function del_select_item(no){
+            var unit_id = $("#div_selectitem_"+no).attr('unit_id');
+            var question_id = $("#div_selectitem_"+no).attr('question_id');
+            if(arr_questions[unit_id]){
+                arr_questions[unit_id].push(question_id);
+                arr_questions[unit_id].sort();
+            }
+            $("#div_selectitem_"+no).remove();
+
+            item_no--;
+
+            $( "#div_select_box #div_box_contents .list_no" ).each(function( index ) {
+                $( this ).text(index+1);
+            });
+
+            match_box_question();
+            if($("#div_select_box #div_box_contents").html() == ""){
+                $("#btn_select_save").attr('disabled','disabled');
+                is_changed = false;
+            }else{
+                $("#btn_select_save").removeAttr('disabled');
+                is_changed = true;
+            }
+        }
+        function match_box_question(){
+            $(".div_select_question").removeClass("selected");
+            $("#div_select_box #div_box_contents .list").map(function(obj){
+                remove_arr(arr_questions,$(this).attr("question_id"));
+                $(".div_select_question[unit_id="+$(this).attr("unit_id")+"]").addClass("selected");
+            });
+            $(".div_select_question").map(function(){
+                $(this).find(".span_info_count").text(arr_questions[$(this).attr("unit_id")].length);
+            });
+
+            $("#div_select_box #p_box_title").text("총 "+(item_no-1)+"문제");
+        }
+        function remove_arr(arr, v) {
+            for(arr_i in arr){
+                var j_len = arr[arr_i].length;
+                for(j=0;j<j_len;j++){
+                    if(arr[arr_i][j] == v){
+                        arr[arr_i].splice(j, 1);
+                        return ;
+                    }
+                }
+            }
+        }
+
+        match_box_question();
+    </script>
+    <script>
+        $("#btn_select_save").click(function(){
+            if($("#div_select_box #div_box_contents").html() != "") {
+                $("#div_main_loading").show();
+                var questions = "";
+
+                $("#div_select_box #div_box_contents .list").each(function (i) {
+                    questions += $(this).attr('question_id') + ",";
+                });
+                questions = questions.substring(0, questions.length - 1);
+
+                select_url = "/testpaper/post/modify/";
+                $("#content").load(select_url, {
+                    'csrfmiddlewaretoken': $("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                    'tpid': '{{ testpaper.id }}',
+                    'questions': questions
+                },function(){
+                    $("#div_main_loading").fadeOut();
+                });
+                $("#wrap #container #div_select_box").hide();
+            }
+        });
+
+        $(".div_select_question").click(function(){
+            if(item_no>50){
+                alert("50문제 이상은 출제 불가능합니다.");
+            }else {
+                var unit_id = $(this).attr('unit_id');
+                var unit = $(this).attr('unit');
+                var title = $(this).attr('title');
+                $("#div_select_box #div_box_contents").append("<div id='div_selectitem_" + item_no + "' class='list' title='" + title + "' unit_id='" + unit_id + "' question_id='" + arr_questions[unit_id][0] + "' style='height:30px;'><span class='list_no'>" + item_no + "</span>." + unit + "<i class='xi-close' onclick='del_select_item(" + item_no + ")'></i></div>");
+                arr_questions[unit_id].splice(0, 1);
+                $(this).find(".span_info_count").text(arr_questions[unit_id].length);
+                $(this).addClass("selected");
+
+                new dragObject("div_selectitem_" + item_no, null, null, null, itemDragBegin, itemMoved, itemDragEnd, false);
+                ++item_no;
+
+                $("#div_select_box #p_box_title").text("총 "+(item_no-1)+"문제");
+            }
+        });
+
+        $("#select_inventory_unit1").change(function(){
+            $("#div_main_loading").show();
+            var unit1 = get_or_0($("#select_inventory_unit1 > option:selected").val());
+            select_url = "/testpaper/modify/?unit1="+unit1+"&tpid={{ testpaper.id }}";
+            $("#content").load(select_url,{
+                'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            },function(){
+                $("#div_main_loading").fadeOut();
+            });
+        });
+        $("#select_inventory_unit2").change(function(){
+            $("#div_main_loading").show();
+            var unit1 = get_or_0($("#select_inventory_unit1 > option:selected").val());
+            var unit2 = get_or_0($("#select_inventory_unit2 > option:selected").val());
+            select_url = "/testpaper/modify/?unit1="+unit1+"&unit2="+unit2+"&tpid={{ testpaper.id }}";
+            $("#content").load(select_url,{
+                'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            },function(){
+                $("#div_main_loading").fadeOut();
+            });
+        });
+        $("#select_inventory_unit3").change(function(){
+            $("#div_main_loading").show();
+            var unit1 = get_or_0($("#select_inventory_unit1 > option:selected").val());
+            var unit2 = get_or_0($("#select_inventory_unit2 > option:selected").val());
+            var unit3 = get_or_0($("#select_inventory_unit3 > option:selected").val());
+            select_url = "/testpaper/modify/?unit1="+unit1+"&unit2="+unit2+"&unit3="+unit3+"&tpid={{ testpaper.id }}";
+            $("#content").load(select_url,{
+                'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            },function(){
+                $("#div_main_loading").fadeOut();
+            });
+        });
+        $("#select_inventory_unit4").change(function(){
+            $("#div_main_loading").show();
+            var unit1 = get_or_0($("#select_inventory_unit1 > option:selected").val());
+            var unit2 = get_or_0($("#select_inventory_unit2 > option:selected").val());
+            var unit3 = get_or_0($("#select_inventory_unit3 > option:selected").val());
+            var unit4 = get_or_0($("#select_inventory_unit4 > option:selected").val());
+            select_url = "/testpaper/modify/?unit1="+unit1+"&unit2="+unit2+"&unit3="+unit3+"&unit4="+unit4+"&tpid={{ testpaper.id }}";
+            $("#content").load(select_url,{
+                'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            },function(){
+                $("#div_main_loading").fadeOut();
+            });
+        });
+
+        {% if u1 == None %}
+            if($("#div_select_box #div_box_contents").html() == "") {
+                {% for question in testpaper.get_questions %}
+                    $("#div_select_box #div_box_contents").append("<div id='div_selectitem_" + item_no + "' class='list' title='{{ question.title }}' unit_id='{{ question.unit.id }}' style='height:30px;'>{{ question.unit.title }}<i class='xi-close' onclick='del_select_item(" + item_no + ")'></i></div>");
+                    new dragObject("div_selectitem_" + item_no, null, null, null, itemDragBegin, itemMoved, itemDragEnd, false);
+                    item_no++;
+                {% endfor %}
+            }
+        {% endif %}
+    </script>
+{% endif %}

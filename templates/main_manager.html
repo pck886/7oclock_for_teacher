@@ -1,0 +1,68 @@
+{% if user.id %}
+    {% load home_extras %}
+    <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
+    <p class="p_content_title"><a href="javascript:;"  onclick="link_content({'link':'manager'})">학생관리페이지</a> <span class="span_content_subtitle">{{ user.profile.school.title }}의 학생관리페이지입니다.</span></p>
+    <div id="div_manager_select">
+        <select id="select_manager_schoolyear" class="select_manager_form">
+            <option>선택</option>
+            {% for room in rooms %}
+                <option value="{{ room.id }}">{{ room.school.title }} {{ room.year }}학년 {{ room.room }}반</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="div_content_board div_content_board_manager">
+        <div id="div_manager_board">
+            {% if query %}<div style="padding-bottom:20px;"><b>"{{ query }}"</b>에 대한 검색결과 <span id="span_search_del" onclick="del_search()">취소</span></div>{% endif %}
+            {% for room in rooms %}<div class="div_manager_room" style="{% if forloop.counter0 != 0 %}display:none;{% endif %}" room_id="{{ room.id }}">
+                <table class="table table-striped">
+                    <thead>
+                    <tr><th  class="text-center">#</th><th>이름</th><th>성별</th><th>연락처</th><th class="text-center">수정</th></tr>
+                    </thead>
+                    <tbody>
+                    {% for profile in room.get_userprofiles|search_user:query %}<tr>
+                        <th scope="row" class="text-center">{{ forloop.counter }}</th>
+                        <td><img class="img_manager_profilepic" src="{{ profile.src.url }}">{{ profile.user.first_name }}</td>
+                        <td>{{ profile.get_gender }}</td>
+                        <td>{{ profile.phone }}</td>
+                        <td class="text-center"><i class="xi-close i_manager_delete" uid="{{ profile.user.id }}"></i></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>{% endfor %}
+        </div>
+    </div>
+    <script>
+        $(".btn_manager_topbtn").click(function(){
+            var room_id = $(this).attr("room_id");
+            $(".div_manager_room").hide();
+            $(".div_manager_room[room_id="+room_id+"]").show();
+            $(".btn_manager_topbtn").removeClass('select');
+            $(this).addClass('select');
+        });
+
+        $("#select_manager_schoolyear").change(function(){
+            var year = get_or_0($("#select_manager_schoolyear > option:selected").val());
+            $(".div_manager_room").hide();
+            $(".div_manager_room[room_id="+year+"]").show();
+        });
+
+        $(".i_manager_delete").click(function(){
+            var uid = $(this).attr('uid');
+            alert_show({
+                "type":"manager_user_delete",
+                "title":"삭제",
+                "contents":"정말 삭제하시겠습니까?",
+                "load_id":'#content',
+                "url":"/manager/post/user/delete/",
+                "data":{
+                    'csrfmiddlewaretoken': $("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                    'uid': uid
+                },
+                "function":function(){
+                    $("#div_main_loading").fadeOut();
+                }
+            });
+        });
+    </script>
+{% endif %}

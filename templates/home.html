@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head lang="kr">
+    <meta charset="UTF-8">
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>모두를 위한 수학</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/xeicon/1.0.4/xeicon.min.css">
+    <link href="/static/css/square/green.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/home.css">
+</head>
+<body>
+<div id="wrap">
+    {% csrf_token %}
+    <p id="p_wrap_company">7o'clock</p>
+    <div id="container" class="text-center">
+        <p class="col-lg-12 text-center" id="p_container_logo"><img id="img_home_logo" src="/static/img/home/home_logo.png"></p>
+        <form method="post" action="/user/login/">
+            {% csrf_token %}
+            <div class="col-lg-12 " id="div_container_form">
+                <input type="text" class="form-control login_form" id="input_container_id" name="user_id" placeholder="아이디" required>
+                <input type="password" class="form-control login_form" id="input_container_pw" name="password" placeholder="비밀번호" required>
+                <input type="hidden" name="come_from" value="/">
+            </div>
+            <button type="submit" class="btn" id="btn_container_login">로그인하기</button>
+        </form>
+        <hr/>
+        아직 회원이 아니십니까? <span id="span_container_join">가입하기</span>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="JoinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="form_join" action="/user/join/" method="post">
+                    {% csrf_token %}
+                    <div class="control-group">
+                        <a type="button" class="join-info" id="btn_join_chkid" data-toggle="tooltip" data-placement="right" title="아이디를 입력하세요." chk="0"><i class="xi-info-circle"></i></a>
+                        <input class="join-form" type="text" name="user_id" id="uid" required placeholder="아이디" title="아이디">
+                        <a type="button" class="join-info" id="btn_join_chkpw" data-toggle="tooltip" data-placement="right" title="6자리 이상을 입력하세요." chk="0"><i class="xi-info-circle"></i></a>
+                        <input class="join-form" type="password" name="password" id="upw" required placeholder="비밀번호" title="비밀번호">
+                        <a type="button" class="join-info" id="btn_join_chkpw_" data-toggle="tooltip" data-placement="right" title="위 비밀번호와 똑같이 입력하세요." chk="0"><i class="xi-info-circle"></i></a>
+                        <input class="join-form" type="password" name="password_" id="upw_" required placeholder="비밀번호 확인" title="비밀번호 확인">
+                        <hr/>
+                        <input class="join-form" type="text" name="user_name" id="uname" required placeholder="이름" title="이름">
+                        <a type="button" class="join-info" id="btn_join_chkemail" data-toggle="tooltip" data-placement="right" title="이메일을 입력하세요." chk="0"><i class="xi-info-circle"></i></a>
+                        <input class="join-form" type="email" name="user_email" id="uemail" required placeholder="이메일" title="이메일">
+                        <input class="join-form" type="text" name="user_phone" id="uphone" required placeholder="연락처" title="연락처">
+                        <label class="checkbox-inline">
+                            <input type="radio" id="ugender_0" name="user_gender" value="0" checked> 남자
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" id="ugender_1" name="user_gender" value="1"> 여자
+                        </label>
+                        <hr/>
+                        <input class="join-form uschool" type="text" name="user_school" id="uschool" required placeholder="학교명" title="학교명">
+                        <input type="hidden" name="school_id" class="uschoolid" id="uschoolid" value="0">
+                        <div class="div_list_school"></div>
+                        <p align="center">개인정보취급방침 자세히 보기</p>
+                        <label for="check_opt"><input type="checkbox" id="check_opt"> 약관에 동의합니다.</label>
+                    </div>
+                    <div class="control-group">
+                        <input type="button" value="회원가입" class="btn_submit" id="btn_join_submit">
+                    </div>
+                </form>
+            </div>
+            <a href="javascript:;" class="btn_close"><i class="xi-close"></i></a>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script type="text/javascript" src="/static/js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/icheck.js"></script>
+<script type="text/javascript" src="/static/js/common.js"></script>
+<script type="text/javascript" src="/static/js/home.js"></script>
+<script>
+    $("#span_container_join").click(function(){
+        $('#JoinModal').modal('show');
+    });
+    $('.btn_close').click(function(){ $('.modal').modal('hide'); });
+    $('.dropdown-toggle').dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+    $('input[type=radio], input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green'
+    });
+</script>
+</body>
+</html>

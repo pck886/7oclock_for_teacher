@@ -1,0 +1,46 @@
+{% if user.id %}
+    <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
+    <p class="p_content_title"><a href="javascript:;"  onclick="link_content({'link':'progress'})">진도출제</a> <span class="span_content_subtitle">총 {{ testpapers|length }}개의 테스트가 있습니다.</span></p>
+    <div id="div_progress_select">
+        <select id="select_progress_year" class="select_progress_form">
+            <option value="0">전체</option>
+            {% for year in user.profile.school.get_years %}
+                {% if year.year == select_year %}
+                    <option value="{{ year.year }}" selected>중학교 {{ year.year }}학년</option>
+                {% else %}
+                    <option value="{{ year.year }}">중학교 {{ year.year }}학년</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <button class="btn btn-default btn_progress_topbtn" onclick="link_content({'link':'home'})"><i class="xi-rollback"></i> 뒤로가기</button>
+    </div>
+    <div class="div_content_board">
+        <div id="div_progress_board">
+            {% if query %}<div style="padding-bottom:20px;"><b>"{{ query }}"</b>에 대한 검색결과 <span id="span_search_del" onclick="del_search()">취소</span></div>{% endif %}
+            {% if testpapers %}
+                {% for testpaper in testpapers %}
+                    <div class="div_progress_testpaper" onclick="link_content({'link':'testpaper', 'tpid':'{{testpaper.id}}'})">
+                        <div class="div_testpaper_bg"></div>
+                        <div class="div_testpaper_title">{{testpaper.title}}</div>
+                        <div class="div_testpaper_date">{{testpaper.date_created|date:"Y-m-d"}}</div>
+                        <div class="div_testpaper_room">모두를 위한 수학</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-data">해당하는 데이터가 없습니다.</div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        $("#select_progress_year").change(function(){
+            $("#div_main_loading").show();
+            var year = get_or_0($("#select_progress_year > option:selected").val());
+            select_url = "/progress/?year="+year;
+            $("#content").load(select_url,{
+                'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            },function(){
+                $("#div_main_loading").fadeOut();
+            });
+        });
+    </script>
+{% endif %}
