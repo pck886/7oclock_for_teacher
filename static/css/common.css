@@ -25,7 +25,7 @@ hr {  border: 0;  border-top: 1px dotted #CBCBCB;}
 .blind {overflow: hidden;position: absolute;top: 0;left: 0;width: 1px;height: 1px;font-size: 0;line-height: 0;}
 .click {cursor:pointer}
 .tooltip .tooltip-inner {min-width: 160px;}
-.btn {border-radius:0;line-height: 30px;}
+.btn {border-radius:0;line-height: 25px;}
 .p_page_title {font-size:16px; font-weight:700}
 .modal-backdrop {background-color: rgb(241, 241, 241)}
 .modal-backdrop.in {opacity: .9;}

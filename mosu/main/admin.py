@@ -6,13 +6,13 @@ from mosu.main.models import TestPaper, TestPaperQuestion, TestPaperForm, TestPa
 
 
 class TestPaperAdmin(admin.ModelAdmin):
-    list_display = ('id','user','title','school','year','purpose','is_shown','is_exported','date_created')
+    list_display = ('id','user','title','purpose','is_shown','is_exported','date_created')
 
 class TestPaperQuestionAdmin(admin.ModelAdmin):
     list_display = ('id','testpaper','question')
 
 class TestPaperFormAdmin(admin.ModelAdmin):
-    list_display = ('id','title','school','html','outline','view','date_created')
+    list_display = ('id','title','union','html','outline','view','date_created')
 
 class TestPaperSubmitAdmin(admin.ModelAdmin):
     list_display = ('id','user','testpaper','answer','question')

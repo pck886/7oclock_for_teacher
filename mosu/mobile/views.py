@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 import sys
 from mosu.docs.models import QuestionUnit1, QuestionUnit2, QuestionUnit3, QuestionUnit4, QuestionUnit5, Question, \
     QuestionFeedback
-from mosu.home.models import get_or_none, School, UserProfile, SchoolYear
+from mosu.home.models import get_or_none, Group, UserProfile, Group
 from mosu.main.models import TestPaper, TestPaperQuestion, TestPaperSubmit
 from mosu.mobile.models import QuestionInventory
 
@@ -23,24 +23,24 @@ def get_user(request):
     password = request.GET.get("password")
     user = authenticate(username=uid, password=password)
     if user.id :
-        school_id, school_name, school_year, school_room = 0, '', '', ''
-        if user.profile.school :
-            school_id = user.profile.school.id
-            school_name = user.profile.school.title
-        if user.profile.schoolyear :
-            school_id = user.profile.schoolyear.school.id
-            school_name = user.profile.schoolyear.school.title
-            school_year = user.profile.schoolyear.year
-            school_room = user.profile.schoolyear.room
+        Group_id, Group_name, Group_year, Group_group = 0, '', '', ''
+        if user.profile.group :
+            Group_id = user.profile.group.id
+            Group_name = user.profile.group.title
+        if user.profile.group :
+            Group_id = user.profile.group.group.id
+            Group_name = user.profile.group.group.title
+            Group_year = user.profile.group.year
+            Group_group = user.profile.group.group
         arr = [{
             'id':user.id,
             'username':user.username,
             'email':user.email,
             'first_name':user.first_name,
-            'school_id':school_id,
-            'school_name':school_name,
-            'school_year':school_year,
-            'school_room':school_room,
+            'Group_id':Group_id,
+            'Group_name':Group_name,
+            'Group_year':Group_year,
+            'Group_group':Group_group,
             'src':user.profile.src.url,
             'phone':user.profile.phone
         }]
@@ -53,24 +53,24 @@ def get_user_info(request):
     uid = int(request.GET.get("uid",0))
     user = get_or_none(User,id=uid)
     if user.id :
-        school_id, school_name, school_year, school_room = 0, '', '', ''
-        if user.profile.school :
-            school_id = user.profile.school.id
-            school_name = user.profile.school.title
-        if user.profile.schoolyear :
-            school_id = user.profile.schoolyear.school.id
-            school_name = user.profile.schoolyear.school.title
-            school_year = user.profile.schoolyear.year
-            school_room = user.profile.schoolyear.room
+        Group_id, Group_name, Group_year, Group_group = 0, '', '', ''
+        if user.profile.group :
+            Group_id = user.profile.group.id
+            Group_name = user.profile.group.title
+        if user.profile.group :
+            Group_id = user.profile.group.group.id
+            Group_name = user.profile.group.group.title
+            Group_year = user.profile.group.year
+            Group_group = user.profile.group.group
         arr = [{
             'id':user.id,
             'username':user.username,
             'email':user.email,
             'first_name':user.first_name,
-            'school_id':school_id,
-            'school_name':school_name,
-            'school_year':school_year,
-            'school_room':school_room,
+            'Group_id':Group_id,
+            'Group_name':Group_name,
+            'Group_year':Group_year,
+            'Group_group':Group_group,
             'src':user.profile.src.url,
             'phone':user.profile.phone,
             'gender':user.profile.get_gender()
@@ -80,10 +80,10 @@ def get_user_info(request):
         return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
     return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
 
-def get_school_name(request):
+def get_Group_name(request):
     q = request.GET.get('q')
-    schools = list(School.objects.filter(title__contains=q,is_active=True).values())
-    return HttpResponse(json.dumps(schools, default=date_handler), content_type="application/json")
+    Groups = list(Group.objects.filter(title__contains=q,is_active=True).values())
+    return HttpResponse(json.dumps(Groups, default=date_handler), content_type="application/json")
 
 def set_user(request):
     user_id = request.GET.get("user_id")
@@ -92,37 +92,37 @@ def set_user(request):
     user_email = request.GET.get("user_email")
     phone = request.GET.get("user_phone")
     gender = int(request.GET.get("user_gender",0))
-    school_name = request.GET.get("school_name")
-    school_year = request.GET.get("school_year")
-    school_room = request.GET.get("school_room")
+    Group_name = request.GET.get("Group_name")
+    Group_year = request.GET.get("Group_year")
+    Group_group = request.GET.get("Group_group")
 
-    sy = get_or_none(SchoolYear,school__title=school_name,year=school_year,room=school_room)
+    sy = get_or_none(Group,Group__title=Group_name,year=Group_year,group=Group_group)
     user = User.objects.create_user(username=user_id,password=password,email=user_email,first_name=user_name)
     if user :
 
         if gender == 0 : src = "default_user.png"
         else : src = "default_user_f.png"
 
-        UserProfile.objects.create(user=user,phone=phone,schoolyear=sy,gender=gender,src=src)
+        UserProfile.objects.create(user=user,phone=phone,Group=sy,gender=gender,src=src)
         user = authenticate(username=user_id, password=password)
         if user :
-            school_name, school_year, school_room = '', '', ''
-            if user.profile.school :
-                school_name = user.profile.school.title
-            if user.profile.schoolyear :
-                school_id = user.profile.schoolyear.school.id
-                school_name = user.profile.schoolyear.school.title
-                school_year = user.profile.schoolyear.year
-                school_room = user.profile.schoolyear.room
+            Group_name, Group_year, Group_group = '', '', ''
+            if user.profile.group :
+                Group_name = user.profile.group.title
+            if user.profile.group :
+                Group_id = user.profile.group.group.id
+                Group_name = user.profile.group.group.title
+                Group_year = user.profile.group.year
+                Group_group = user.profile.group.group
             arr = [{
                 'id':user.id,
                 'username':user.username,
                 'email':user.email,
                 'first_name':user.first_name,
-                'school_id':school_id,
-                'school_name':school_name,
-                'school_year':school_year,
-                'school_room':school_room,
+                'Group_id':Group_id,
+                'Group_name':Group_name,
+                'Group_year':Group_year,
+                'Group_group':Group_group,
                 'src':user.profile.src.url,
                 'phone':user.profile.phone,
                 'gender':user.profile.get_gender()
@@ -298,11 +298,11 @@ def get_testpaper_list(request):
 
     arr = []
 
-    testpapers = TestPaper.objects.filter(rooms__year=user.profile.schoolyear.year,rooms__room=user.profile.schoolyear.room,school=user.profile.schoolyear.school,is_shown=True,is_exported=True).order_by('-id')
+    testpapers = TestPaper.objects.filter(groups__year=user.profile.group.year,groups__group=user.profile.group.group,Group=user.profile.group.group,is_shown=True,is_exported=True).order_by('-id')
 
     for testpaper in testpapers :
         arr.append({'id':testpaper.id, 'title':testpaper.title, 'year':testpaper.year,
-                    'date':set_date(testpaper.date_created), 'school_name':testpaper.school.title, 'user':testpaper.user.first_name,
+                    'date':set_date(testpaper.date_created), 'Group_name':testpaper.group.title, 'user':testpaper.user.first_name,
                     "purpose":testpaper.get_purpose(),"question_len":len(testpaper.get_questions())})
 
     return HttpResponse(json.dumps(arr, default=date_handler), content_type="application/json")
@@ -400,7 +400,7 @@ def get_inventory_question_list(request):
 def get_testpaper_submit(request):
     user = get_or_none(User,id=request.GET.get("uid",0))
     testpaper = get_or_none(TestPaper,id=request.GET.get("tpid",0))
-    testpaper_user = TestPaperSubmit.objects.filter(testpaper=testpaper,user__profile__schoolyear=user.profile.schoolyear).values('user').annotate(Count('user'))
+    testpaper_user = TestPaperSubmit.objects.filter(testpaper=testpaper,user__profile__Group=user.profile.group).values('user').annotate(Count('user'))
 
     myrank = 0
 
@@ -462,8 +462,8 @@ def mobile(request):
         return get_user(request)
     elif request.GET.get("mode") == "get_user_info" :
         return get_user_info(request)
-    elif request.GET.get("mode") == "get_school_name" :
-        return get_school_name(request)
+    elif request.GET.get("mode") == "get_Group_name" :
+        return get_Group_name(request)
     elif request.GET.get("mode") == "set_user" :
         return set_user(request)
     elif request.GET.get("mode") == "set_user_profilepic" :

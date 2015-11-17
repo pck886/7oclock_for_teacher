@@ -1,7 +1,13 @@
 $(window).load(function(){
+
     var day = ["일","월","화","수","목","금","토"];
     var myDate = new Date();
     $("#p_top_date").text(myDate.getFullYear()+"년 "+(myDate.getMonth()+1)+"월 "+myDate.getDate()+"일 "+day[myDate.getDay()%7]+"요일");
+
+    $("#btn_join_account").click(function(){
+        $("#div_join_btngroup").hide();
+        $("#div_join_account").fadeIn();
+    });
 
     $('#JoinModal #uid').keyup(function(){
         if($(this).val().length < 4){
@@ -57,7 +63,6 @@ $(window).load(function(){
         var chk_pw_ = Number($("#JoinModal  #btn_join_chkpw_").attr("chk"));
         var chk_name = Number($("#JoinModal  #uname").val().length);
         var chk_email = Number($("#JoinModal  #btn_join_chkemail").attr("chk"));
-        var chk_phone = Number($("#JoinModal  #uphone").val().length);
         var chk_opt = Number($(":checkbox[id='check_opt']:checked").length);
 
         if(chk_id == 0){
@@ -75,9 +80,6 @@ $(window).load(function(){
         }else if(chk_email == 0){
             $("#JoinModal  #uemail").focus();
             return;
-        }else if(chk_phone == 0){
-            $("#JoinModal  #uphone").focus();
-            return;
         }else if(chk_opt == 0){
             $("#JoinModal  #check_opt").focus();
             return;
@@ -85,28 +87,7 @@ $(window).load(function(){
 
         $("#JoinModal #form_join").submit();
     });
-
-    $('#JoinModal #uschool').focus(function(evt){
-        if($("#uschool").val() != "") getSearchList($('#JoinModal #uschool').val());
-    });
-
-    $('#JoinModal #uschool').change(function(evt){
-        getSearchList($('#JoinModal #uschool').val());
-    });
-
-    $('#JoinModal #uschool').keyup(function(evt){
-        getSearchList($('#JoinModal #uschool').val());
-    });
-
 });
-
-function getSearchList(q){
-    $('.div_list_school').show();
-    $('.div_list_school').load('/home/list/school/',{
-        'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
-        'q':q
-    });
-}
 
 function setChk(ele_id, chk, msg){
     if(chk){

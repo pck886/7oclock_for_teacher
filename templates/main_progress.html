@@ -4,7 +4,7 @@
     <div id="div_progress_select">
         <select id="select_progress_year" class="select_progress_form">
             <option value="0">전체</option>
-            {% for year in user.profile.school.get_years %}
+            {% for year in user.profile.group.get_years %}
                 {% if year.year == select_year %}
                     <option value="{{ year.year }}" selected>중학교 {{ year.year }}학년</option>
                 {% else %}
@@ -23,7 +23,7 @@
                         <div class="div_testpaper_bg"></div>
                         <div class="div_testpaper_title">{{testpaper.title}}</div>
                         <div class="div_testpaper_date">{{testpaper.date_created|date:"Y-m-d"}}</div>
-                        <div class="div_testpaper_room">모두를 위한 수학</div>
+                        <div class="div_testpaper_group">모두를 위한 수학</div>
                     </div>
                 {% endfor %}
             {% else %}

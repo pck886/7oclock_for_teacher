@@ -7,12 +7,14 @@
 #wrap #container #header #btn_head_home {position: absolute;top: 5px;left: 5px;width: 40px;line-height: 40px;padding: 0;color:#fff;font-size: 25px;background-color: transparent;border: 0;}
 #wrap #container #header #p_header_logo {position: absolute;left: 50%;margin-left: -48.5px;line-height: 50px;color: #fff;font-size: 24px;font-weight: 700;}
 #wrap #container #header #p_header_logo #img_header_logo {padding:5px 0;margin-top: -3px;}
-#wrap #container #header #div_header_school {position: relative;line-height: 50px;font-size: 14px;padding: 0 10px;margin: 0;color: #D1EDE7;background-color: RGBA(0,0,0,0.05);cursor: pointer;float: right;}
-#wrap #container #header #div_header_school:hover {background-color: RGBA(0,0,0,0.1);color:#fff}
-#wrap #container #header #div_header_school #div_school_icon {width: 30px;height: 30px;line-height: 0;background-color: #FFF;margin: 10px 5px 0px 0px;border-radius: 30px;overflow: hidden;float: left;}
-#wrap #container #header #div_header_school #div_school_icon #div_icon_img {width:100%;height:auto;}
+#wrap #container #header #div_header_Group {position: relative;line-height: 50px;font-size: 14px;padding: 0 10px;margin: 0;color: #D1EDE7;background-color: RGBA(0,0,0,0.05);cursor: pointer;float: right;}
+#wrap #container #header #div_header_Group:hover {background-color: RGBA(0,0,0,0.1);color:#fff}
+#wrap #container #header #div_header_Group #div_Group_icon {width: 30px;height: 30px;line-height: 0;background-color: #FFF;margin: 10px 5px 0px 0px;border-radius: 30px;overflow: hidden;float: left;}
+#wrap #container #header #div_header_Group #div_Group_icon #div_icon_img {width:100%;height:auto;}
 #wrap #container #header #div_header_profile {position: relative;line-height: 50px;font-size: 14px;padding: 0 20px;margin: 0;color: #D1EDE7;background-color: RGBA(0,0,0,0.05);text-align: center;cursor: pointer;}
 #wrap #container #header #div_header_profile:hover {background-color: RGBA(0,0,0,0.1);color:#fff}
+#wrap #container #header #div_header_profile #div_user_icon {width: 30px;height: 30px;line-height: 0;margin: 10px 5px 0px 0px;border-radius: 30px;overflow: hidden;float: left;}
+#wrap #container #header #div_header_profile #div_user_icon #div_user_img {width:100%;height:auto;}
 
 #wrap #container #content {position: absolute;top: 90px;left: 60px;right: 60px;bottom: 40px;}
 #wrap #container #content .p_content_search {position: relative;float:right;width: 250px;}
@@ -25,28 +27,36 @@
 #wrap #container #content #span_search_del {color: #ffcfcc;cursor:pointer;font-size: 13px;margin-left: 5px;}
 #wrap #container #content #span_search_del:hover {color:#ea6153}
 #wrap #container #content #div_testpaper_zoom {position:absolute;bottom: 40px;right: 40px;background-color: #fff;}
-#wrap #container #content #div_testpaper_room {position:absolute;top: 160px;left: 30px;background-color: #fff;}
-#wrap #container #content #div_testpaper_room #btn_room_year {width: 60px;}
-#wrap #container #content #div_testpaper_room .btn_rooms {width: 60px;border-top: 0;}
+#wrap #container #content #div_testpaper_group {position:absolute;top: 160px;left: 30px;background-color: #fff;}
+#wrap #container #content #div_testpaper_group #btn_group_year {width: 60px;}
+#wrap #container #content #div_testpaper_group .btn_groups {width: 60px;border-top: 0;}
+
+#wrap #container #content #div_dashboard_groups {position:absolute;top: 61px;left: 10px;right: 10px;height:40px;z-index: 1;}
+#wrap #container #content #div_dashboard_groups #p_groups_title {line-height:40px;float:left;margin-right: 15px;}
+#wrap #container #content #div_dashboard_groups .btn_groups {position: relative;padding: 9px 15px;background: #fff;border: 1px solid #ddd;color: #666;}
+#wrap #container #content #div_dashboard_groups .btn_groups.active {background-color: #fafafa;border-bottom: 1px solid #fafafa;}
+#wrap #container #content #div_dashboard_groups .btn_groups:hover {background: #fafafa;border: 1px solid #dadada;}
+#wrap #container #content .div_content_board_dashboard {position: absolute;top: 100px;left: 0;right: 0;bottom: 0;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding: 10px;background-color: #fafafa;overflow-y: scroll;overflow-x: hidden;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board {padding: 10px;word-wrap: break-word; }
 
 #wrap #container #content #div_inventory_select { padding:20px 0;border-bottom:1px solid #ddd ; height: 85px;}
 #wrap #container #content #div_inventory_select .select_inventory_form { font-size: 16px; border: 1px solid #ccc; background-color: #fff; border-radius: 0; height: 40px;line-height: 40px;padding: 0 0px 0 10px;    }
 #wrap #container #content #div_inventory_select .btn_inventory_topbtn {float:right;margin-left: 5px;}
-#wrap #container #content .div_content_board #div_inventory_board {padding: 10px;word-wrap: break-word;                        }
+#wrap #container #content .div_content_board #div_inventory_board {padding: 10px;word-wrap: break-word; }
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper {position: relative;width: 267px;height: 320px;margin: 20px 30px;border: 1px solid RGBA(0,0,0,0.2);border-left: 4px solid RGBA(0,0,0,0.2);border-radius: 0 10px 10px 0;background-color: #517A92;overflow: hidden;float:left;cursor: pointer;}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper:hover {box-shadow: 0px 0px 20px 0px #47A794;}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_bg {position: absolute;top: 0;left: 0;width:100%;height:100%;opacity: 0.1;z-index: 1;}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_title {margin: 30px 20px 10px 20px;background-color:#fff;font-size: 20px;text-align: center;padding: 10px;z-index: 2;}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_date {font-size: 14px;text-align: center;color: #fff;z-index: 2;}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_purpose {font-size: 14px;text-align: center;color: #fff;z-index: 2;}
-#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_room {position:absolute;left: 20px;right: 20px;bottom: 20px;text-align: center;z-index: 3;}
-#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_room .p_testpaper_btntitle {color:#fff;font-weight: 700;margin-bottom: 5px;}
-#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_room .btn_testpaper_room {font-size: 12px;padding: 0 5px;border-radius: 30px;width: 32px;height: 32px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
-#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_room .btn_testpaper_room:hover {background-color: rgba(255, 255, 255, 0.4);}
-#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_room .btn_testpaper_room.select {background-color: rgb(60, 202, 164);color: #fff;border: 0;font-weight: 700;}
-#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_room .btn_testpaper_room.select:hover {background-color: rgb(49, 175, 141);}
-#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_room .btn_testpaper_open {font-size: 12px;padding: 0 10px;border-radius: 30px;height: 32px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
-#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_room .btn_testpaper_open:hover {background-color: rgb(49, 175, 141);}
+#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group {position:absolute;left: 20px;right: 20px;bottom: 20px;text-align: center;z-index: 3;}
+#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .p_testpaper_btntitle {color:#fff;font-weight: 700;margin-bottom: 5px;}
+#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_group {font-size: 12px;padding: 0 5px;border-radius: 30px;width: 32px;height: 32px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
+#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_group:hover {background-color: rgba(255, 255, 255, 0.4);}
+#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_group.select {background-color: rgb(60, 202, 164);color: #fff;border: 0;font-weight: 700;}
+#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_group.select:hover {background-color: rgb(49, 175, 141);}
+#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_open {font-size: 12px;padding: 0 10px;border-radius: 30px;height: 32px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
+#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_open:hover {background-color: rgb(49, 175, 141);}
 
 #wrap #container #content #div_select_select { padding:20px 0;border-bottom:1px solid #ddd ; height: 85px;}
 #wrap #container #content #div_select_select .select_inventory_form { font-size: 16px; border: 1px solid #ccc; background-color: #fff; border-radius: 0; height: 40px;     line-height: 40px;     padding: 0 0px 0 10px;    }
@@ -90,7 +100,7 @@
 #wrap #container #content .div_content_board #div_progress_board .div_progress_testpaper .div_testpaper_bg {position: absolute;top: 0;left: 0;width:100%;height:100%;opacity: 0.1;z-index: 1;}
 #wrap #container #content .div_content_board #div_progress_board .div_progress_testpaper .div_testpaper_title {margin: 30px 20px 10px 20px;background-color:#fff;font-size: 20px;text-align: center;padding: 10px;z-index: 2;}
 #wrap #container #content .div_content_board #div_progress_board .div_progress_testpaper .div_testpaper_date {font-size: 14px;text-align: center;color: #fff;z-index: 2;}
-#wrap #container #content .div_content_board #div_progress_board .div_progress_testpaper .div_testpaper_room {color:#fff;font-weight: 700;position:absolute;left: 20px;right: 20px;bottom: 20px;text-align: center;z-index: 3;}
+#wrap #container #content .div_content_board #div_progress_board .div_progress_testpaper .div_testpaper_group {color:#fff;font-weight: 700;position:absolute;left: 20px;right: 20px;bottom: 20px;text-align: center;z-index: 3;}
 
 #wrap #container #content #div_manager_select { padding:20px 0;border-bottom:1px solid #ddd ; height: 85px;}
 #wrap #container #content #div_manager_select .select_manager_form { font-size: 16px; border: 1px solid #ccc; background-color: #fff; border-radius: 0; height: 40px;line-height: 40px;padding: 0 0px 0 10px;    }
@@ -105,7 +115,7 @@
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element {position: relative;height: 130px;background-color:#FFF;border: 1px solid #eee;padding: 30px;text-align: left;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element:hover {box-shadow: 0px 0px 5px 0px #ddd;cursor: pointer;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element .p_element_icon {text-align:center;width: 70px;height: 70px;margin-right: 20px;color:#FFF;background-color:#aaa;border-radius: 70px;line-height: 75px;font-size: 40px;float: left;}
-#wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element H1 {font-size: 18px;margin-top: 13px;}
+#wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element H1 {font-size: 18px;margin-top: 5px;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element p.con {font-size: 12px;margin-top: 5px;margin-right: 20px;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element p.next {position: absolute;top: 43px;right: 15px;}
 
@@ -124,7 +134,25 @@
 #wrap #container #div_main_loading {position: absolute;width: 100%;height: 100%;top: 0;text-align: center;background-color: RGBA(255,255,255,0.8);color: rgba(0, 0, 0, 0.21);font-size: 30px;z-index: 1000;}
 #wrap #container #div_main_loading i { position: absolute;  top: 50%; left:50%;  margin-top: -50px;  margin-left: -50px;}
 
+.modal .div_dashboard_progress { text-align:center; margin-bottom: 20px;color: #aaa;}
+.modal .div_dashboard_progress i {position: relative;top: 7px;font-size: 20px;}
+.modal .div_dashboard_progress i.xi-check-circle {color: #27ae60;}
 .modal .input_mypage_ele_form {border-radius: 0;margin-bottom:10px}
+.modal .input_dashboard_ele_form {border-radius: 0;margin-bottom:10px}
+
+#div_modal_welcome2 .label_dashboard_ele2_grade {width: 50px;margin: 7px 0;}
+#div_modal_welcome2 .checkbox-inline {margin-left: 0px;width: 132px;}
+#div_modal_welcome2 #div_dashboard_ele2_school {display: none}
+#div_modal_welcome2 .div_list_school {position: absolute;top: 322px;width: 470px;z-index: 100;border:1px solid #bbb;background-color: #fff;display:none}
+#div_modal_welcome2 .div_list_school li {font-size: 14px;font-weight: 700;line-height: 35px;padding: 0 10px;border-bottom: 1px solid #ddd;cursor: pointer;overflow: hidden;}
+#div_modal_welcome2 .div_list_school li:hover {background-color: #f5f5f5;}
+#div_modal_welcome2 .div_list_school li.no-data {text-align:center;border: 0;font-weight: normal;cursor: default;}
+#div_modal_welcome2 .div_list_school li.no-data:hover {background-color: #fff;}
+#div_modal_welcome2 .div_list_school li .span_school_address {width: 40%;font-size:12px;font-weight: normal;white-space: nowrap;display: inline-block;}
+
+#div_modal_welcome3 .div_page_contents {text-align:center}
+#div_modal_welcome3 .div_page_contents i{font-size: 100px;color:#27ae60}
+#div_modal_welcome3 .div_page_contents .p_w3_msg {font-size:15px;margin: 20px 0;}
 
 #div_modal_maketest .input_maketest_form {border-radius: 0;}
 #div_modal_maketest #span_maketest_chkname {position: absolute;top: 111px;right: 23px;}
@@ -134,11 +162,11 @@
 #div_modal_maketest #span_maketest_chkname i.fail {color:#e74c3c;display:none;}
 #div_modal_maketest #span_maketest_chkname .tooltip-inner {min-width:190px;}
 
-#div_modal_mypage_ele1 .div_list_school {position: absolute;top: 205px;width: 470px;z-index: 100;border:1px solid #bbb;background-color: #fff;display:none}
-#div_modal_mypage_ele1 .div_list_school li {font-size: 14px;font-weight: 700;line-height: 35px;padding: 0 10px;border-bottom: 1px solid #ddd;cursor: pointer;}
-#div_modal_mypage_ele1 .div_list_school li:hover {background-color: #f5f5f5;}
-#div_modal_mypage_ele1 .div_list_school li.no-data {text-align:center;border: 0;font-weight: normal;cursor: default;}
-#div_modal_mypage_ele1 .div_list_school li.no-data:hover {background-color: #fff;}
+#div_modal_mypage_ele1 .div_list_group {position: absolute;top: 205px;width: 470px;z-index: 100;border:1px solid #bbb;background-color: #fff;display:none}
+#div_modal_mypage_ele1 .div_list_group li {font-size: 14px;font-weight: 700;line-height: 35px;padding: 0 10px;border-bottom: 1px solid #ddd;cursor: pointer;}
+#div_modal_mypage_ele1 .div_list_group li:hover {background-color: #f5f5f5;}
+#div_modal_mypage_ele1 .div_list_group li.no-data {text-align:center;border: 0;font-weight: normal;cursor: default;}
+#div_modal_mypage_ele1 .div_list_group li.no-data:hover {background-color: #fff;}
 
 #div_modal_mypage .div_page_contents i {font-size: 80px;margin-bottom: 10px;}
 #div_modal_mypage .div_page_contents .p_mypate_msg {margin-bottom:10px}

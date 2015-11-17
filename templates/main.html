@@ -22,7 +22,9 @@
         <div id="header">
             <button class="btn" id="btn_head_home" onclick="link_content({'link':'home'});"><i class="xi-home"></i></button>
             <div id="div_header_profile" class="dropdown navbar-right">
-                <p data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="xi-user"></i> {{ user.first_name }} <span class="caret"></span></p>
+                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div id="div_user_icon"><img id="div_user_img" src="{{ user.profile.get_src }}"></div> {{ user.first_name }} <span class="caret"></span>
+                </div>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick="link_content({'link':'mypage'});">마이페이지</a></li>
                     {% if user.is_superuser  %}<li role="presentation"><a role="menuitem" tabindex="-1" href="/admin/" target="_blank">관리자 페이지</a></li>{% endif %}
@@ -31,9 +33,11 @@
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/logout/">로그아웃</a></li>
                 </ul>
             </div>
-            <div id="div_header_school" href="javascript:;" onclick="link_content({'link':'manager'});">
-                <div id="div_school_icon"><img id="div_icon_img" src="{{ user.profile.school.icon.url }}"></div> {{ user.profile.school.title }}
-            </div>
+            {% if user.profile.get_union %}
+                <div id="div_header_Group" href="javascript:;" onclick="link_content({'link':'manager'});">
+                    <div id="div_Group_icon"><img id="div_icon_img" src="{{ user.profile.group.icon.url }}"></div> {{ user.profile.group.title }}
+                </div>
+            {% endif %}
             <p id="p_header_logo"><a href="javascript:;" onclick="link_content({'link':'home'});"><img id="img_header_logo" src="/static/img/main/head_logo.png"></a></p>
         </div>
         <div id="div_main_loading"><i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i></div>

@@ -3,14 +3,23 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib.auth.models import User
-from mosu.home.models import UserProfile, School, SchoolYear
+from mosu.home.models import UserProfile, Union, Group, GroupUser, UnionUser, School
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 
-class SchoolYearAdmin(admin.ModelAdmin):
-    list_display = ('id','school','year','room')
-
 class SchoolAdmin(admin.ModelAdmin):
-    list_display = ('id','title','address','phone','is_active')
+    list_display = ('id','grade','city','region','name','founder','address')
+
+class GroupAdmin(admin.ModelAdmin):
+    list_display = ('id','union','user','title','is_paid')
+
+class UnionAdmin(admin.ModelAdmin):
+    list_display = ('id','user','title','address','phone','is_active')
+
+class GroupUserAdmin(admin.ModelAdmin):
+    list_display = ('id','group','user','is_active')
+
+class UnionUserAdmin(admin.ModelAdmin):
+    list_display = ('id','union','user','is_active')
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
@@ -18,17 +27,12 @@ class UserProfileInline(admin.StackedInline):
     can_delete = True
 
 class UserAdmin(AuthUserAdmin):
-    list_display = ('id','username','first_name','SchoolYear','Gender','Level','Phone','is_active','date_joined')
+    list_display = ('id','Account','username','first_name','Gender','Phone','School','GradeCode','date_joined')
     inlines = [UserProfileInline]
     ordering = ('-id',)
 
-    def SchoolYear(self, instance):
-        return u"%s"%instance.profile.schoolyear
-
-    def Level(self, instance):
-        if instance.profile.school : return u"교사"
-        elif instance.profile.schoolyear : return u"학생"
-        return u""
+    def Account(self, instance):
+        return u"%s"%instance.profile.get_login_from()
 
     def Gender(self, instance):
         if instance.profile.gender == 0 : return u"남자"
@@ -37,7 +41,19 @@ class UserAdmin(AuthUserAdmin):
     def Phone(self, instance):
         return instance.profile.phone
 
-admin.site.register(SchoolYear, SchoolYearAdmin)
+    def School(self, instance):
+        if instance.profile.school:
+            return u"%s %d학년"%(instance.profile.school.name, instance.profile.year)
+        else :
+            return u"없음"
+
+    def GradeCode(self, instance):
+        return instance.profile.grade_code
+
 admin.site.register(School, SchoolAdmin)
+admin.site.register(Group, GroupAdmin)
+admin.site.register(Union, UnionAdmin)
+admin.site.register(GroupUser, GroupUserAdmin)
+admin.site.register(UnionUser, UnionUserAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)

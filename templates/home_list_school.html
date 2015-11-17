@@ -1,18 +1,18 @@
 <ul id="ul_school_list">
-    {% for school in schools|slice:":3" %}
-        <li class="li_list_school" sid="{{ school.id }}">{{ school.title }}</li>
+    {% for school in schools|slice:":4" %}
+        <li class="li_list_school" sid="{{ school.id }}"><span class="span_school_name">{{ school.name }}</span> <span class="span_school_address">{{ school.address }}</span></li>
     {% endfor %}
     <li class="no-data">총 {{ schools|length }}개의 학교가 검색되었습니다.</li>
 </ul>
 <script>
     $(".li_list_school").click(function(){
-        $('.div_list_school').hide();
-        $(".uschool").val($(this).text());
-        $(".uschoolid").val($(this).attr('sid'));
-        if($('#div_modal_mypage_ele1 #uschoolid').val() != "0"){
-            $("#div_modal_mypage_ele1 #btn_mypage_ele_submit").removeAttr("disabled");
+        $('#div_modal_welcome2 .div_list_school').hide();
+        $("#div_modal_welcome2 #input_dashboard_ele2_school").val($(this).children(".span_school_name").text());
+        $("#div_modal_welcome2 #uschoolid").val($(this).attr('sid'));
+        if($('#div_modal_welcome2 #uschoolid').val() != "0"){
+            $("#div_modal_welcome2 #btn_dashboard_ele_submit").removeAttr("disabled");
         }else{
-            $("#div_modal_mypage_ele1 #btn_mypage_ele_submit").attr("disabled","disabled");
+            $("#div_modal_welcome2 #btn_dashboard_ele_submit").attr("disabled","disabled");
         }
     });
 </script>

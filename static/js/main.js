@@ -17,6 +17,27 @@ $(document).ready(function(){
         radioClass: 'iradio_square-green'
     });
 
+    function getSearchList(q, grade){
+        $('.div_list_school').show();
+        $('.div_list_school').load('/home/list/school/',{
+            'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
+            'q':q, 'grade':grade
+        });
+    }
+
+    $('#div_modal_welcome2 #input_dashboard_ele2_school').focus(function(evt){
+        if($("#input_dashboard_ele2_school").val() != "") getSearchList($('#div_modal_welcome2 #input_dashboard_ele2_school').val(), $('#div_modal_welcome2 #uschoolgrade').val());
+    });
+
+    $('#div_modal_welcome2 #input_dashboard_ele2_school').change(function(evt){
+        if($("#input_dashboard_ele2_school").val() != "") getSearchList($('#div_modal_welcome2 #input_dashboard_ele2_school').val(), $('#div_modal_welcome2 #uschoolgrade').val());
+        else $('.div_list_school').hide();
+    });
+
+    $('#div_modal_welcome2 #input_dashboard_ele2_school').keyup(function(evt){
+        getSearchList($('#div_modal_welcome2 #input_dashboard_ele2_school').val(), $('#div_modal_welcome2 #uschoolgrade').val());
+    });
+
     $("#input_maketest_title").keyup(function(){
         var str = $(this).val();
         $.post("/select/post/maketest/chkname/",{'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),'keyword':str},function(data){
@@ -34,7 +55,7 @@ $(document).ready(function(){
 
     $("#btn_maketest_submit").click(function(){
         var input_maketest_tpid= $("#div_modal_maketest #input_maketest_tpid").val();
-        var input_maketest_school = $("#div_modal_maketest #input_maketest_school").val();
+        var input_maketest_Group = $("#div_modal_maketest #input_maketest_Group").val();
         var input_maketest_title = $("#div_modal_maketest #input_maketest_title").val();
         var select_inventory_year = $("#div_modal_maketest #select_inventory_year > option:selected").val();
         var radio_inventory_purpose = $("#div_modal_maketest input[name=maketest_purpose]:checked").val();
@@ -46,7 +67,7 @@ $(document).ready(function(){
             select_url = "/select/post/maketest/";
             arr = {
                 'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
-                'school':input_maketest_school,
+                'Group':input_maketest_Group,
                 'title':input_maketest_title,
                 'year':select_inventory_year,
                 'tpid':input_maketest_tpid,
@@ -62,7 +83,7 @@ $(document).ready(function(){
             select_url = "/select/post/maketest/";
             arr = {
                 'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
-                'school':input_maketest_school,
+                'Group':input_maketest_Group,
                 'title':input_maketest_title,
                 'year':select_inventory_year,
                 'questions':questions,
@@ -84,7 +105,7 @@ $(document).ready(function(){
     });
 
     $("#btn_alert_submit").click(function(){
-        if(alert_value.type == "testpaper_room_open"){
+        if(alert_value.type == "testpaper_group_open"){
             $(alert_value.load_id).load(alert_value.url,alert_value.data,alert_value.function);
         }else if(alert_value.type == "testpaper_delete"){
             $("#div_main_loading").show();
@@ -100,7 +121,7 @@ $(document).ready(function(){
     //$("#div_modal_mypage_ele1 #btn_mypage_ele_submit").click(function(){
     //    $.post("/main/mypage/post/group/change/",{
     //        'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
-    //        'sid':$('#div_modal_mypage_ele1 #uschoolid').val()
+    //        'sid':$('#div_modal_mypage_ele1 #uGroupid').val()
     //    },function(data){
     //        location.reload(true);
     //    });
@@ -156,6 +177,15 @@ function link_content(obj){
     $("#div_main_loading").show();
 
     if(obj.link == 'home'){
+        select_url = "/dashboard/?id=0";
+        $("#content").load(select_url,{
+            'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+        },function(data, err){
+            $("#div_main_loading").fadeOut();
+            if(err == "error") location.reload(true);
+        });
+        $("#wrap #container #div_select_box").hide();
+    }else if(obj.link == 'inventory'){
         select_url = "/inventory/?year=0";
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
@@ -245,14 +275,6 @@ function link_content(obj){
 function get_or_0(v){
     if(v) return v;
     return 0;
-}
-
-function getSearchList(q){
-    $('.div_list_school').show();
-    $('.div_list_school').load('/home/list/school/',{
-        'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
-        'q':q
-    });
 }
 
 window.onbeforeunload = function() {

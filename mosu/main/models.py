@@ -4,11 +4,12 @@ from django.db import models
 
 # Create your models here.
 from mosu.docs.models import Question
-from mosu.home.models import School, SchoolYear
+from mosu.home.models import Union, Group
+
 
 class TestPaperForm(models.Model):
     title = models.TextField(default='')
-    school = models.ForeignKey(School,blank=True,null=True)
+    union = models.ForeignKey(Union,blank=True,null=True)
     view = models.FileField(upload_to="upload/",default="/static/img/main/default_user.png")
     html = models.TextField(default='')
     outline = models.BooleanField(default=False)
@@ -18,7 +19,7 @@ class TestPaperForm(models.Model):
         verbose_name_plural = "테스트 서식(TestPaperForm)"
 
     def __unicode__(self):
-        return u'[%d]%s %s' %(self.id, self.school, self.title)
+        return u'[%d]%s %s' %(self.id, self.union, self.title)
 
 PURPOSE_IN_TESTPAPER_CHOICES = (
     (0, u'테스트용'),
@@ -30,9 +31,7 @@ class TestPaper(models.Model):
     title = models.TextField(default='')
     form = models.ForeignKey(TestPaperForm)
     purpose = models.IntegerField(choices=PURPOSE_IN_TESTPAPER_CHOICES,default=0)
-    school = models.ForeignKey(School,blank=True,null=True)
-    year = models.IntegerField(default=1)
-    rooms = models.ManyToManyField(SchoolYear,blank=True)
+    groups = models.ManyToManyField(Group,blank=True)
     is_shown = models.BooleanField(default=True)
     is_exported = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -41,7 +40,7 @@ class TestPaper(models.Model):
         verbose_name_plural = "테스트(TestPaper)"
 
     def __unicode__(self):
-        return u'[%d] %s:%s %d %s' %(self.id, self.title, self.school, self.year, self.user)
+        return u'[%d] %s %s' %(self.id, self.title, self.user)
 
     def get_submit(self, user):
         return TestPaperSubmit.objects.filter(testpaper=self,user=user)

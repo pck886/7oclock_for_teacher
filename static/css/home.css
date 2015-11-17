@@ -10,6 +10,8 @@
 #wrap #container #div_container_form {background-color:#fff;border: 5px solid #f1f1f1;border-radius: 10px;padding: 5px 10px;}
 #wrap #container #div_container_form #input_container_id {border-bottom: 1px solid #E5E5E5;}
 #wrap #container #btn_container_login {width: 100%;margin-top: 10px;font-size: 16px;font-weight: 500;color: #fff;background-color: #18AAA0;}
+#wrap #container #btn_container_facebook {width: 100%;margin-top: 10px;font-size: 16px;font-weight: 500;color: #fff;background-color: #3765a3;}
+#wrap #container #btn_container_kakao {width: 100%;margin-top: 10px;font-size: 16px;font-weight: 500;color: #3b3b3b;background-color: #ffdc00;}
 #wrap #container hr {margin-top: 15px;margin-bottom: 10px;border-top: 1px solid #aaa;}
 #wrap #container #span_container_join {font-weight:700;cursor:pointer}
 #wrap #container #span_container_join:hover {color:#333}
@@ -17,6 +19,10 @@
 #JoinModal .modal-dialog {width:400px;}
 #JoinModal .modal-dialog .modal-content {border-radius: 0;margin-top: 30%;box-shadow: none;}
 #JoinModal .modal-dialog .modal-content .modal-body {background-color: #FFF;}
+#JoinModal .modal-body #btn_join_facebook {background-color: #3765a3;margin:0}
+#JoinModal .modal-body #btn_join_kakao {background-color: #ffdc00;margin:0;color: #3b3b3b;}
+#JoinModal .modal-body #btn_join_account {margin:0}
+#JoinModal .modal-body #div_join_account {display:none}
 #JoinModal .modal-body hr {margin-top: 10px;margin-bottom: 10px;border: 0;border-top: 1px solid #ccc;}
 #JoinModal .modal-body .join-info { position: absolute; right: 30px; background-color: transparent;}
 #JoinModal .modal-body .join-info i {font-size: 18px;}
@@ -27,11 +33,11 @@
 #JoinModal .modal-body #btn_join_chkpw_ { color: #95a5a6; top: 146px; }
 #JoinModal .modal-body #btn_join_chkemail { color: #95a5a6; top: 283px; }
 #JoinModal .modal-body .join-form {font-size: 14px;width: 100%;height: 48px;margin-bottom: 10px;padding: 12px 6px 12px 10px;border: 1px solid #ccc;background-color: #fff;line-height: 14px;box-sizing: border-box;}
-#JoinModal .modal-body .btn_submit {font-size: 15px;color: #fafafa;border: 0;border-radius: 5px;background-color: #2ecc71;width: 100%;margin: 19px 0 0 0;padding: 14px 0px;cursor: pointer;}
+#JoinModal .modal-body .btn_submit {font-size: 15px;color: #fafafa;border: 0;border-radius: 5px;background-color: #18AAA0;width: 100%;margin: 19px 0 0 0;padding: 14px 0px;cursor: pointer;}
 #JoinModal .modal-dialog .btn_close {position: absolute;top: -31px;right: 0;width: 26px;height: 26px;font-size: 26px;line-height: 26px;text-align: center;color: #aaa;}
 #JoinModal .modal-dialog .btn_close i {font-size: 26px;text-align: center;color: #aaa;}
-#JoinModal .modal-dialog .div_list_school {position: absolute;top: 474px;width: 368px;z-index: 100;border:1px solid #bbb;background-color: #fff;display:none}
-#JoinModal .modal-dialog .div_list_school li {font-size: 14px;font-weight: 700;line-height: 35px;padding: 0 10px;border-bottom: 1px solid #ddd;cursor: pointer;}
-#JoinModal .modal-dialog .div_list_school li:hover {background-color: #f5f5f5;}
-#JoinModal .modal-dialog .div_list_school li.no-data {text-align:center;border: 0;font-weight: normal;cursor: default;}
-#JoinModal .modal-dialog .div_list_school li.no-data:hover {background-color: #fff;}
+#JoinModal .modal-dialog .div_list_Group {position: absolute;top: 474px;width: 368px;z-index: 100;border:1px solid #bbb;background-color: #fff;display:none}
+#JoinModal .modal-dialog .div_list_Group li {font-size: 14px;font-weight: 700;line-height: 35px;padding: 0 10px;border-bottom: 1px solid #ddd;cursor: pointer;}
+#JoinModal .modal-dialog .div_list_Group li:hover {background-color: #f5f5f5;}
+#JoinModal .modal-dialog .div_list_Group li.no-data {text-align:center;border: 0;font-weight: normal;cursor: default;}
+#JoinModal .modal-dialog .div_list_Group li.no-data:hover {background-color: #fff;}

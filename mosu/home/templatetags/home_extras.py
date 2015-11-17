@@ -19,9 +19,9 @@ def times(arg, n):
 @register.filter
 def set_testpaper_head(html, tp):
     if tp.title : html = html.replace('{{title}}',tp.title)
-    if tp.school : html = html.replace('{{logo}}',tp.school.logo.url)
-    if tp.school : html = html.replace('{{icon}}',tp.school.icon.url)
-    if tp.school : html = html.replace('{{school}}',tp.school.title)
+    if tp.group : html = html.replace('{{logo}}',tp.group.logo.url)
+    if tp.group : html = html.replace('{{icon}}',tp.group.icon.url)
+    if tp.group : html = html.replace('{{Group}}',tp.group.title)
     if tp.title : html = html.replace('{{unit}}',"")
     if tp.year : html = html.replace('{{year}}',"%s"%tp.year)
     return html
@@ -38,8 +38,8 @@ def get_testpapersubmit_question(tp, qid):
     return TestPaperSubmit.objects.filter(testpaper=tp,question=qid)
 
 @register.filter
-def get_testpapersubmit_room(tps, room):
-    return tps.filter(user__profile__schoolyear=room)
+def get_testpapersubmit_group(tps, group):
+    return tps.filter(user__profile__Group=group)
 
 @register.filter
 def get_submit_percent(tpss):
@@ -52,8 +52,8 @@ def get_submit_percent(tpss):
     return percent
 
 @register.filter
-def get_room_checked(ele, testpaper):
-    if testpaper.rooms.filter(id=ele.id) :
+def get_group_checked(ele, testpaper):
+    if testpaper.groups.filter(id=ele.id) :
         return True
     return False
 

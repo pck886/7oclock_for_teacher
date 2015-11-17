@@ -24,8 +24,11 @@
                 <input type="text" class="form-control login_form" id="input_container_id" name="user_id" placeholder="아이디" required>
                 <input type="password" class="form-control login_form" id="input_container_pw" name="password" placeholder="비밀번호" required>
                 <input type="hidden" name="come_from" value="/">
+                <input type="hidden" name="login_from" value="0">
             </div>
-            <button type="submit" class="btn" id="btn_container_login">로그인하기</button>
+            <button type="submit" class="btn" id="btn_container_login"><i class="xi-arrow-right"></i> 아이디로 로그인하기</button>
+            <button type="button" class="btn" id="btn_container_facebook" onclick="fb_login()"><i class="xi-facebook"></i> 페이스북으로 로그인하기</button>
+            <button type="button" class="btn" id="btn_container_kakao" onclick="loginWithKakao()"><i class="xi-kakaotalk"></i> 카카오로 로그인하기</button>
         </form>
         <hr/>
         아직 회원이 아니십니까? <span id="span_container_join">가입하기</span>
@@ -36,9 +39,18 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
+                <div class="control-group" id="div_join_btngroup">
+                    <button type="button" class="btn_submit" id="btn_join_facebook" onclick="fb_signup()"><i class="xi-facebook"></i> 페이스북으로 가입하기</button>
+                    <hr/>
+                    <button type="button" class="btn_submit" id="btn_join_kakao" onclick="signupWithKakao()"><i class="xi-kakaotalk"></i> 카카오로 가입하기</button>
+                    <hr/>
+                    <button type="button" class="btn_submit" id="btn_join_account"><i class="xi-user"></i> 아이디로 가입하기</button>
+                </div>
                 <form id="form_join" action="/user/join/" method="post">
                     {% csrf_token %}
-                    <div class="control-group">
+                    <div class="control-group" id="div_join_account">
+                        <input type="hidden" id="login_from" name="login_from" value="0"/>
+                        <input type="hidden" id="img_url" name="img_url" value=""/>
                         <a type="button" class="join-info" id="btn_join_chkid" data-toggle="tooltip" data-placement="right" title="아이디를 입력하세요." chk="0"><i class="xi-info-circle"></i></a>
                         <input class="join-form" type="text" name="user_id" id="uid" required placeholder="아이디" title="아이디">
                         <a type="button" class="join-info" id="btn_join_chkpw" data-toggle="tooltip" data-placement="right" title="6자리 이상을 입력하세요." chk="0"><i class="xi-info-circle"></i></a>
@@ -49,7 +61,6 @@
                         <input class="join-form" type="text" name="user_name" id="uname" required placeholder="이름" title="이름">
                         <a type="button" class="join-info" id="btn_join_chkemail" data-toggle="tooltip" data-placement="right" title="이메일을 입력하세요." chk="0"><i class="xi-info-circle"></i></a>
                         <input class="join-form" type="email" name="user_email" id="uemail" required placeholder="이메일" title="이메일">
-                        <input class="join-form" type="text" name="user_phone" id="uphone" required placeholder="연락처" title="연락처">
                         <label class="checkbox-inline">
                             <input type="radio" id="ugender_0" name="user_gender" value="0" checked> 남자
                         </label>
@@ -57,13 +68,8 @@
                             <input type="radio" id="ugender_1" name="user_gender" value="1"> 여자
                         </label>
                         <hr/>
-                        <input class="join-form uschool" type="text" name="user_school" id="uschool" required placeholder="학교명" title="학교명">
-                        <input type="hidden" name="school_id" class="uschoolid" id="uschoolid" value="0">
-                        <div class="div_list_school"></div>
                         <p align="center">개인정보취급방침 자세히 보기</p>
                         <label for="check_opt"><input type="checkbox" id="check_opt"> 약관에 동의합니다.</label>
-                    </div>
-                    <div class="control-group">
                         <input type="button" value="회원가입" class="btn_submit" id="btn_join_submit">
                     </div>
                 </form>
@@ -72,13 +78,18 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type="text/javascript" src="/static/js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/js/icheck.js"></script>
 <script type="text/javascript" src="/static/js/common.js"></script>
 <script type="text/javascript" src="/static/js/home.js"></script>
+<script type="text/javascript" src="/static/js/sns.js"></script>
 <script>
+
     $("#span_container_join").click(function(){
+        $("#div_join_btngroup").show();
+        $("#div_join_account").hide();
         $('#JoinModal').modal('show');
     });
     $('.btn_close').click(function(){ $('.modal').modal('hide'); });

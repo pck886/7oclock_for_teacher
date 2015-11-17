@@ -62,7 +62,7 @@
                                             {% if page.0 %}
                                                 <div id="div_testpaper_question{{ forloop.counter0|times:6|add:1 }}">
                                                     <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:1 }}.</p>
-                                                    <img width="100%" class="img_testpaper_question" src="{{ page.0.src.url }}">
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.0.src.url }}" onmousedown="return false">
                                                     {% if mode == "main_testpaper_similar" %}
                                                         <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
                                                             <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:1 }}"><i class="xi-angle-left"></i></button>
@@ -79,7 +79,7 @@
                                             {% if page.1 %}
                                                 <div id="div_testpaper_question{{ forloop.counter0|times:6|add:2 }}">
                                                     <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:2 }}.</p>
-                                                    <img width="100%" class="img_testpaper_question" src="{{ page.1.src.url }}">
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.1.src.url }}" onmousedown="return false">
                                                     {% if mode == "main_testpaper_similar" %}
                                                         <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
                                                             <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:2 }}"><i class="xi-angle-left"></i></button>
@@ -96,7 +96,7 @@
                                             {% if page.2 %}
                                                 <div id="div_testpaper_question{{ forloop.counter0|times:6|add:3 }}">
                                                     <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:3}}.</p>
-                                                    <img width="100%" class="img_testpaper_question" src="{{ page.2.src.url }}">
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.2.src.url }}" onmousedown="return false">
                                                     {% if mode == "main_testpaper_similar" %}
                                                         <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
                                                             <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:3 }}"><i class="xi-angle-left"></i></button>
@@ -117,7 +117,7 @@
                                             {% if page.3 %}
                                                 <div id="div_testpaper_question{{ forloop.counter0|times:6|add:4 }}">
                                                     <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:4}}.</p>
-                                                    <img width="100%" class="img_testpaper_question" src="{{ page.3.src.url }}">
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.3.src.url }}" onmousedown="return false">
                                                     {% if mode == "main_testpaper_similar" %}
                                                         <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
                                                             <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:4 }}"><i class="xi-angle-left"></i></button>
@@ -134,7 +134,7 @@
                                             {% if page.4 %}
                                                 <div id="div_testpaper_question{{ forloop.counter0|times:6|add:5 }}">
                                                     <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:5}}.</p>
-                                                    <img width="100%" class="img_testpaper_question" src="{{ page.4.src.url }}">
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.4.src.url }}" onmousedown="return false">
                                                     {% if mode == "main_testpaper_similar" %}
                                                         <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
                                                             <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:5 }}"><i class="xi-angle-left"></i></button>
@@ -151,7 +151,7 @@
                                             {% if page.5 %}
                                                 <div id="div_testpaper_question{{ forloop.counter0|times:6|add:6 }}">
                                                     <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:6}}.</p>
-                                                    <img width="100%" class="img_testpaper_question" src="{{ page.5.src.url }}">
+                                                    <img width="100%" class="img_testpaper_question" src="{{ page.5.src.url }}" onmousedown="return false">
                                                     {% if mode == "main_testpaper_similar" %}
                                                         <div class="btn-group div_testpaper_chooser" role="group" aria-label="...">
                                                             <button type="button" class="btn btn-default btn_chooser_prev" qno="{{ forloop.counter0|times:6|add:6 }}"><i class="xi-angle-left"></i></button>
@@ -192,7 +192,7 @@
                                         <td style="width:50%;height:100%;border-right: 1px solid #bbb;padding:0 10px 0 5px;">
                                             <table width="100%" height="100%" style="margin-top:10px;">
                                                 {% for question in line %}
-                                                    <tr><td style="width:100%;vertical-align: top;">{% if question %}<p class="p_testpaper_qno">{{ question.no }}.</p><img width="100%" src="{{ question.explain.url }}">{% endif %}</td></tr>
+                                                    <tr><td style="width:100%;vertical-align: top;">{% if question %}<p class="p_testpaper_qno">{{ question.no }}.</p><img width="100%" src="{{ question.explain.url }}" onmousedown="return false">{% endif %}</td></tr>
                                                 {% endfor %}
                                             </table>
                                         </td>
@@ -200,7 +200,7 @@
                                         <td style="width:50%;height:100%;padding:0 5px 0 10px;">
                                             <table width="100%" height="100%" style="margin-top:10px;">
                                                 {% for question in line %}
-                                                    <tr><td style="width:100%;vertical-align: top;">{% if question %}<p class="p_testpaper_qno">{{ question.no }}.</p><img width="100%" src="{{ question.explain.url }}">{% endif %}</td></tr>
+                                                    <tr><td style="width:100%;vertical-align: top;">{% if question %}<p class="p_testpaper_qno">{{ question.no }}.</p><img width="100%" src="{{ question.explain.url }}" onmousedown="return false">{% endif %}</td></tr>
                                                 {% endfor %}
                                             </table>
                                         </td>
@@ -263,11 +263,11 @@
                                                     <div id="div_testpaper_question{{ forloop.counter0|times:6|add:1 }}">
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:1 }}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.0.src.url }}">
-                                                        {% for room in rooms %}
-                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                        {% for group in groups %}
+                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
                                                                 <div class="div_question_answer">정답 : {{ page.0.get_answer|safe }}</div>
-                                                                <div class="div_question_percent">{{ room.room }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.0|get_testpapersubmit_room:room|get_submit_percent|floatformat:1 }}%</div>
-                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.0|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                                <div class="div_question_percent">{{ group.group }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.0|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.0|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
                                                         {% endfor %}
                                                     </div>
@@ -280,11 +280,11 @@
                                                     <div id="div_testpaper_question{{ forloop.counter0|times:6|add:2 }}">
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:2 }}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.1.src.url }}">
-                                                        {% for room in rooms %}
-                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                        {% for group in groups %}
+                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
                                                                 <div class="div_question_answer">정답 : {{ page.1.get_answer|safe }}</div>
-                                                                <div class="div_question_percent">{{ room.room }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.1|get_testpapersubmit_room:room|get_submit_percent|floatformat:1 }}%</div>
-                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.1|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                                <div class="div_question_percent">{{ group.group }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.1|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.1|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
                                                         {% endfor %}
                                                     </div>
@@ -297,11 +297,11 @@
                                                     <div id="div_testpaper_question{{ forloop.counter0|times:6|add:3 }}">
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:3}}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.2.src.url }}">
-                                                        {% for room in rooms %}
-                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                        {% for group in groups %}
+                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
                                                                 <div class="div_question_answer">정답 : {{ page.2.get_answer|safe }}</div>
-                                                                <div class="div_question_percent">{{ room.room }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.2|get_testpapersubmit_room:room|get_submit_percent|floatformat:1 }}%</div>
-                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.2|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                                <div class="div_question_percent">{{ group.group }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.2|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.2|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
                                                         {% endfor %}
                                                     </div>
@@ -318,11 +318,11 @@
                                                     <div id="div_testpaper_question{{ forloop.counter0|times:6|add:4 }}">
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:4}}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.3.src.url }}">
-                                                        {% for room in rooms %}
-                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                        {% for group in groups %}
+                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
                                                                 <div class="div_question_answer">정답 : {{ page.3.get_answer|safe }}</div>
-                                                                <div class="div_question_percent">{{ room.room }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.3|get_testpapersubmit_room:room|get_submit_percent|floatformat:1 }}%</div>
-                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.3|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                                <div class="div_question_percent">{{ group.group }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.3|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.3|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
                                                         {% endfor %}
                                                     </div>
@@ -335,11 +335,11 @@
                                                     <div id="div_testpaper_question{{ forloop.counter0|times:6|add:5 }}">
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:5}}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.4.src.url }}">
-                                                        {% for room in rooms %}
-                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                        {% for group in groups %}
+                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
                                                                 <div class="div_question_answer">정답 : {{ page.4.get_answer|safe }}</div>
-                                                                <div class="div_question_percent">{{ room.room }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.4|get_testpapersubmit_room:room|get_submit_percent|floatformat:1 }}%</div>
-                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.4|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                                <div class="div_question_percent">{{ group.group }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.4|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.4|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
                                                         {% endfor %}
                                                     </div>
@@ -352,10 +352,10 @@
                                                     <div id="div_testpaper_question{{ forloop.counter0|times:6|add:6 }}">
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:6}}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.5.src.url }}">
-                                                        {% for room in rooms %}
-                                                            <div class="div_question_stats div_question_stats{{ room.room }}">
+                                                        {% for group in groups %}
+                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
                                                                 <div class="div_question_answer">정답 : {{ page.5.get_answer|safe }}</div>
-                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.5|get_testpapersubmit_room:room %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
+                                                                <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.5|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
                                                         {% endfor %}
                                                     </div>
@@ -377,9 +377,9 @@
         <button type="button" class="btn btn-default" id="btn_zoom_no" disabled>0</button>
         <button type="button" class="btn btn-default" id="btn_zoom_out"><i class="xi-minus"></i></button>
     </div>
-    <div id="div_testpaper_room" class="btn-group" role="group" aria-label="..." style="display: none">
-        <button type="button" class="btn btn-default" id="btn_room_year" disabled>{{ rooms.0.year }}학년</button><br/>
-        {% for room in rooms %}<button type="button" class="btn btn-default btn_rooms" id="btn_room_{{ room.room }}">{{ room.room }}</button><br/>
+    <div id="div_testpaper_group" class="btn-group" role="group" aria-label="..." style="display: none">
+        <button type="button" class="btn btn-default" id="btn_group_year" disabled>{{ groups.0.year }}학년</button><br/>
+        {% for group in groups %}<button type="button" class="btn btn-default btn_groups" id="btn_group_{{ group.group }}">{{ group.group }}</button><br/>
         {% endfor %}
     </div>
     <script>
@@ -401,19 +401,19 @@
         });
 
         $("#btn_testpaper_question").click(function(){
-            $("#div_testpaper_room").hide();
+            $("#div_testpaper_group").hide();
             $(".div_testpaper_board").hide();
             $("#div_testpaper_question").show();
         });
 
         $("#btn_testpaper_explain").click(function(){
-            $("#div_testpaper_room").hide();
+            $("#div_testpaper_group").hide();
             $(".div_testpaper_board").hide();
             $("#div_testpaper_explain").show();
         });
 
         $("#btn_testpaper_answer").click(function(){
-            $("#div_testpaper_room").hide();
+            $("#div_testpaper_group").hide();
             $(".div_testpaper_board").hide();
             $("#div_testpaper_answer").show();
             MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} });
@@ -421,7 +421,7 @@
         });
 
         $("#btn_testpaper_stats").click(function(){
-            $("#div_testpaper_room").show();
+            $("#div_testpaper_group").show();
             $(".div_testpaper_board").hide();
             $("#div_testpaper_stats").show();
             MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} });
@@ -449,7 +449,7 @@
     <script>
         $(".div_question_stats1").show();
 
-        $(".btn_rooms").click(function(){
+        $(".btn_groups").click(function(){
             var stats_no = $(this).text();
             $(".div_question_stats").hide();
             $(".div_question_stats"+stats_no).show();

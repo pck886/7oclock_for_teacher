@@ -9,9 +9,8 @@ from django.shortcuts import render
 import math
 import operator
 from mosu.docs.models import Question, QuestionUnit1, QuestionUnit2, QuestionUnit3, QuestionUnit4
-from mosu.home.models import get_or_none, School, SchoolYear
+from mosu.home.models import get_or_none, Union, Group, School
 from mosu.main.models import TestPaper, TestPaperQuestion, TestPaperForm
-
 
 def main(request):
     if request.user.id is None:
@@ -21,6 +20,21 @@ def main(request):
         'appname':'main'
     }
     return render(request, 'main.html', context)
+
+def main_dashboard(request):
+    q = request.GET.get('q', '')
+    select_year = int(request.GET.get('year', 0))
+
+    if select_year != 0 : testpapers = TestPaper.objects.filter(user=request.user,title__icontains=q,year=select_year,is_shown=True).order_by("-id")
+    else : testpapers = TestPaper.objects.filter(user=request.user,title__icontains=q,is_shown=True).order_by("-id")
+
+    context = {
+        'user': request.user,
+        'query':q,
+        'select_year':str(select_year),
+        'testpapers':testpapers
+    }
+    return render(request, 'main_dashboard.html', context)
 
 def main_inventory(request):
     q = request.GET.get('q', '')
@@ -85,7 +99,7 @@ def main_select(request):
 
 def main_select_post_maketest(request):
     test_title = request.POST.get('title')
-    school = get_or_none(School,id=int(request.POST.get('school',0)))
+    union = get_or_none(Union,id=int(request.POST.get('Group',0)))
     year = request.POST.get('year')
     tpid = request.POST.get('tpid')
     str_questions = request.POST.get('questions')
@@ -93,7 +107,7 @@ def main_select_post_maketest(request):
 
     if tpid :
         tpid = get_or_none(TestPaper,id=tpid)
-        tp = TestPaper.objects.create(form=tpid.form, user=request.user, title=test_title, school=school, year=year, purpose=purpose, is_exported=False)
+        tp = TestPaper.objects.create(form=tpid.form, user=request.user, title=test_title, union=union, year=year, purpose=purpose, is_exported=False)
         if tp :
             for question in reversed(tpid.get_questions()) :
                 TestPaperQuestion.objects.create(testpaper=tp,question=question)
@@ -103,7 +117,7 @@ def main_select_post_maketest(request):
 
         form = get_or_none(TestPaperForm, id=1)
 
-        tp = TestPaper.objects.create(form=form, user=request.user, title=test_title, school=school, year=int(year), purpose=purpose, is_exported=False)
+        tp = TestPaper.objects.create(form=form, user=request.user, title=test_title, union=union, year=int(year), purpose=purpose, is_exported=False)
 
         if tp :
             for question in arr_questions :
@@ -119,7 +133,7 @@ def main_select_post_maketest_chkname(request):
 
 def main_testpaper(request, tp=None):
     if tp == None : tp = get_or_none(TestPaper,id=int(request.GET.get('tpid',0)))
-    rooms = SchoolYear.objects.filter(school=tp.school,year=tp.year).order_by("room")
+    groups = Group.objects.filter(union=tp.union,year=tp.year).order_by("group")
 
     pages = []
     n = 0
@@ -175,7 +189,7 @@ def main_testpaper(request, tp=None):
         'pages':pages,
         'testpaper':tp,
         "explain_pages":explain_pages,
-        'rooms':rooms,
+        'groups':groups,
         'mode':'main_testpaper'
     }
     return render(request, 'main_testpaper.html', context)
@@ -232,7 +246,7 @@ def main_testpaper_form(request):
     q = request.GET.get('q','')
     tp = get_or_none(TestPaper,id=request.GET.get('tpid'))
 
-    forms = TestPaperForm.objects.filter((Q(school=None)|Q(school=request.user.profile.school))&Q(title__icontains=q))
+    forms = TestPaperForm.objects.filter((Q(Group=None)|Q(Group=request.user.profile.group))&Q(title__icontains=q))
 
     context = {
         'user': request.user,
@@ -315,31 +329,31 @@ def main_testpaper_post_form(request):
 
     return main_testpaper(request,tp=tp)
 
-def main_testpaper_post_room(request):
+def main_testpaper_post_group(request):
     tp = get_or_none(TestPaper,id=int(request.POST.get('tpid',0)))
-    str_room = request.POST.get('rooms',None)
+    str_group = request.POST.get('groups',None)
     is_exported = request.POST.get('is_exported',None)
 
     if is_exported :
         tp.is_exported = True
         tp.save()
 
-    if str_room :
-        arr_room = str_room.split(',')
-        tp.rooms.clear()
-        for room in arr_room:
-            sy = get_or_none(SchoolYear,id=int(room))
-            if sy : tp.rooms.add(sy)
+    if str_group :
+        arr_group = str_group.split(',')
+        tp.groups.clear()
+        for group in arr_group:
+            sy = get_or_none(Group,id=int(group))
+            if sy : tp.groups.add(sy)
         tp.save()
 
-    rooms = SchoolYear.objects.filter(school=tp.school,year=tp.year).order_by('room')
+    groups = Group.objects.filter(union=tp.union).order_by('group')
 
     context = {
         'user': request.user,
         'testpaper':tp,
-        'rooms':rooms
+        'groups':groups
     }
-    return render(request, 'main_testpaper_room.html', context)
+    return render(request, 'main_testpaper_group.html', context)
 
 def main_progress(request):
 
@@ -360,14 +374,14 @@ def main_progress(request):
 def main_manager(request):
     q = request.GET.get('q', '')
 
-    schools = TestPaper.objects.filter(user=request.user,is_shown=True).values_list('school', flat=True)
-    query = reduce(operator.or_, (Q(school__id = item) for item in schools))
-    rooms = SchoolYear.objects.filter(query).order_by('school','year','room')
+    unions = TestPaper.objects.filter(user=request.user,is_shown=True).values_list('union', flat=True)
+    query = reduce(operator.or_, (Q(union__id = item) for item in unions))
+    groups = Group.objects.filter(query).order_by('union','group')
 
     context = {
         'user': request.user,
         'query':q,
-        'rooms':rooms
+        'groups':groups
     }
     return render(request, 'main_manager.html', context)
 
@@ -385,9 +399,9 @@ def main_mypage(request):
 
 def main_mypage_post_group_change(request):
     user = request.user
-    school = get_or_none(School,id=int(request.POST.get('sid',0)))
-    if school :
-        user.profile.school = school
+    Group = get_or_none(Group,id=int(request.POST.get('sid',0)))
+    if Group :
+        user.profile.group = Group
         user.profile.save()
         return HttpResponse("True")
     return HttpResponse("False")
@@ -417,5 +431,20 @@ def main_mypage_post_info_change(request):
     if phone : user.profile.phone = phone
     if gender : user.profile.gender = gender
     user.save()
+    user.profile.save()
+    return HttpResponse("True")
+
+def main_mypage_post_school_change(request):
+    grade = request.POST.get("grade","")
+    school_id = request.POST.get("school_id",0)
+
+    user = request.user
+    if school_id:
+        user.profile.school = get_or_none(School, id=school_id)
+    if grade :
+        if user.profile.school :user.profile.year = grade[-1]
+        else : user.profile.year = 0
+        user.profile.grade_code = grade
+
     user.profile.save()
     return HttpResponse("True")

@@ -4,11 +4,11 @@
     <div id="div_inventory_select">
         <select id="select_inventory_year" class="select_inventory_form">
             <option value="0">전체</option>
-            {% for year in user.profile.school.get_years %}
+            {% for year in user.profile.group.get_years %}
                 {% if year.year == select_year %}
-                    <option value="{{ year.year }}" selected>{{ user.profile.school.title }} {{ year.year }}학년</option>
+                    <option value="{{ year.year }}" selected>{{ user.profile.group.title }} {{ year.year }}학년</option>
                 {% else %}
-                    <option value="{{ year.year }}">{{ user.profile.school.title }} {{ year.year }}학년</option>
+                    <option value="{{ year.year }}">{{ user.profile.group.title }} {{ year.year }}학년</option>
                 {% endif %}
             {% endfor %}
         </select>
@@ -25,7 +25,7 @@
                         <div class="div_testpaper_title">{{testpaper.title}}</div>
                         <div class="div_testpaper_date">{{testpaper.date_created|date:"Y-m-d"}}</div>
                         <div class="div_testpaper_purpose">{{testpaper.get_purpose}}</div>
-                        <div class="div_testpaper_room" id="div_testpaper_room{{ testpaper.id }}" tpid="{{ testpaper.id }}"><center><i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i></center></div>
+                        <div class="div_testpaper_group" id="div_testpaper_group{{ testpaper.id }}" tpid="{{ testpaper.id }}"><center><i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i></center></div>
                     </div>
                 {% endfor %}
             {% else %}
@@ -45,10 +45,10 @@
             });
         });
 
-        $(".div_testpaper_room").each(function(i){
+        $(".div_testpaper_group").each(function(i){
             var tpid = $(this).attr('tpid');
 
-            $(this).load("/testpaper/post/room/",{
+            $(this).load("/testpaper/post/group/",{
                 'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
                 'tpid':tpid
             });

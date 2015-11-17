@@ -4,7 +4,7 @@
             <div class="modal-body">
                 <p class="p_page_title">테스트 저장</p>
                 <hr/>
-                <input type="hidden" id="input_maketest_school" value="{{ user.profile.school.id }}">
+                <input type="hidden" id="input_maketest_Group" value="{{ user.profile.group.id }}">
                 <div class="form-group">
                     <input type="hidden" id="input_maketest_tpid" value=""/>
                     <label for="input_maketest_title">테스트명</label>
@@ -18,8 +18,8 @@
                 <div class="form-group">
                     <label for="select_inventory_year">학년</label>
                     <select id="select_inventory_year" class="form-control input_maketest_form">
-                        {% for year in user.profile.school.get_years %}
-                            <option value="{{ year.year }}" {% if forloop.counter0 == 0 %}selected{% endif %}>{{ user.profile.school.title }} {{ year.year }}학년</option>
+                        {% for year in user.profile.group.get_years %}
+                            <option value="{{ year.year }}" {% if forloop.counter0 == 0 %}selected{% endif %}>{{ user.profile.group.title }} {{ year.year }}학년</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -60,28 +60,110 @@
     </div>
 </div>
 
-{#<div class="modal fade" id="div_modal_mypage_ele1" tabindex="-1" role="dialog" aria-labelledby="div_modal_mypage_ele1" aria-hidden="true">#}
-{#    <div class="modal-dialog">#}
-{#        <div class="modal-content">#}
-{#            <div class="modal-body">#}
-{#                <p class="p_page_title">소속 변경</p>#}
-{#                <hr/>#}
-{#                <div class="div_page_contents">#}
-{#                    <label for="input_maketest_title">현재 소속</label>#}
-{#                    <input type="text" class="form-control input_mypage_ele_form" id="input_mypage_ele1_now" value="{{ user.profile.school.title }}" disabled>#}
-{#                    <label for="input_maketest_title">변경할 소속</label>#}
-{#                    <input type="text" class="form-control input_mypage_ele_form uschool" id="input_mypage_ele1_change" placeholder="학교명">#}
-{#                    <input type="hidden" name="school_id" class="uschoolid" id="uschoolid" value="0">#}
-{#                    <div class="div_list_school"></div>#}
-{#                </div>#}
-{#                <p align="right">#}
-{#                    <button class="btn btn-success input_mypage_ele_form" id="btn_mypage_ele_submit" disabled><i class="xi-check-circleout"></i> 변경</button>#}
-{#                    <button class="btn btn-default input_mypage_ele_form" data-dismiss="modal" aria-label="Close"><i class="xi-close"></i> 취소</button>#}
-{#                </p>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#</div>#}
+<div class="modal fade" id="div_modal_welcome1" tabindex="-1" role="dialog" aria-labelledby="div_modal_alert" aria-hidden="true" data-backdrop="static" data-show="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="div_dashboard_progress"><i class="xi-check-circle"></i>……<i class="xi-full-moon"></i>……<i class="xi-full-moon"></i></div>
+                <p class="p_page_title text-center">Step1. 회원님의 정보를 입력해주세요.</p>
+                <hr/>
+                <div class="div_page_contents">
+                    <form>
+                        <label for="input_dashboard_ele_name">이름</label>
+                        <input type="text" class="form-control input_dashboard_ele_form" id="input_dashboard_ele_name" onkeyup="chk_dashboard_w1_blank()" placeholder="이름">
+                        <label for="input_dashboard_ele_email">이메일</label>
+                        <input type="text" class="form-control input_dashboard_ele_form" id="input_dashboard_ele_email" onkeyup="chk_dashboard_w1_blank()" placeholder="이메일" value="{{ user.email }}">
+                        <label for="input_dashboard_ele_phone">연락처</label>
+                        <input type="text" class="form-control input_dashboard_ele_form" id="input_dashboard_ele_phone" onkeyup="chk_dashboard_w1_blank()" placeholder="연락처" value="{{ user.profile.phone }}">
+                        <label for="input_dashboard_ele_gender">성별</label>
+                        <label class="checkbox-inline">
+                            <input type="radio" id="input_dashboard_ele_gender0" name="user_gender" value="0" {% if user.profile.gender == 0 %}checked{% endif %}> 남자
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" id="input_dashboard_ele_gender1" name="user_gender" value="1" {% if user.profile.gender == 1 %}checked{% endif %}> 여자
+                        </label>
+                    </form>
+                </div>
+                <p align="right">
+                    <button class="btn btn-success input_dashboard_ele_form" id="btn_dashboard_ele_submit" onclick="submit_dashboard_w1();" disabled><i class="xi-angle-right"></i> 다음</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="div_modal_welcome2" tabindex="-1" role="dialog" aria-labelledby="div_modal_alert" aria-hidden="true" data-backdrop="static" data-show="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="div_dashboard_progress"><i class="xi-check-circle"></i>……<i class="xi-check-circle"></i>……<i class="xi-full-moon"></i></div>
+                <p class="p_page_title text-center">Step2. 기타 정보를 입력해주세요.</p>
+                <hr/>
+                <div class="div_page_contents">
+                    <form>
+                        <label for="input_dashboard_ele2_grade" class="label_dashboard_ele2_grade">중학교</label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="user_grade" class="input_dashboard_ele2_grade" value="m1" onclick="aaa()"> 중학교 1학년
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="user_grade" class="input_dashboard_ele2_grade" value="m2"> 중학교 2학년
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="user_grade" class="input_dashboard_ele2_grade" value="m3"> 중학교 3학년
+                        </label><br/>
+                        <label for="input_dashboard_ele2_grade" class="label_dashboard_ele2_grade">고등학교</label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="user_grade" class="input_dashboard_ele2_grade" value="h1"> 고등학교 1학년
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="user_grade" class="input_dashboard_ele2_grade" value="h2"> 고등학교 2학년
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="user_grade" class="input_dashboard_ele2_grade" value="h3"> 고등학교 3학년
+                        </label><br/>
+                        <label for="input_dashboard_ele2_grade" class="label_dashboard_ele2_grade">기타</label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="user_grade" class="input_dashboard_ele2_grade" value="n1"> 일반인
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="user_grade" class="input_dashboard_ele2_grade" value="n2"> 선생님
+                        </label>
+                        <div id="div_dashboard_ele2_school">
+                            <hr/>
+                            <label for="input_dashboard_ele_name">학교명</label>
+                            <input type="text" class="form-control input_dashboard_ele_form" id="input_dashboard_ele2_school" placeholder="학교명">
+                            <input type="hidden" name="school_grade" class="uschoolgrade" id="uschoolgrade" value="중학교">
+                            <input type="hidden" name="school_id" class="uschoolid" id="uschoolid" value="0">
+                            <div class="div_list_school"></div>
+                        </div>
+                    </form>
+                </div>
+                <p align="right">
+                    <button class="btn btn-success input_dashboard_ele_form" id="btn_dashboard_ele_submit" onclick="submit_dashboard_w2();" disabled><i class="xi-angle-right"></i> 다음</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="div_modal_welcome3" tabindex="-1" role="dialog" aria-labelledby="div_modal_alert" aria-hidden="true" data-backdrop="static" data-show="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="div_dashboard_progress"><i class="xi-check-circle"></i>……<i class="xi-check-circle"></i>……<i class="xi-check-circle"></i></div>
+                <p class="p_page_title text-center">완료. 가입완료</p>
+                <hr/>
+                <div class="div_page_contents">
+                    <i class="xi-check-circle"></i>
+                    <p class="p_w3_msg">모두를 위한 수학에 오신것을 환영합니다.<br/>새로고침 후 서비스를 이용해보세요.</p>
+                </div>
+                <p align="right">
+                    <button class="btn btn-success input_dashboard_ele_form" id="btn_dashboard_ele_submit" onclick="location.reload(true);"><i class="xi-refresh"></i> 새로고침</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="div_modal_mypage" tabindex="-1" role="dialog" aria-labelledby="div_modal_mypage" aria-hidden="true">
     <div class="modal-dialog">

@@ -1,0 +1,95 @@
+{% if user.id %}
+    <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
+    <p class="p_content_title"><a href="javascript:;"  onclick="link_content({'link':'home'})">대쉬보드</a> <span class="span_content_subtitle">{{ user.first_name }}님의 대쉬보드입니다.</span></p>
+    <div id="div_dashboard_groups">
+        <p id="p_groups_title">"XXX"소속의 그룹</p>
+        <button class="btn_groups active">그룹 이름</button>
+        <button class="btn_groups"><i class="xi-plus"></i></button>
+    </div>
+    <div class="div_content_board div_content_board_dashboard">
+        <div id="div_dashboard_board">
+            {% if query %}<div style="padding-bottom:20px;"><b>"{{ query }}"</b>에 대한 검색결과 <span id="span_search_del" onclick="del_search()">취소</span></div>{% endif %}
+            <div class="no-data">해당하는 데이터가 없습니다.</div>
+        </div>
+    </div>
+    <script>
+        {% if not user.profile.grade_code %}
+            {% if user.profile.login_from != 0 %}
+                $("#div_modal_welcome1").modal('show');
+
+                function submit_dashboard_w1(){
+                    var first_name = $("#div_modal_welcome1 #input_dashboard_ele_name").val();
+                    var email = $('#div_modal_welcome1 #input_dashboard_ele_email').val();
+                    var phone = $('#div_modal_welcome1 #input_dashboard_ele_phone').val();
+                    var gender = $('#div_modal_welcome1 #input_dashboard_ele_gender1').is(":checked")|0;
+
+                    $.post("/main/mypage/post/info/change/",{
+                        'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                        'first_name':first_name,
+                        'email':email,
+                        'phone':phone,
+                        'gender':gender
+                    },function(data){
+                        $("#div_modal_welcome1").modal('hide');
+                        $("#div_modal_welcome2").modal('show');
+                    });
+                }
+
+                function chk_dashboard_w1_blank(){
+                    var first_name = $("#div_modal_welcome1 #input_dashboard_ele_name").val();
+                    var email = $('#div_modal_welcome1 #input_dashboard_ele_email').val();
+                    var phone = $('#div_modal_welcome1 #input_dashboard_ele_phone').val();
+
+                    if(first_name  == ""){
+                        $("#div_modal_welcome1 #btn_dashboard_ele_submit").attr("disabled","disabled");
+                        return;
+                    }
+                    else $("#div_modal_welcome1 #btn_dashboard_ele_submit").removeAttr("disabled");
+
+                    if(email  == ""){
+                        $("#div_modal_welcome1 #btn_dashboard_ele_submit").attr("disabled","disabled");
+                        return;
+                    }
+                    else $("#div_modal_welcome1 #btn_dashboard_ele_submit").removeAttr("disabled");
+
+                    if(phone  == ""){
+                        $("#div_modal_welcome1 #btn_dashboard_ele_submit").attr("disabled","disabled");
+                        return;
+                    }
+                    else $("#div_modal_welcome1 #btn_dashboard_ele_submit").removeAttr("disabled");
+
+                }
+            {% else %}
+                $("#div_modal_welcome2").modal('show');
+            {% endif %}
+            $("#div_modal_welcome2 .iradio_square-green, #div_modal_welcome2 .checkbox-inline, #div_modal_welcome2 .iCheck-helper").click(function(){
+                var str_value = $("#div_modal_welcome2 .input_dashboard_ele2_grade:checked").val();
+                if(str_value.indexOf("m") > -1 || str_value.indexOf("h") > -1){
+                    $("#div_modal_welcome2 #div_dashboard_ele2_school").show();
+                    if (str_value.indexOf("m") > -1) $("#div_modal_welcome2 #uschoolgrade").val("중학교");
+                    else if (str_value.indexOf("h") > -1) $("#div_modal_welcome2 #uschoolgrade").val("고등학교");
+                    $("#div_modal_welcome2 #btn_dashboard_ele_submit").attr("disabled","disabled");
+                }
+                else{
+                    $("#div_modal_welcome2 #div_dashboard_ele2_school").hide();
+                    $("#div_modal_welcome2 #btn_dashboard_ele_submit").removeAttr("disabled");
+                }
+            });
+
+            function submit_dashboard_w2(){
+                var grade = $("#div_modal_welcome2 .input_dashboard_ele2_grade:checked").val();
+                var school_id = $("#div_modal_welcome2 #uschoolid").val();
+
+                $.post("/main/mypage/post/school/change/",{
+                    'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                    'grade':grade,
+                    'school_id':school_id,
+
+                },function(data){
+                    $("#div_modal_welcome2").modal('hide');
+                    $("#div_modal_welcome3").modal('show');
+                });
+            }
+        {% endif %}
+    </script>
+{% endif %}
