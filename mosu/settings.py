@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mosu.about',
     'mosu.home',
     'mosu.main',
     'mosu.docs',
@@ -131,4 +132,5 @@ STATICFILES_DIRS = (
     ('fonts', 'static/css/fonts'),
     ('js', 'static/js'),
     ('img', 'static/img'),
+    ('about', 'static/about'),
 )

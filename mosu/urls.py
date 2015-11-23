@@ -21,6 +21,8 @@ from mosu import settings
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', 'mosu.about.views.about'),
+    url(r'^about/$', 'mosu.about.views.about'),
     url(r'^home/$', 'mosu.home.views.home'),
     url(r'^home/list/school/$', 'mosu.home.views.home_list_school'),
     url(r'^user/$', 'mosu.home.views.user'),
@@ -28,7 +30,7 @@ urlpatterns = [
     url(r'^user/logout/$', 'mosu.home.views.user_logout'),
     url(r'^user/join/$', 'mosu.home.views.user_join'),
     url(r'^user/join/get/$', 'mosu.home.views.user_join_get'),
-    url(r'^$', 'mosu.main.views.main'),
+    url(r'^main/$', 'mosu.main.views.main'),
     url(r'^dashboard/$', 'mosu.main.views.main_dashboard'),
     url(r'^inventory/$', 'mosu.main.views.main_inventory'),
     url(r'^select/$', 'mosu.main.views.main_select'),
@@ -50,7 +52,7 @@ urlpatterns = [
     url(r'^main/mypage/post/group/change/$', 'mosu.main.views.main_mypage_post_group_change'),
     url(r'^main/mypage/post/pw/change/$', 'mosu.main.views.main_mypage_post_pw_change'),
     url(r'^main/mypage/post/info/change/$', 'mosu.main.views.main_mypage_post_info_change'),
-    url(r'^main/mypage/post/school/change/$', 'mosu.main.views.main_mypage_post_school_change'),
+    url(r'^main/dashboard/post/school/register/$', 'mosu.main.views.main_dashboard_post_school_register'),
     url(r'^mobile/$', 'mosu.mobile.views.mobile'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 ]
