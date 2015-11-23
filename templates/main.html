@@ -35,7 +35,7 @@
             </div>
             {% if user.profile.get_union %}
                 <div id="div_header_Group" href="javascript:;" onclick="link_content({'link':'manager'});">
-                    <div id="div_Group_icon"><img id="div_icon_img" src="{{ user.profile.group.icon.url }}"></div> {{ user.profile.group.title }}
+                    <div id="div_Group_icon"><img id="div_icon_img" src="{{ user.profile.get_union.0.icon.url }}"></div> {{ user.profile.get_union.0.title }}
                 </div>
             {% endif %}
             <p id="p_header_logo"><a href="javascript:;" onclick="link_content({'link':'home'});"><img id="img_header_logo" src="/static/img/main/head_logo.png"></a></p>

@@ -40,9 +40,9 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="control-group" id="div_join_btngroup">
-                    <button type="button" class="btn_submit" id="btn_join_facebook" onclick="fb_signup()"><i class="xi-facebook"></i> 페이스북으로 가입하기</button>
+                    <button type="button" class="btn_submit" id="btn_join_facebook" onclick="fb_login()"><i class="xi-facebook"></i> 페이스북으로 가입하기</button>
                     <hr/>
-                    <button type="button" class="btn_submit" id="btn_join_kakao" onclick="signupWithKakao()"><i class="xi-kakaotalk"></i> 카카오로 가입하기</button>
+                    <button type="button" class="btn_submit" id="btn_join_kakao" onclick="loginWithKakao()"><i class="xi-kakaotalk"></i> 카카오로 가입하기</button>
                     <hr/>
                     <button type="button" class="btn_submit" id="btn_join_account"><i class="xi-user"></i> 아이디로 가입하기</button>
                 </div>
@@ -61,6 +61,7 @@
                         <input class="join-form" type="text" name="user_name" id="uname" required placeholder="이름" title="이름">
                         <a type="button" class="join-info" id="btn_join_chkemail" data-toggle="tooltip" data-placement="right" title="이메일을 입력하세요." chk="0"><i class="xi-info-circle"></i></a>
                         <input class="join-form" type="email" name="user_email" id="uemail" required placeholder="이메일" title="이메일">
+                        <input class="join-form" type="text" name="user_phone" id="uphone" required placeholder="연락처" title="연락처">
                         <label class="checkbox-inline">
                             <input type="radio" id="ugender_0" name="user_gender" value="0" checked> 남자
                         </label>

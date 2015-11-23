@@ -1,9 +1,11 @@
 {% if user.id %}
     <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
-    <p class="p_content_title"><a href="javascript:;"  onclick="link_content({'link':'home'})">대쉬보드</a> <span class="span_content_subtitle">{{ user.first_name }}님의 대쉬보드입니다.</span></p>
+    <p class="p_content_title"><a href="javascript:;"  onclick="link_content({'link':'home'})">대쉬보드</a> <span class="span_content_subtitle">"{{ union.title }}"의 대쉬보드입니다.</span></p>
     <div id="div_dashboard_groups">
-        <p id="p_groups_title">"XXX"소속의 그룹</p>
-        <button class="btn_groups active">그룹 이름</button>
+        <p id="p_groups_title">"{{ union.title }}"의 그룹</p>
+        {% for group in union.get_groups %}
+            <button class="btn_groups active">{{ group.title }}</button>
+        {% endfor %}
         <button class="btn_groups"><i class="xi-plus"></i></button>
     </div>
     <div class="div_content_board div_content_board_dashboard">
@@ -80,7 +82,7 @@
                 var grade = $("#div_modal_welcome2 .input_dashboard_ele2_grade:checked").val();
                 var school_id = $("#div_modal_welcome2 #uschoolid").val();
 
-                $.post("/main/mypage/post/school/change/",{
+                $.post("/main/dashboard/post/school/register/",{
                     'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
                     'grade':grade,
                     'school_id':school_id,

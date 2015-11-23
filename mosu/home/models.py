@@ -37,6 +37,7 @@ class Union(models.Model):
     phone = models.CharField(max_length=15,null=True,blank=True,default='-')
     logo = models.FileField(upload_to="upload/",null=True,blank=True)
     icon = models.FileField(upload_to="upload/",null=True,blank=True)
+    is_paid = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -44,6 +45,9 @@ class Union(models.Model):
 
     def __unicode__(self):
         return u'[%d] %s' %(self.id,self.title)
+
+    def get_groups(self):
+        return Group.objects.filter(union=self)
 
 class UnionUser(models.Model):
     union = models.ForeignKey(Union)
@@ -58,7 +62,7 @@ class UnionUser(models.Model):
 
 class Group(models.Model):
     union = models.ForeignKey(Union)
-    user = models.ForeignKey(UnionUser)
+    unionuser = models.ForeignKey(UnionUser)
     title = models.CharField(max_length=64)
     is_paid = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)

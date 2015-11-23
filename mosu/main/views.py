@@ -9,7 +9,7 @@ from django.shortcuts import render
 import math
 import operator
 from mosu.docs.models import Question, QuestionUnit1, QuestionUnit2, QuestionUnit3, QuestionUnit4
-from mosu.home.models import get_or_none, Union, Group, School
+from mosu.home.models import get_or_none, Union, Group, School, UnionUser
 from mosu.main.models import TestPaper, TestPaperQuestion, TestPaperForm
 
 def main(request):
@@ -23,15 +23,17 @@ def main(request):
 
 def main_dashboard(request):
     q = request.GET.get('q', '')
-    select_year = int(request.GET.get('year', 0))
+    union = get_or_none(Union,id=int(request.GET.get('id', 0)))
+    if union == None :
+        union = Union.objects.filter(user=request.user)
+        if union : union = union[0]
 
-    if select_year != 0 : testpapers = TestPaper.objects.filter(user=request.user,title__icontains=q,year=select_year,is_shown=True).order_by("-id")
-    else : testpapers = TestPaper.objects.filter(user=request.user,title__icontains=q,is_shown=True).order_by("-id")
+    testpapers = TestPaper.objects.filter(user=request.user,title__icontains=q,is_shown=True).order_by("-id")
 
     context = {
         'user': request.user,
         'query':q,
-        'select_year':str(select_year),
+        'union':union,
         'testpapers':testpapers
     }
     return render(request, 'main_dashboard.html', context)
@@ -420,25 +422,26 @@ def main_mypage_post_pw_change(request):
     return HttpResponse("False")
 
 def main_mypage_post_info_change(request):
+    user = request.user
     first_name = request.POST.get("first_name","")
     email = request.POST.get("email","")
     phone = request.POST.get("phone","")
     gender = request.POST.get("gender","")
 
-    user = request.user
     if first_name : user.first_name = first_name
     if email : user.email = email
     if phone : user.profile.phone = phone
     if gender : user.profile.gender = gender
     user.save()
     user.profile.save()
+
     return HttpResponse("True")
 
-def main_mypage_post_school_change(request):
+def main_dashboard_post_school_register(request):
+    user = request.user
     grade = request.POST.get("grade","")
     school_id = request.POST.get("school_id",0)
 
-    user = request.user
     if school_id:
         user.profile.school = get_or_none(School, id=school_id)
     if grade :
@@ -447,4 +450,29 @@ def main_mypage_post_school_change(request):
         user.profile.grade_code = grade
 
     user.profile.save()
+
+    union_obj, err = Union.objects.get_or_create(
+        user=user,
+        title=u"%s's 임시소속"%user.first_name,
+        address="",
+        phone=user.profile.phone,
+        icon="/static/img/main/union_tmp.png",
+        is_paid=False,
+        is_active=True
+    )
+
+    unionuser_obj, err = UnionUser.objects.get_or_create(
+        union = union_obj,
+        user = user,
+        is_active = True
+    )
+
+    Group.objects.get_or_create(
+        union = union_obj,
+        unionuser = unionuser_obj,
+        title = u"무료그룹1",
+        is_paid=False,
+        is_active=True
+    )
+
     return HttpResponse("True")

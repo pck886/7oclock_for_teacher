@@ -60,6 +60,7 @@ def user_join(request):
     password = request.POST.get("password")
     user_name = request.POST.get("user_name")
     user_email = request.POST.get("user_email")
+    phone = request.POST.get("user_phone")
     gender = int(request.POST.get("user_gender",0))
     img_url = request.POST.get("img_url","")
 
@@ -67,20 +68,20 @@ def user_join(request):
     if login_from != 0 :
         password = "%d_%s"%(login_from,password)
         if img_url :
-            img_temp = NamedTemporaryFile(delete=True)
-            img_temp.write(urllib2.urlopen(img_url).read())
-            img_temp.flush()
+            profile_img = NamedTemporaryFile(delete=True)
+            profile_img.write(urllib2.urlopen(img_url).read())
+            profile_img.flush()
 
     try :
         user = User.objects.create_user(username=user_id,password=password,email=user_email,first_name=user_name)
         if user :
-            profile = UserProfile.objects.create(user=user,gender=gender,login_from=login_from)
-            profile.src.save("%s.jpg"%user_id, File(img_temp))
+            profile = UserProfile.objects.create(user=user,gender=gender,login_from=login_from,phone=phone)
+            if profile_img : profile.src.save("%s.jpg"%user_id, File(profile_img))
             user = authenticate(username=user_id, password=password)
             if user :
                 login(request, user)
                 request.session.set_expiry(31536000)
-                return HttpResponseRedirect('/home/')
+                return HttpResponseRedirect('/')
     except Exception as e:
         pass
     return HttpResponseRedirect('/home/')

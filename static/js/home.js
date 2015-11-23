@@ -63,6 +63,7 @@ $(window).load(function(){
         var chk_pw_ = Number($("#JoinModal  #btn_join_chkpw_").attr("chk"));
         var chk_name = Number($("#JoinModal  #uname").val().length);
         var chk_email = Number($("#JoinModal  #btn_join_chkemail").attr("chk"));
+        var chk_phone = Number($("#JoinModal  #uphone").val().length);
         var chk_opt = Number($(":checkbox[id='check_opt']:checked").length);
 
         if(chk_id == 0){
@@ -79,6 +80,9 @@ $(window).load(function(){
             return;
         }else if(chk_email == 0){
             $("#JoinModal  #uemail").focus();
+            return;
+        }else if(chk_phone == 0){
+            $("#JoinModal  #uphone").focus();
             return;
         }else if(chk_opt == 0){
             $("#JoinModal  #check_opt").focus();

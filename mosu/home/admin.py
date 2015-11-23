@@ -10,7 +10,7 @@ class SchoolAdmin(admin.ModelAdmin):
     list_display = ('id','grade','city','region','name','founder','address')
 
 class GroupAdmin(admin.ModelAdmin):
-    list_display = ('id','union','user','title','is_paid')
+    list_display = ('id','union','unionuser','title','is_paid')
 
 class UnionAdmin(admin.ModelAdmin):
     list_display = ('id','user','title','address','phone','is_active')

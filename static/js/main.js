@@ -1,7 +1,6 @@
 var is_changed = false;
 var item_no = 0;
 var select_url = '';
-var back_history = "/inventory/?year=0";
 var alert_value = {};
 
 $(window).load(function(){
