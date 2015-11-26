@@ -159,7 +159,7 @@ def set_school_info(request):
             title=u"%s's 임시소속"%user.first_name,
             address="",
             phone=user.profile.phone,
-            icon="/static/img/main/union_tmp.png",
+            icon="/static/img/main/icon_union_tmp.png",
             is_paid=False,
             is_active=True
         )

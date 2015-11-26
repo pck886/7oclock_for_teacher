@@ -264,9 +264,9 @@
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:1 }}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.0.src.url }}">
                                                         {% for group in groups %}
-                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
+                                                            <div class="div_question_stats div_question_stats{{ group.id }}">
                                                                 <div class="div_question_answer">정답 : {{ page.0.get_answer|safe }}</div>
-                                                                <div class="div_question_percent">{{ group.group }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.0|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_percent">{{ group.title }} 오답률 : {{ testpaper|get_testpapersubmit_question:page.0|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
                                                                 <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.0|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
                                                         {% endfor %}
@@ -281,9 +281,9 @@
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:2 }}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.1.src.url }}">
                                                         {% for group in groups %}
-                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
+                                                            <div class="div_question_stats div_question_stats{{ group.id }}">
                                                                 <div class="div_question_answer">정답 : {{ page.1.get_answer|safe }}</div>
-                                                                <div class="div_question_percent">{{ group.group }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.1|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_percent">{{ group.title }} 오답률 : {{ testpaper|get_testpapersubmit_question:page.1|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
                                                                 <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.1|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
                                                         {% endfor %}
@@ -298,9 +298,9 @@
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:3}}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.2.src.url }}">
                                                         {% for group in groups %}
-                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
+                                                            <div class="div_question_stats div_question_stats{{ group.id }}">
                                                                 <div class="div_question_answer">정답 : {{ page.2.get_answer|safe }}</div>
-                                                                <div class="div_question_percent">{{ group.group }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.2|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_percent">{{ group.title }} 오답률 : {{ testpaper|get_testpapersubmit_question:page.2|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
                                                                 <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.2|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
                                                         {% endfor %}
@@ -319,9 +319,9 @@
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:4}}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.3.src.url }}">
                                                         {% for group in groups %}
-                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
+                                                            <div class="div_question_stats div_question_stats{{ group.id }}">
                                                                 <div class="div_question_answer">정답 : {{ page.3.get_answer|safe }}</div>
-                                                                <div class="div_question_percent">{{ group.group }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.3|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_percent">{{ group.group }} 오답률 : {{ testpaper|get_testpapersubmit_question:page.3|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
                                                                 <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.3|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
                                                         {% endfor %}
@@ -336,9 +336,9 @@
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:5}}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.4.src.url }}">
                                                         {% for group in groups %}
-                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
+                                                            <div class="div_question_stats div_question_stats{{ group.id }}">
                                                                 <div class="div_question_answer">정답 : {{ page.4.get_answer|safe }}</div>
-                                                                <div class="div_question_percent">{{ group.group }}반 오답률 : {{ testpaper|get_testpapersubmit_question:page.4|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
+                                                                <div class="div_question_percent">{{ group.title }} 오답률 : {{ testpaper|get_testpapersubmit_question:page.4|get_testpapersubmit_group:group|get_submit_percent|floatformat:1 }}%</div>
                                                                 <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.4|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
                                                         {% endfor %}
@@ -353,7 +353,7 @@
                                                         <p class="p_testpaper_qno">{{ forloop.counter0|times:6|add:6}}.</p>
                                                         <img width="100%" class="img_testpaper_question" src="{{ page.5.src.url }}">
                                                         {% for group in groups %}
-                                                            <div class="div_question_stats div_question_stats{{ group.group }}">
+                                                            <div class="div_question_stats div_question_stats{{ group.id }}">
                                                                 <div class="div_question_answer">정답 : {{ page.5.get_answer|safe }}</div>
                                                                 <div class="div_question_wrong"> 오답자 :{% for tps in testpaper|get_testpapersubmit_question:page.5|get_testpapersubmit_group:group %}{% if tps.answer != tps.question.answer_mobile %}{{ tps.user.first_name }}, {% endif %}{% endfor %}</div>
                                                             </div>
@@ -378,8 +378,8 @@
         <button type="button" class="btn btn-default" id="btn_zoom_out"><i class="xi-minus"></i></button>
     </div>
     <div id="div_testpaper_group" class="btn-group" role="group" aria-label="..." style="display: none">
-        <button type="button" class="btn btn-default" id="btn_group_year" disabled>{{ groups.0.year }}학년</button><br/>
-        {% for group in groups %}<button type="button" class="btn btn-default btn_groups" id="btn_group_{{ group.group }}">{{ group.group }}</button><br/>
+        <button type="button" class="btn btn-default" id="btn_group_year" disabled>{{ testpaper.union.title }}</button><br/>
+        {% for group in groups %}<button type="button" class="btn btn-default btn_groups" id="btn_group_{{ group.id }}" group_id="{{ group.id }}">{{ group.title }}</button><br/>
         {% endfor %}
     </div>
     <script>
@@ -447,10 +447,10 @@
 
     </script>
     <script>
-        $(".div_question_stats1").show();
+        $(".div_question_stats{{ groups.0.id }}").show();
 
         $(".btn_groups").click(function(){
-            var stats_no = $(this).text();
+            var stats_no = $(this).attr("group_id");
             $(".div_question_stats").hide();
             $(".div_question_stats"+stats_no).show();
         });

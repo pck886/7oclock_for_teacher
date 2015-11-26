@@ -19,11 +19,10 @@ def times(arg, n):
 @register.filter
 def set_testpaper_head(html, tp):
     if tp.title : html = html.replace('{{title}}',tp.title)
-    if tp.group : html = html.replace('{{logo}}',tp.group.logo.url)
-    if tp.group : html = html.replace('{{icon}}',tp.group.icon.url)
-    if tp.group : html = html.replace('{{Group}}',tp.group.title)
+    if tp.union : html = html.replace('{{logo}}',tp.union.get_logo())
+    if tp.union : html = html.replace('{{icon}}',tp.union.get_icon())
+    if tp.union : html = html.replace('{{union}}',tp.union.title)
     if tp.title : html = html.replace('{{unit}}',"")
-    if tp.year : html = html.replace('{{year}}',"%s"%tp.year)
     return html
 
 @register.filter
@@ -39,7 +38,9 @@ def get_testpapersubmit_question(tp, qid):
 
 @register.filter
 def get_testpapersubmit_group(tps, group):
-    return tps.filter(user__profile__Group=group)
+    if tps and group :
+        return tps.filter(union=group.union)
+    return []
 
 @register.filter
 def get_submit_percent(tpss):

@@ -9,7 +9,7 @@ from django.shortcuts import render
 import math
 import operator
 from mosu.docs.models import Question, QuestionUnit1, QuestionUnit2, QuestionUnit3, QuestionUnit4
-from mosu.home.models import get_or_none, Union, Group, School, UnionUser
+from mosu.home.models import get_or_none, Union, Group, School, UnionUser, GroupUser
 from mosu.main.models import TestPaper, TestPaperQuestion, TestPaperForm
 
 def main(request):
@@ -22,33 +22,36 @@ def main(request):
     return render(request, 'main.html', context)
 
 def main_dashboard(request):
-    q = request.GET.get('q', '')
-    union = get_or_none(Union,id=int(request.GET.get('id', 0)))
-    if union == None :
-        union = Union.objects.filter(user=request.user)
-        if union : union = union[0]
+    union = get_or_none(Union, id=request.POST.get('union_id',0))
+    context = {
+        'user': request.user,
+        'union':union,
+    }
+    return render(request, 'main_dashboard.html', context)
 
-    testpapers = TestPaper.objects.filter(user=request.user,title__icontains=q,is_shown=True).order_by("-id")
+def main_dashboard_union(request):
+    union = get_or_none(Union, id=request.POST.get('union_id',0))
+    user = request.user
+
+    testpapers = TestPaper.objects.filter(union=union,user=user).order_by("-id")
+
+    context = {
+        'user': user,
+        'union':union,
+        'testpapers':testpapers
+    }
+    return render(request, 'main_dashboard_union.html', context)
+
+def main_inventory(request):
+    q = request.GET.get('q', '')
+    union = get_or_none(Union, id=request.POST.get('union_id',0))
+
+    testpapers = TestPaper.objects.filter(user=request.user,union=union,title__icontains=q,is_shown=True).order_by("-id")
 
     context = {
         'user': request.user,
         'query':q,
         'union':union,
-        'testpapers':testpapers
-    }
-    return render(request, 'main_dashboard.html', context)
-
-def main_inventory(request):
-    q = request.GET.get('q', '')
-    select_year = int(request.GET.get('year', 0))
-
-    if select_year != 0 : testpapers = TestPaper.objects.filter(user=request.user,title__icontains=q,year=select_year,is_shown=True).order_by("-id")
-    else : testpapers = TestPaper.objects.filter(user=request.user,title__icontains=q,is_shown=True).order_by("-id")
-
-    context = {
-        'user': request.user,
-        'query':q,
-        'select_year':str(select_year),
         'testpapers':testpapers
     }
     return render(request, 'main_inventory.html', context)
@@ -101,15 +104,14 @@ def main_select(request):
 
 def main_select_post_maketest(request):
     test_title = request.POST.get('title')
-    union = get_or_none(Union,id=int(request.POST.get('Group',0)))
-    year = request.POST.get('year')
+    union = get_or_none(Union,id=int(request.POST.get('union_id',0)))
     tpid = request.POST.get('tpid')
     str_questions = request.POST.get('questions')
     purpose = int(request.POST.get('purpose', 0))
 
     if tpid :
         tpid = get_or_none(TestPaper,id=tpid)
-        tp = TestPaper.objects.create(form=tpid.form, user=request.user, title=test_title, union=union, year=year, purpose=purpose, is_exported=False)
+        tp = TestPaper.objects.create(form=tpid.form, user=request.user, title=test_title, union=union, purpose=purpose, is_exported=False)
         if tp :
             for question in reversed(tpid.get_questions()) :
                 TestPaperQuestion.objects.create(testpaper=tp,question=question)
@@ -119,7 +121,7 @@ def main_select_post_maketest(request):
 
         form = get_or_none(TestPaperForm, id=1)
 
-        tp = TestPaper.objects.create(form=form, user=request.user, title=test_title, union=union, year=int(year), purpose=purpose, is_exported=False)
+        tp = TestPaper.objects.create(form=form, user=request.user, title=test_title, union=union, purpose=purpose, is_exported=False)
 
         if tp :
             for question in arr_questions :
@@ -135,7 +137,7 @@ def main_select_post_maketest_chkname(request):
 
 def main_testpaper(request, tp=None):
     if tp == None : tp = get_or_none(TestPaper,id=int(request.GET.get('tpid',0)))
-    groups = Group.objects.filter(union=tp.union,year=tp.year).order_by("group")
+    groups = Group.objects.filter(union=tp.union,unionuser__user=request.user).order_by("id")
 
     pages = []
     n = 0
@@ -248,7 +250,7 @@ def main_testpaper_form(request):
     q = request.GET.get('q','')
     tp = get_or_none(TestPaper,id=request.GET.get('tpid'))
 
-    forms = TestPaperForm.objects.filter((Q(Group=None)|Q(Group=request.user.profile.group))&Q(title__icontains=q))
+    forms = TestPaperForm.objects.filter((Q(union=None)|Q(union=tp.union))&Q(title__icontains=q))
 
     context = {
         'user': request.user,
@@ -348,7 +350,7 @@ def main_testpaper_post_group(request):
             if sy : tp.groups.add(sy)
         tp.save()
 
-    groups = Group.objects.filter(union=tp.union).order_by('group')
+    groups = Group.objects.filter(union=tp.union).order_by('id')
 
     context = {
         'user': request.user,
@@ -373,25 +375,50 @@ def main_progress(request):
     }
     return render(request, 'main_progress.html', context)
 
-def main_manager(request):
+def main_groupuser(request):
     q = request.GET.get('q', '')
+    union = get_or_none(Union, id=request.POST.get('union_id',0))
+    this_group = get_or_none(Group,id=int(request.GET.get("id",0)))
 
-    unions = TestPaper.objects.filter(user=request.user,is_shown=True).values_list('union', flat=True)
-    query = reduce(operator.or_, (Q(union__id = item) for item in unions))
-    groups = Group.objects.filter(query).order_by('union','group')
+    groups = Group.objects.filter(union=union).order_by('id')
+
+    if this_group == None : this_group = groups[0]
 
     context = {
         'user': request.user,
         'query':q,
+        'union':union,
+        'this_group':this_group,
         'groups':groups
     }
-    return render(request, 'main_manager.html', context)
+    return render(request, 'main_groupuser.html', context)
 
-def main_manager_post_user_delete(request):
+def main_groupuser_post_groupuser_move(request):
     user = get_or_none(User,id=int(request.POST.get('uid',0)))
-    if user :
-        user.delete()
-    return HttpResponseRedirect("/manager/")
+    this_group = get_or_none(Group,id=int(request.GET.get("id",0)))
+    gu, created = GroupUser.objects.get_or_create(user=user,group=this_group)
+    if gu :
+        gu.in_group = True
+        gu.is_active = True
+        gu.save()
+    return main_groupuser(request)
+
+def main_groupuser_post_groupuser_delete(request):
+    user = get_or_none(User,id=int(request.POST.get('uid',0)))
+    this_group = get_or_none(Group,id=int(request.GET.get("id",0)))
+    gu = get_or_none(GroupUser,user=user,group=this_group)
+    if gu :
+        gu.delete()
+    return main_groupuser(request)
+
+def main_groupuser_post_groupuser_cancel(request):
+    user = get_or_none(User,id=int(request.POST.get('uid',0)))
+    this_group = get_or_none(Group,id=int(request.GET.get("id",0)))
+    gu = get_or_none(GroupUser,user=user,group=this_group)
+    if gu :
+        gu.in_group = False
+        gu.save()
+    return main_groupuser(request)
 
 def main_mypage(request):
     context = {
@@ -456,7 +483,7 @@ def main_dashboard_post_school_register(request):
         title=u"%s's 임시소속"%user.first_name,
         address="",
         phone=user.profile.phone,
-        icon="/static/img/main/union_tmp.png",
+        icon="/static/img/main/icon_union_tmp.png",
         is_paid=False,
         is_active=True
     )

@@ -28,6 +28,7 @@ PURPOSE_IN_TESTPAPER_CHOICES = (
 
 class TestPaper(models.Model):
     user = models.ForeignKey(User)
+    union = models.ForeignKey(Union)
     title = models.TextField(default='')
     form = models.ForeignKey(TestPaperForm)
     purpose = models.IntegerField(choices=PURPOSE_IN_TESTPAPER_CHOICES,default=0)

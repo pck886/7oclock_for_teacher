@@ -33,9 +33,9 @@
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/logout/">로그아웃</a></li>
                 </ul>
             </div>
-            {% if user.profile.get_union %}
-                <div id="div_header_Group" href="javascript:;" onclick="link_content({'link':'manager'});">
-                    <div id="div_Group_icon"><img id="div_icon_img" src="{{ user.profile.get_union.0.icon.url }}"></div> {{ user.profile.get_union.0.title }}
+            {% if user.profile.get_unions %}
+                <div id="div_header_union" union_id="{{ user.profile.get_unions.0.id }}"{% if user.profile.get_unions.0.is_paid == False %} data-toggle="tooltip" data-placement="bottom" title="내 소속을 등록해보세요."{% endif %}>
+                    <div id="div_union_icon"><img id="div_icon_img" src="{{ user.profile.get_unions.0.get_icon }}"></div> {{ user.profile.get_unions.0.title }}
                 </div>
             {% endif %}
             <p id="p_header_logo"><a href="javascript:;" onclick="link_content({'link':'home'});"><img id="img_header_logo" src="/static/img/main/head_logo.png"></a></p>

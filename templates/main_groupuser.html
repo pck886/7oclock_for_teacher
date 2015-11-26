@@ -1,0 +1,127 @@
+{% if user.id %}
+    {% load home_extras %}
+    <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
+    <p class="p_content_title"><a href="javascript:;"  onclick="link_content({'link':'groupuser','group_id':'{{ this_group.id }}'})">학생관리페이지</a> <span class="span_content_subtitle">"{{ union.title }}"의 학생관리페이지입니다.</span></p>
+    <div id="div_groupuser_select">
+        <button class="btn btn-default btn_groupuser_topbtn" onclick="link_content({'link':'home'})"><i class="xi-rollback"></i> 뒤로가기</button>
+    </div>
+    <div class="div_content_board div_content_board_groupuser">
+        <div class="div_groupuser_board" id="div_groupuser_board_all">
+            <p class="p_groupuser_title">전체 학생</p>
+            {% if query %}<div style="padding-bottom:20px;"><b>"{{ query }}"</b>에 대한 검색결과 <span id="span_search_del" onclick="del_search()">취소</span></div>{% endif %}
+            <div class="div_groupuser_group">
+                <table class="table table-striped">
+                    <thead>
+                    <tr><th  class="text-center">#</th><th>이름</th><th>성별</th><th>그룹</th><th class="text-center">액션</th></tr>
+                    </thead>
+                    <tbody>
+                    {% if union.get_users %}
+                        {% for user in union.get_users %}
+                            <tr>
+                                <th scope="row" class="text-center">{{ forloop.counter }}</th>
+                                <td><img class="img_groupuser_profilepic" src="{{ user.profile.get_src }}">{{ user.first_name }}</td>
+                                <td>{{ user.profile.get_gender }}</td>
+                                <td>{% for group in user.profile.get_groups %}{{ group.title }}{% if forloop.counter < user.profile.get_groups|length %}, {% endif %}{% endfor %}</td>
+                                <td class="text-center">
+                                    <i class="xi-close i_groupuser_groupuser_delete" uid="{{ user.id }}" title="탈퇴"></i>
+                                    <i class="xi-arrow-right i_groupuser_groupuser_move" uid="{{ user.id }}" title="배치"></i>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr><td colspan="5" class="text-center">소속된 학생이 없습니다.</td></tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="div_groupuser_board" id="div_groupuser_board_group">
+            <p class="p_groupuser_title">
+                <select id="select_groupuser_groups" class="select_groupuser_groups">
+                    {% for group in groups %}
+                        <option value="{{ group.id }}" {% if group == this_group %}selected{% endif %}>{{ group.title }}</option>
+                    {% endfor %}
+                </select> 그룹 학생</p>
+            {% if query %}<div style="padding-bottom:20px;"><b>"{{ query }}"</b>에 대한 검색결과 <span id="span_search_del" onclick="del_search()">취소</span></div>{% endif %}
+            <div class="div_groupuser_group" group_id="{{ group.id }}">
+                <table class="table table-striped">
+                    <thead>
+                    <tr><th  class="text-center">#</th><th>이름</th><th>성별</th><th>그룹</th><th class="text-center">액션</th></tr>
+                    </thead>
+                    <tbody>
+                    {% if this_group.get_users %}
+                        {% for user in this_group.get_users %}
+                            <tr>
+                                <th scope="row" class="text-center">{{ forloop.counter }}</th>
+                                <td><img class="img_groupuser_profilepic" src="{{ user.profile.get_src }}">{{ user.first_name }}</td>
+                                <td>{{ user.profile.get_gender }}</td>
+                                <td>{% for group in user.profile.get_groups %}{{ group.title }}{% if forloop.counter < user.profile.get_groups|length %}, {% endif %}{% endfor %}</td>
+                                <td class="text-center"><i class="xi-close i_groupuser_groupuser_cancel" uid="{{ user.id }}" title="제외"></i></td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr><td colspan="5" class="text-center">소속된 학생이 없습니다.</td></tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(".btn_groupuser_topbtn").click(function(){
+            var group_id = $(this).attr("group_id");
+            $(".div_groupuser_group").hide();
+            $(".div_groupuser_group[group_id="+group_id+"]").show();
+            $(".btn_groupuser_topbtn").removeClass('select');
+            $(this).addClass('select');
+        });
+
+        $("#select_groupuser_groups").change(function(){
+            var group_id = get_or_0($("#select_groupuser_groups > option:selected").val());
+            link_content({'link':'groupuser','group_id':group_id});
+        });
+
+        $(".i_groupuser_groupuser_move").click(function(){
+            $("#div_main_loading").show();
+            var uid = $(this).attr('uid');
+            $("#content").load("/groupuser/post/groupuser/move/?id={{ this_group.id }}", {
+                'csrfmiddlewaretoken': $("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                'uid': uid,
+                'union_id':'{{ union.id }}'
+            }, function(){
+                $("#div_main_loading").fadeOut();
+            });
+        });
+
+        $(".i_groupuser_groupuser_delete").click(function(){
+            var uid = $(this).attr('uid');
+            alert_show({
+                "type":"groupuser_groupuser_delete",
+                "title":"탈퇴",
+                "contents":"정말 소속에서 탈퇴시키겠습니까?",
+                "load_id":'#content',
+                "url":"/groupuser/post/groupuser/delete/?id={{ this_group.id }}",
+                "data":{
+                    'csrfmiddlewaretoken': $("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                    'uid': uid,
+                    'union_id':'{{ union.id }}'
+                },
+                "function":function(){
+                    $("#div_main_loading").fadeOut();
+                }
+            });
+        });
+
+        $(".i_groupuser_groupuser_cancel").click(function(){
+            $("#div_main_loading").show();
+            var uid = $(this).attr('uid');
+            $("#content").load("/groupuser/post/groupuser/cancel/?id={{ this_group.id }}", {
+                'csrfmiddlewaretoken': $("#wrap > input[name=csrfmiddlewaretoken]").val(),
+                'uid': uid,
+                'union_id':'{{ union.id }}'
+            }, function(){
+                $("#div_main_loading").fadeOut();
+            });
+        });
+    </script>
+{% endif %}

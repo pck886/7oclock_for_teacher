@@ -1,10 +1,13 @@
+var union_id = 0;
 var is_changed = false;
 var item_no = 0;
 var select_url = '';
 var alert_value = {};
 
 $(window).load(function(){
+    union_id = $("#div_header_union").attr("union_id");
     link_content({'link':'home'});
+    $("#div_header_union").tooltip('show');
 });
 
 $(document).ready(function(){
@@ -54,9 +57,7 @@ $(document).ready(function(){
 
     $("#btn_maketest_submit").click(function(){
         var input_maketest_tpid= $("#div_modal_maketest #input_maketest_tpid").val();
-        var input_maketest_Group = $("#div_modal_maketest #input_maketest_Group").val();
         var input_maketest_title = $("#div_modal_maketest #input_maketest_title").val();
-        var select_inventory_year = $("#div_modal_maketest #select_inventory_year > option:selected").val();
         var radio_inventory_purpose = $("#div_modal_maketest input[name=maketest_purpose]:checked").val();
         var questions = "";
         var arr = {};
@@ -66,9 +67,8 @@ $(document).ready(function(){
             select_url = "/select/post/maketest/";
             arr = {
                 'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
-                'Group':input_maketest_Group,
+                'union_id':union_id,
                 'title':input_maketest_title,
-                'year':select_inventory_year,
                 'tpid':input_maketest_tpid,
                 'purpose':radio_inventory_purpose
             };
@@ -82,9 +82,8 @@ $(document).ready(function(){
             select_url = "/select/post/maketest/";
             arr = {
                 'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
-                'Group':input_maketest_Group,
+                'union_id':union_id,
                 'title':input_maketest_title,
-                'year':select_inventory_year,
                 'questions':questions,
                 'purpose':radio_inventory_purpose
             };
@@ -104,15 +103,7 @@ $(document).ready(function(){
     });
 
     $("#btn_alert_submit").click(function(){
-        if(alert_value.type == "testpaper_group_open"){
-            $(alert_value.load_id).load(alert_value.url,alert_value.data,alert_value.function);
-        }else if(alert_value.type == "testpaper_delete"){
-            $("#div_main_loading").show();
-            $(alert_value.load_id).load(alert_value.url,alert_value.data,alert_value.function);
-        }else if(alert_value.type == "manager_user_delete"){
-            $("#div_main_loading").show();
-            $(alert_value.load_id).load(alert_value.url,alert_value.data,alert_value.function);
-        }
+        $(alert_value.load_id).load(alert_value.url,alert_value.data,alert_value.function);
         alert_value = {};
         $("#div_modal_alert").modal("hide");
     });
@@ -141,6 +132,18 @@ $(document).ready(function(){
 
 
 });
+
+function link_dashboard_union(){
+    $("#div_main_loading").show();
+    $(".div_content_board_dashboard #div_dashboard_board").load("/dashboard/union/",{
+        'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+        ,'union_id':union_id
+    },function(data, err){
+        $("#div_main_loading").fadeOut();
+        if(err == "error") location.reload(true);
+    });
+    $("#wrap #container #div_select_box").hide();
+}
 
 function alert_show(arr){
     alert_value = arr;
@@ -176,18 +179,21 @@ function link_content(obj){
     $("#div_main_loading").show();
 
     if(obj.link == 'home'){
-        select_url = "/dashboard/?id=0";
+        select_url = "/dashboard/";
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            ,'union_id':union_id
         },function(data, err){
             $("#div_main_loading").fadeOut();
+            link_dashboard_union();
             if(err == "error") location.reload(true);
         });
         $("#wrap #container #div_select_box").hide();
     }else if(obj.link == 'inventory'){
-        select_url = "/inventory/?year=0";
+        select_url = "/inventory/";
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            ,'union_id':union_id
         },function(data, err){
             $("#div_main_loading").fadeOut();
             if(err == "error") location.reload(true);
@@ -197,6 +203,7 @@ function link_content(obj){
         select_url = "/select/?unit1=0";
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            ,'union_id':union_id
         },function(data, err){
             $("#div_main_loading").fadeOut();
             if(err == "error") location.reload(true);
@@ -207,6 +214,7 @@ function link_content(obj){
         select_url = "/testpaper/?tpid="+obj.tpid;
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            ,'union_id':union_id
         },function(data, err){
             $("#div_main_loading").fadeOut();
             // if(err == "error") location.reload(true);
@@ -216,6 +224,7 @@ function link_content(obj){
         select_url = "/testpaper/modify/?unit1=0&tpid="+obj.tpid;
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            ,'union_id':union_id
         },function(data, err){
             $("#div_main_loading").fadeOut();
             if(err == "error") location.reload(true);
@@ -226,6 +235,7 @@ function link_content(obj){
         select_url = "/testpaper/form/?tpid="+obj.tpid;
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            ,'union_id':union_id
         },function(data, err){
             $("#div_main_loading").fadeOut();
             if(err == "error") location.reload(true);
@@ -235,6 +245,7 @@ function link_content(obj){
         select_url = "/testpaper/similar/?tpid="+obj.tpid;
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            ,'union_id':union_id
         },function(data, err){
             $("#div_main_loading").fadeOut();
             if(err == "error") location.reload(true);
@@ -244,6 +255,7 @@ function link_content(obj){
         select_url = "/progress/?year=0";
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            ,'union_id':union_id
         },function(data, err){
             $("#div_main_loading").fadeOut();
             if(err == "error") location.reload(true);
@@ -253,15 +265,17 @@ function link_content(obj){
         select_url = "/mypage/?";
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            ,'union_id':union_id
         },function(data, err){
             $("#div_main_loading").fadeOut();
             if(err == "error") location.reload(true);
         });
         $("#wrap #container #div_select_box").hide();
-    }else if(obj.link == 'manager'){
-        select_url = "/manager/?";
+    }else if(obj.link == 'groupuser'){
+        select_url = "/groupuser/?id="+obj.group_id;
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            ,'union_id':union_id
         },function(data, err){
             $("#div_main_loading").fadeOut();
             if(err == "error") location.reload(true);

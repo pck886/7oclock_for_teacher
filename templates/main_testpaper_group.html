@@ -1,9 +1,8 @@
 {% if user.id %}
     {% load home_extras %}
-    <p class="p_testpaper_btntitle">{{ testpaper.group.title }} {{ testpaper.year }}학년</p>
     {% if testpaper.is_exported  %}
         {% for group in groups %}
-            <button class="btn btn-default btn_testpaper_group {% if group|get_group_checked:testpaper %}select{% endif %}" group_id="{{ group.id }}">{{ group.group }}반</button>
+            <button class="btn btn-default btn_testpaper_group {% if group|get_group_checked:testpaper %}select{% endif %}" group_id="{{ group.id }}">{{ group.title }}</button>
         {% endfor %}
         <script>
             $("#div_testpaper_group{{ testpaper.id }} .btn_testpaper_group").click(function(){

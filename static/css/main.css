@@ -7,14 +7,15 @@
 #wrap #container #header #btn_head_home {position: absolute;top: 5px;left: 5px;width: 40px;line-height: 40px;padding: 0;color:#fff;font-size: 25px;background-color: transparent;border: 0;}
 #wrap #container #header #p_header_logo {position: absolute;left: 50%;margin-left: -48.5px;line-height: 50px;color: #fff;font-size: 24px;font-weight: 700;}
 #wrap #container #header #p_header_logo #img_header_logo {padding:5px 0;margin-top: -3px;}
-#wrap #container #header #div_header_Group {position: relative;line-height: 50px;font-size: 14px;padding: 0 10px;margin: 0;color: #D1EDE7;background-color: RGBA(0,0,0,0.05);cursor: pointer;float: right;}
-#wrap #container #header #div_header_Group:hover {background-color: RGBA(0,0,0,0.1);color:#fff}
-#wrap #container #header #div_header_Group #div_Group_icon {width: 30px;height: 30px;line-height: 0;background-color: #FFF;margin: 10px 5px 0px 0px;border-radius: 30px;overflow: hidden;float: left;}
-#wrap #container #header #div_header_Group #div_Group_icon #div_icon_img {width:100%;height:auto;}
+#wrap #container #header #div_header_union {position: relative;line-height: 50px;font-size: 14px;padding: 0 10px;margin: 0;color: #D1EDE7;background-color: RGBA(0,0,0,0.05);cursor: pointer;float: right;}
+#wrap #container #header #div_header_union:hover {background-color: RGBA(0,0,0,0.1);color:#fff}
+#wrap #container #header #div_header_union #div_union_icon {width: 30px;height: 30px;line-height: 0;background-color: #FFF;margin: 10px 5px 0px 0px;border-radius: 30px;overflow: hidden;float: left;}
+#wrap #container #header #div_header_union #div_union_icon #div_icon_img {width:100%;height:auto;}
 #wrap #container #header #div_header_profile {position: relative;line-height: 50px;font-size: 14px;padding: 0 20px;margin: 0;color: #D1EDE7;background-color: RGBA(0,0,0,0.05);text-align: center;cursor: pointer;}
 #wrap #container #header #div_header_profile:hover {background-color: RGBA(0,0,0,0.1);color:#fff}
 #wrap #container #header #div_header_profile #div_user_icon {width: 30px;height: 30px;line-height: 0;margin: 10px 5px 0px 0px;border-radius: 30px;overflow: hidden;float: left;}
 #wrap #container #header #div_header_profile #div_user_icon #div_user_img {width:100%;height:auto;}
+#wrap #container #header #div_header_profile .dropdown-menu {border-radius:0}
 
 #wrap #container #content {position: absolute;top: 90px;left: 60px;right: 60px;bottom: 40px;}
 #wrap #container #content .p_content_search {position: relative;float:right;width: 250px;}
@@ -28,19 +29,34 @@
 #wrap #container #content #span_search_del:hover {color:#ea6153}
 #wrap #container #content #div_testpaper_zoom {position:absolute;bottom: 40px;right: 40px;background-color: #fff;}
 #wrap #container #content #div_testpaper_group {position:absolute;top: 160px;left: 30px;background-color: #fff;}
-#wrap #container #content #div_testpaper_group #btn_group_year {width: 60px;}
-#wrap #container #content #div_testpaper_group .btn_groups {width: 60px;border-top: 0;}
+#wrap #container #content #div_testpaper_group #btn_group_year {width: 100%;}
+#wrap #container #content #div_testpaper_group .btn_groups {width: 100%;border-top: 0;}
 
-#wrap #container #content #div_dashboard_groups {position:absolute;top: 61px;left: 10px;right: 10px;height:40px;z-index: 1;}
-#wrap #container #content #div_dashboard_groups #p_groups_title {line-height:40px;float:left;margin-right: 15px;}
-#wrap #container #content #div_dashboard_groups .btn_groups {position: relative;padding: 9px 15px;background: #fff;border: 1px solid #ddd;color: #666;}
-#wrap #container #content #div_dashboard_groups .btn_groups.active {background-color: #fafafa;border-bottom: 1px solid #fafafa;}
-#wrap #container #content #div_dashboard_groups .btn_groups:hover {background: #fafafa;border: 1px solid #dadada;}
-#wrap #container #content .div_content_board_dashboard {position: absolute;top: 100px;left: 0;right: 0;bottom: 0;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding: 10px;background-color: #fafafa;overflow-y: scroll;overflow-x: hidden;}
+#wrap #container #content #div_dashboard_select { padding:20px 0;border-bottom:1px solid #ddd ; height: 85px;}
+#wrap #container #content #div_dashboard_select .btn_dashboard_topbtn {float:right;margin-left: 5px;}
+#wrap #container #content .div_content_board_dashboard {position: absolute;top: 132px;left: 0;right: 0;bottom: 0;border-bottom: 1px solid #ddd;padding: 10px;overflow-y: scroll;overflow-x: hidden;}
 #wrap #container #content .div_content_board_dashboard #div_dashboard_board {padding: 10px;word-wrap: break-word; }
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element {width:100%;background-color:#FFF;border-radius: 3px;border: 1px solid #d9d9d9;margin: 5px;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .p_element_title {font-size:16px;padding: 8px 3px;margin: 0px 8px;border-bottom: 1px dotted #ccc;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .p_element_more {float:right;margin: 12px;font-size: 12px;color: #ccc;cursor:pointer}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .p_element_more:hover{color:#666}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content {position: relative;width: 100%;height: 215px;padding: 10px;display: -webkit-inline-box;overflow: hidden;overflow-x: scroll;}
+
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper {position: relative;width: 150px;height: 180px;margin: 0px 10px 0 0px;border: 1px solid RGBA(0,0,0,0.2);border-left: 4px solid RGBA(0,0,0,0.2);border-radius: 0 10px 10px 0;background-color: #517A92;overflow: hidden;cursor: pointer;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper:hover {box-shadow: 0px 0px 10px 0px #47A794;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_bg {position: absolute;top: 0;left: 0;width:100%;height:100%;opacity: 0.1;z-index: 1;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_title {margin: 20px 20px 10px 20px;background-color:#fff;font-size: 16px;text-align: center;padding: 5px;z-index: 2;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_date {font-size: 12px;text-align: center;color: #fff;z-index: 2;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_purpose {font-size: 12px;text-align: center;color: #fff;z-index: 2;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group {position:absolute;left: 20px;right: 20px;bottom: 10px;text-align: center;z-index: 3;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group {font-size: 10px;padding: 0 5px;border-radius: 25px;height: 25px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group:hover {background-color: rgba(255, 255, 255, 0.4);}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group.select {background-color: rgb(60, 202, 164);color: #fff;border: 0;font-weight: 700;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group.select:hover {background-color: rgb(49, 175, 141);}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_open {font-size: 10px;padding: 0px 5px;border-radius: 25px;height: 25px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_open:hover {background-color: rgb(49, 175, 141);}
 
 #wrap #container #content #div_inventory_select { padding:20px 0;border-bottom:1px solid #ddd ; height: 85px;}
-#wrap #container #content #div_inventory_select .select_inventory_form { font-size: 16px; border: 1px solid #ccc; background-color: #fff; border-radius: 0; height: 40px;line-height: 40px;padding: 0 0px 0 10px;    }
 #wrap #container #content #div_inventory_select .btn_inventory_topbtn {float:right;margin-left: 5px;}
 #wrap #container #content .div_content_board #div_inventory_board {padding: 10px;word-wrap: break-word; }
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper {position: relative;width: 267px;height: 320px;margin: 20px 30px;border: 1px solid RGBA(0,0,0,0.2);border-left: 4px solid RGBA(0,0,0,0.2);border-radius: 0 10px 10px 0;background-color: #517A92;overflow: hidden;float:left;cursor: pointer;}
@@ -50,8 +66,7 @@
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_date {font-size: 14px;text-align: center;color: #fff;z-index: 2;}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_purpose {font-size: 14px;text-align: center;color: #fff;z-index: 2;}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group {position:absolute;left: 20px;right: 20px;bottom: 20px;text-align: center;z-index: 3;}
-#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .p_testpaper_btntitle {color:#fff;font-weight: 700;margin-bottom: 5px;}
-#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_group {font-size: 12px;padding: 0 5px;border-radius: 30px;width: 32px;height: 32px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
+#wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_group {font-size: 12px;padding: 0 10px;border-radius: 30px;height: 32px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_group:hover {background-color: rgba(255, 255, 255, 0.4);}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_group.select {background-color: rgb(60, 202, 164);color: #fff;border: 0;font-weight: 700;}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_group.select:hover {background-color: rgb(49, 175, 141);}
@@ -102,15 +117,22 @@
 #wrap #container #content .div_content_board #div_progress_board .div_progress_testpaper .div_testpaper_date {font-size: 14px;text-align: center;color: #fff;z-index: 2;}
 #wrap #container #content .div_content_board #div_progress_board .div_progress_testpaper .div_testpaper_group {color:#fff;font-weight: 700;position:absolute;left: 20px;right: 20px;bottom: 20px;text-align: center;z-index: 3;}
 
-#wrap #container #content #div_manager_select { padding:20px 0;border-bottom:1px solid #ddd ; height: 85px;}
-#wrap #container #content #div_manager_select .select_manager_form { font-size: 16px; border: 1px solid #ccc; background-color: #fff; border-radius: 0; height: 40px;line-height: 40px;padding: 0 0px 0 10px;    }
-#wrap #container #content .div_content_board_manager #div_manager_board {width: 100%;height: 100%;padding: 10px;word-wrap: break-word;}
-#wrap #container #content .div_content_board_manager #div_manager_board td {line-height: 30px}
-#wrap #container #content .div_content_board_manager #div_manager_board .img_manager_profilepic {height:30px;border-radius:30px;margin-right:10px}
-#wrap #container #content .div_content_board_manager #div_manager_board .i_manager_delete {color:#e74c3c;cursor:pointer;}
-#wrap #container #content .div_content_board_manager #div_manager_board .i_manager_delete:hover {font-weight:700}
+#wrap #container #content #div_groupuser_select { padding:20px 0; height: 85px;border-bottom: 1px solid #ddd;}
+#wrap #container #content #div_groupuser_select .btn_groupuser_topbtn {float:right;margin-left: 5px;}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board {width: 50%;height: 100%;padding: 10px;word-wrap: break-word;}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board td {line-height: 30px}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board .img_groupuser_profilepic {height:30px;border-radius:30px;margin-right:10px}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board .i_groupuser_groupuser_move {color:#34495e;cursor:pointer;}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board .i_groupuser_groupuser_move:hover {font-weight:700}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board .i_groupuser_groupuser_delete {color:#e74c3c;cursor:pointer;}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board .i_groupuser_groupuser_delete:hover {font-weight:700}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board .i_groupuser_groupuser_cancel {color:#e74c3c;cursor:pointer;}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board .i_groupuser_groupuser_cancel:hover {font-weight:700}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board .p_groupuser_title {font-size:16px;font-weight:700;margin-bottom: 10px;}
+#wrap #container #content .div_content_board_groupuser #div_groupuser_board_all {float:left}
+#wrap #container #content .div_content_board_groupuser #div_groupuser_board_group {float:right}
 
-#wrap #container #content .div_content_board_mypage {position: absolute;top: 60px;left: 0;right: 0;bottom: 0;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding: 10px;text-align: center;background-color: rgba(247, 247, 247, 0.48);overflow-y: scroll;overflow-x: hidden;}
+#wrap #container #content .div_content_board_mypage {position: absolute;top: 60px;left: 0;right: 0;bottom: 0;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding: 10px;text-align: center;overflow-y: scroll;overflow-x: hidden;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board {padding: 0 15px;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element {position: relative;height: 130px;background-color:#FFF;border: 1px solid #eee;padding: 30px;text-align: left;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element:hover {box-shadow: 0px 0px 5px 0px #ddd;cursor: pointer;}

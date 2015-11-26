@@ -49,6 +49,20 @@ class Union(models.Model):
     def get_groups(self):
         return Group.objects.filter(union=self)
 
+    def get_users(self):
+        gu = GroupUser.objects.filter(group__union=self).values_list("user")
+        return User.objects.filter(id__in=gu)
+
+    def get_logo(self):
+        if self.logo :
+            return self.logo.url
+        return "/static/img/main/logo_union_tmp.png"
+
+    def get_icon(self):
+        if self.icon :
+            return self.icon.url
+        return "/static/img/main/icon_union_tmp.png"
+
 class UnionUser(models.Model):
     union = models.ForeignKey(Union)
     user = models.ForeignKey(User)
@@ -73,9 +87,14 @@ class Group(models.Model):
     def __unicode__(self):
         return u'[%d] %s %s' %(self.id,self.union,self.title)
 
+    def get_users(self):
+        gu = GroupUser.objects.filter(group=self,in_group=True).values_list("user")
+        return User.objects.filter(id__in=gu)
+
 class GroupUser(models.Model):
     group = models.ForeignKey(Group)
     user = models.ForeignKey(User)
+    in_group = models.BooleanField(default=True)
     is_active = models.BooleanField(default=False)
 
     class Meta:
@@ -114,8 +133,12 @@ class UserProfile(models.Model):
     def get_gender(self):
         return u"%s"%GENDER_IN_PROFILE_CHOICES[self.gender][1]
 
-    def get_union(self):
-        return Union.objects.filter(user=self.user)
+    def get_unions(self):
+        return Union.objects.filter(user=self.user,is_active=True)
+
+    def get_groups(self):
+        gu = GroupUser.objects.filter(user=self.user,in_group=True).values_list("group")
+        return Group.objects.filter(id__in=gu)
 
     def get_src(self):
         if self.src :
