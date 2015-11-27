@@ -7,7 +7,6 @@ from django.shortcuts import render
 
 # Create your views here.
 import math
-import operator
 from mosu.docs.models import Question, QuestionUnit1, QuestionUnit2, QuestionUnit3, QuestionUnit4
 from mosu.home.models import get_or_none, Union, Group, School, UnionUser, GroupUser
 from mosu.main.models import TestPaper, TestPaperQuestion, TestPaperForm
@@ -395,29 +394,60 @@ def main_groupuser(request):
 
 def main_groupuser_post_groupuser_move(request):
     user = get_or_none(User,id=int(request.POST.get('uid',0)))
+    union = get_or_none(Union, id=request.POST.get('union_id',0))
+    unionuser = get_or_none(UnionUser, union=union, user=user)
     this_group = get_or_none(Group,id=int(request.GET.get("id",0)))
-    gu, created = GroupUser.objects.get_or_create(user=user,group=this_group)
-    if gu :
-        gu.in_group = True
-        gu.is_active = True
-        gu.save()
+    if this_group.unionuser != unionuser :
+        gu, created = GroupUser.objects.get_or_create(unionuser=unionuser,group=this_group)
+        if gu :
+            gu.in_group = True
+            gu.is_active = True
+            gu.save()
     return main_groupuser(request)
 
 def main_groupuser_post_groupuser_delete(request):
     user = get_or_none(User,id=int(request.POST.get('uid',0)))
+    union = get_or_none(Union, id=request.POST.get('union_id',0))
+    unionuser = get_or_none(UnionUser, union=union, user=user)
     this_group = get_or_none(Group,id=int(request.GET.get("id",0)))
-    gu = get_or_none(GroupUser,user=user,group=this_group)
-    if gu :
-        gu.delete()
+    if unionuser :
+        if user != request.user :
+            if this_group.unionuser == unionuser :
+                unionuser_new = get_or_none(UnionUser,user=union.user,union=union)
+                this_group.unionuser = unionuser_new
+                this_group.save()
+                gu = get_or_none(GroupUser,unionuser=unionuser_new,group=this_group)
+                if gu : gu.delete()
+            unionuser.delete()
     return main_groupuser(request)
 
 def main_groupuser_post_groupuser_cancel(request):
     user = get_or_none(User,id=int(request.POST.get('uid',0)))
+    union = get_or_none(Union, id=request.POST.get('union_id',0))
+    unionuser = get_or_none(UnionUser, union=union, user=user)
     this_group = get_or_none(Group,id=int(request.GET.get("id",0)))
-    gu = get_or_none(GroupUser,user=user,group=this_group)
-    if gu :
-        gu.in_group = False
-        gu.save()
+    if unionuser :
+        gu = get_or_none(GroupUser,unionuser=unionuser,group=this_group)
+        if gu :
+            gu.delete()
+    return main_groupuser(request)
+
+def main_groupuser_post_groupuser_teacher(request):
+    user = get_or_none(User,id=int(request.POST.get('uid',0)))
+    union = get_or_none(Union, id=request.POST.get('union_id',0))
+    unionuser = get_or_none(UnionUser, union=union, user=user)
+    this_group = get_or_none(Group,id=int(request.GET.get("id",0)))
+    if this_group.unionuser != unionuser :
+        gu = get_or_none(GroupUser,unionuser=unionuser,group=this_group)
+        if gu :
+            gu_new, created = GroupUser.objects.get_or_create(unionuser=this_group.unionuser,group=this_group)
+            if gu_new :
+                gu_new.in_group = True
+                gu_new.is_active = True
+                gu_new.save()
+                this_group.unionuser = unionuser
+                this_group.save()
+                gu.delete()
     return main_groupuser(request)
 
 def main_mypage(request):

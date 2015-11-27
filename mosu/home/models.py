@@ -50,8 +50,8 @@ class Union(models.Model):
         return Group.objects.filter(union=self)
 
     def get_users(self):
-        gu = GroupUser.objects.filter(group__union=self).values_list("user")
-        return User.objects.filter(id__in=gu)
+        uu = UnionUser.objects.filter(union=self).values_list("user")
+        return User.objects.filter(id__in=uu)
 
     def get_logo(self):
         if self.logo :
@@ -88,20 +88,19 @@ class Group(models.Model):
         return u'[%d] %s %s' %(self.id,self.union,self.title)
 
     def get_users(self):
-        gu = GroupUser.objects.filter(group=self,in_group=True).values_list("user")
+        gu = GroupUser.objects.filter(group=self).values_list("unionuser__user")
         return User.objects.filter(id__in=gu)
 
 class GroupUser(models.Model):
     group = models.ForeignKey(Group)
-    user = models.ForeignKey(User)
-    in_group = models.BooleanField(default=True)
+    unionuser = models.ForeignKey(UnionUser)
     is_active = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "그룹 사용자(GroupUser)"
 
     def __unicode__(self):
-        return u'[%d] %s > %s' %(self.id,self.group,self.user)
+        return u'[%d] %s > %s' %(self.id,self.group,self.unionuser)
 
 GENDER_IN_PROFILE_CHOICES = (
     (0, u'남성'),
@@ -136,9 +135,25 @@ class UserProfile(models.Model):
     def get_unions(self):
         return Union.objects.filter(user=self.user,is_active=True)
 
-    def get_groups(self):
-        gu = GroupUser.objects.filter(user=self.user,in_group=True).values_list("group")
-        return Group.objects.filter(id__in=gu)
+    # def get_groups(self):
+    #     gu = GroupUser.objects.filter(user=self.user,in_group=True).values_list("group")
+    #     return Group.objects.filter(id__in=gu)
+
+    def get_grade(self):
+        str_grade = ""
+        grade = self.grade_code[:1]
+        code = self.grade_code[1:2]
+
+        if grade != "n":
+            if grade == "m" : str_grade = u"중"
+            elif grade == "h" : str_grade = u"고"
+
+            if code == "1" : str_grade = u"%s1"%str_grade
+            elif code == "2" : str_grade = u"%s2"%str_grade
+            elif code == "3" : str_grade = u"%s3"%str_grade
+
+            return str_grade
+        return u"일반인"
 
     def get_src(self):
         if self.src :

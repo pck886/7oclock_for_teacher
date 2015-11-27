@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from mosu.home.models import GroupUser, get_or_none, UnionUser, Group
 from mosu.main.models import TestPaperSubmit
 
 __author__ = 'JerryPark'
@@ -57,6 +58,17 @@ def get_group_checked(ele, testpaper):
     if testpaper.groups.filter(id=ele.id) :
         return True
     return False
+
+@register.filter
+def get_groupuser_by_union(user, union):
+    arr_list = []
+    unionuser = get_or_none(UnionUser,union=union, user=user)
+    group = Group.objects.filter(unionuser=unionuser)
+    for g in group :
+        arr_list.append(g)
+    for gu in GroupUser.objects.filter(unionuser=unionuser):
+        arr_list.append(gu.group)
+    return arr_list
 
 @register.filter
 def search_user(arr, query):

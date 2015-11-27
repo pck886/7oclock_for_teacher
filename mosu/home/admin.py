@@ -3,7 +3,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib.auth.models import User
-from mosu.home.models import UserProfile, Union, Group, GroupUser, UnionUser, School
+from mosu.home.models import UserProfile, Union, UnionUser, School, Group, GroupUser
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 
 class SchoolAdmin(admin.ModelAdmin):
@@ -16,7 +16,7 @@ class UnionAdmin(admin.ModelAdmin):
     list_display = ('id','user','title','address','phone','is_active')
 
 class GroupUserAdmin(admin.ModelAdmin):
-    list_display = ('id','group','user','in_group','is_active')
+    list_display = ('id','unionuser','group','is_active')
 
 class UnionUserAdmin(admin.ModelAdmin):
     list_display = ('id','union','user','is_active')

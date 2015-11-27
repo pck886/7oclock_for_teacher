@@ -51,6 +51,7 @@ urlpatterns = [
     url(r'^groupuser/post/groupuser/move/$', 'mosu.main.views.main_groupuser_post_groupuser_move'),
     url(r'^groupuser/post/groupuser/delete/$', 'mosu.main.views.main_groupuser_post_groupuser_delete'),
     url(r'^groupuser/post/groupuser/cancel/$', 'mosu.main.views.main_groupuser_post_groupuser_cancel'),
+    url(r'^groupuser/post/groupuser/teacher/$', 'mosu.main.views.main_groupuser_post_groupuser_teacher'),
     url(r'^mypage/$', 'mosu.main.views.main_mypage'),
     url(r'^main/mypage/post/group/change/$', 'mosu.main.views.main_mypage_post_group_change'),
     url(r'^main/mypage/post/pw/change/$', 'mosu.main.views.main_mypage_post_pw_change'),

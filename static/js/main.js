@@ -278,7 +278,7 @@ function link_content(obj){
             ,'union_id':union_id
         },function(data, err){
             $("#div_main_loading").fadeOut();
-            if(err == "error") location.reload(true);
+            //if(err == "error") location.reload(true);
         });
         $("#wrap #container #div_select_box").hide();
     }
