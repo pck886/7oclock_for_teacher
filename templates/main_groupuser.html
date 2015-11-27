@@ -3,7 +3,7 @@
     <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
     <p class="p_content_title"><a href="javascript:;"  onclick="link_content({'link':'groupuser','group_id':'{{ this_group.id }}'})">회원관리페이지</a> <span class="span_content_subtitle">"{{ union.title }}"의 회원관리페이지입니다.</span></p>
     <div id="div_groupuser_select">
-        <button class="btn btn-default btn_groupuser_topbtn" onclick="link_content({'link':'home'})"><i class="xi-rollback"></i> 뒤로가기</button>
+        <button class="btn btn-default btn_groupuser_topbtn" onclick="link_content({'link':'dashboard'})"><i class="xi-rollback"></i> 뒤로가기</button>
     </div>
     <div class="div_content_board div_content_board_groupuser">
         <div class="div_groupuser_board" id="div_groupuser_board_all">
@@ -24,8 +24,8 @@
                                 <td class="text-center">{{ user_all.profile.get_gender }}</td>
                                 <td>{% for group in user_all|get_groupuser_by_union:union %}{{ group.title }}{% if forloop.counter < user_all.profile.get_groups|length %}, {% endif %}{% endfor %}</td>
                                 <td class="text-center">
-                                    {% if user != user_all %}<i class="xi-close i_groupuser_groupuser_delete" uid="{{ user_all.id }}" title="탈퇴"></i>{% endif %}
-                                    <i class="xi-arrow-right i_groupuser_groupuser_move" uid="{{ user_all.id }}" title="배치"></i>
+                                    {% if user != user_all and user == union.user %}<i class="xi-close i_groupuser_groupuser_delete" uid="{{ user_all.id }}" title="소속 탈퇴"></i>{% endif %}
+                                    <i class="xi-arrow-right i_groupuser_groupuser_move" uid="{{ user_all.id }}" title="그룹 배치"></i>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -67,8 +67,8 @@
                                 <td class="text-center">{{ user_group.profile.get_gender }}</td>
                                 <td>{% for group in user_group|get_groupuser_by_union:union %}{{ group.title }}{% if forloop.counter < user_group.profile.get_groups|length %}, {% endif %}{% endfor %}</td>
                                 <td class="text-center">
-                                    <i class="xi-close i_groupuser_groupuser_cancel" uid="{{ user_group.id }}" title="제외"></i>
-                                    <i class="xi-lecture i_groupuser_groupuser_teacher" uid="{{ user_group.id }}" title="선생님 지정"></i>
+                                    <i class="xi-close i_groupuser_groupuser_cancel" uid="{{ user_group.id }}" title="그룹 제외"></i>
+                                    {% if user == union.user %}<i class="xi-lecture i_groupuser_groupuser_teacher" uid="{{ user_group.id }}" title="선생님 지정"></i>{% endif %}
                                 </td>
                             </tr>
                         {% endfor %}

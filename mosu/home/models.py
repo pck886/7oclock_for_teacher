@@ -133,7 +133,8 @@ class UserProfile(models.Model):
         return u"%s"%GENDER_IN_PROFILE_CHOICES[self.gender][1]
 
     def get_unions(self):
-        return Union.objects.filter(user=self.user,is_active=True)
+        uu = UnionUser.objects.filter(user=self.user).values_list("union__id")
+        return Union.objects.filter(id__in=uu,is_active=True)
 
     # def get_groups(self):
     #     gu = GroupUser.objects.filter(user=self.user,in_group=True).values_list("group")

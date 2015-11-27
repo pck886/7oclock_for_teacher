@@ -4,6 +4,10 @@
 #wrap #container:after{display:block;clear:both;content:''}
 #wrap #container #header {width:100%; height: 50px;box-shadow: 0px 0px 5px 0px #ABABAB;}
 #wrap #container #header {background: -webkit-linear-gradient(left, #3ebdc4 , #43d2b2);background: -o-linear-gradient(right, #3ebdc4 , #43d2b2);background: -moz-linear-gradient(right, #3ebdc4 , #43d2b2);background: linear-gradient(to right, #3ebdc4 , #43d2b2); }
+#wrap #container #header .dropdown-menu {border-radius:0;border: 0;background-color: #68D6BE;margin: 0;}
+#wrap #container #header .dropdown-menu li a {color:#fff}
+#wrap #container #header .dropdown-menu li a:hover {background-color: #4BC5AD;}
+#wrap #container #header .dropdown-menu .divider {background-color: #8EDECD;}
 #wrap #container #header #btn_head_home {position: absolute;top: 5px;left: 5px;width: 40px;line-height: 40px;padding: 0;color:#fff;font-size: 25px;background-color: transparent;border: 0;}
 #wrap #container #header #p_header_logo {position: absolute;left: 50%;margin-left: -48.5px;line-height: 50px;color: #fff;font-size: 24px;font-weight: 700;}
 #wrap #container #header #p_header_logo #img_header_logo {padding:5px 0;margin-top: -3px;}
@@ -15,7 +19,6 @@
 #wrap #container #header #div_header_profile:hover {background-color: RGBA(0,0,0,0.1);color:#fff}
 #wrap #container #header #div_header_profile #div_user_icon {width: 30px;height: 30px;line-height: 0;margin: 10px 5px 0px 0px;border-radius: 30px;overflow: hidden;float: left;}
 #wrap #container #header #div_header_profile #div_user_icon #div_user_img {width:100%;height:auto;}
-#wrap #container #header #div_header_profile .dropdown-menu {border-radius:0}
 
 #wrap #container #content {position: absolute;top: 90px;left: 60px;right: 60px;bottom: 40px;}
 #wrap #container #content .p_content_search {position: relative;float:right;width: 250px;}

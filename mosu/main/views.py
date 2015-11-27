@@ -14,8 +14,25 @@ from mosu.main.models import TestPaper, TestPaperQuestion, TestPaperForm
 def main(request):
     if request.user.id is None:
         return HttpResponseRedirect("/home/")
+
+    this_union = get_or_none(Union,id=request.GET.get("id",0))
+
+    union_list = []
+
+    for u in Union.objects.filter(user=request.user,is_active=True):
+        union_list.append(u.id)
+    for u in Group.objects.filter(unionuser__user=request.user,is_active=True):
+        union_list.append(u.union.id)
+
+    unions = Union.objects.filter(id__in=union_list,is_active=True).order_by("is_paid")
+
+    if this_union == None :
+        this_union = unions[0]
+
     context = {
         'user':request.user,
+        'unions':unions,
+        'this_union':this_union,
         'appname':'main'
     }
     return render(request, 'main.html', context)

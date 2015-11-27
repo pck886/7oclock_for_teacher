@@ -33,9 +33,18 @@
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/logout/">로그아웃</a></li>
                 </ul>
             </div>
-            {% if user.profile.get_unions %}
-                <div id="div_header_union" union_id="{{ user.profile.get_unions.0.id }}"{% if user.profile.get_unions.0.is_paid == False %} data-toggle="tooltip" data-placement="bottom" title="내 소속을 등록해보세요."{% endif %}>
-                    <div id="div_union_icon"><img id="div_icon_img" src="{{ user.profile.get_unions.0.get_icon }}"></div> {{ user.profile.get_unions.0.title }}
+            {% if unions %}
+                <div id="div_header_union" union_id="{{ this_union.id }}" class="dropdown navbar-right">
+                    <div id="div_header_union_tootip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% if this_union.is_paid == False %} data-toggle="tooltip" data-placement="bottom" title="내 소속을 등록해보세요."{% endif %}>
+                        <div id="div_union_icon"><img id="div_icon_img" src="{{ this_union.get_icon }}"></div> {{ this_union.title }}
+                    </div>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        {% for union_list in unions %}
+                            {% if union_list != this_union %}<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick="location.href='/main/?id={{ union_list.id }}';">{{ union_list.title }}</a></li>{% endif %}
+                        {% endfor %}
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick=""><i class="xi-plus"></i> 소속 등록하기</a></li>
+                    </ul>
                 </div>
             {% endif %}
             <p id="p_header_logo"><a href="javascript:;" onclick="link_content({'link':'home'});"><img id="img_header_logo" src="/static/img/main/head_logo.png"></a></p>

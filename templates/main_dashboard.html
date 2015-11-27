@@ -2,7 +2,7 @@
     <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
     <p class="p_content_title"><a href="javascript:;"  onclick="link_content({'link':'home'})">대쉬보드</a> <span class="span_content_subtitle">"{{ union.title }}"의 대쉬보드입니다.</span></p>
     <div id="div_dashboard_select">
-        <button class="btn btn-default btn_dashboard_topbtn" onclick="link_content({'link':'groupuser','group_id':0})"><i class="xi-user-info"></i> 학생관리</button>
+        <button class="btn btn-default btn_dashboard_topbtn" onclick="link_content({'link':'groupuser','group_id':0})"><i class="xi-user-info"></i> 회원관리</button>
         <button class="btn btn-default btn_dashboard_topbtn" onclick="link_content({'link':'inventory'})"><i class="xi-box"></i> 출제보관함</button>
     </div>
     <div class="div_content_board div_content_board_dashboard">

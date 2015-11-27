@@ -6,8 +6,8 @@ var alert_value = {};
 
 $(window).load(function(){
     union_id = $("#div_header_union").attr("union_id");
-    link_content({'link':'home'});
-    $("#div_header_union").tooltip('show');
+    link_content({'link':'dashboard'});
+    $("#div_header_union_tootip").tooltip('show');
 });
 
 $(document).ready(function(){
@@ -178,7 +178,10 @@ function link_content(obj){
 
     $("#div_main_loading").show();
 
-    if(obj.link == 'home'){
+    if(obj.link == 'home') {
+        select_url = "/main/?id="+union_id;
+        location.href=select_url;
+    }else if(obj.link == 'dashboard'){
         select_url = "/dashboard/";
         $("#content").load(select_url,{
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
