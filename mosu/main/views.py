@@ -350,6 +350,7 @@ def main_testpaper_post_form(request):
     return main_testpaper(request,tp=tp)
 
 def main_testpaper_post_group(request):
+    user = request.user
     tp = get_or_none(TestPaper,id=int(request.POST.get('tpid',0)))
     str_group = request.POST.get('groups',None)
     is_exported = request.POST.get('is_exported',None)
@@ -366,10 +367,10 @@ def main_testpaper_post_group(request):
             if sy : tp.groups.add(sy)
         tp.save()
 
-    groups = Group.objects.filter(union=tp.union).order_by('id')
+    groups = Group.objects.filter(union=tp.union,unionuser__user=user).order_by('id')
 
     context = {
-        'user': request.user,
+        'user': user,
         'testpaper':tp,
         'groups':groups
     }
@@ -392,16 +393,20 @@ def main_progress(request):
     return render(request, 'main_progress.html', context)
 
 def main_groupuser(request):
+    user = request.user
     q = request.GET.get('q', '')
     union = get_or_none(Union, id=request.POST.get('union_id',0))
     this_group = get_or_none(Group,id=int(request.GET.get("id",0)))
 
-    groups = Group.objects.filter(union=union).order_by('id')
+    if union.user == user :
+        groups = Group.objects.filter(union=union).order_by('id')
+    else :
+        groups = Group.objects.filter(union=union,unionuser__user=user).order_by('id')
 
     if this_group == None : this_group = groups[0]
 
     context = {
-        'user': request.user,
+        'user': user,
         'query':q,
         'union':union,
         'this_group':this_group,
