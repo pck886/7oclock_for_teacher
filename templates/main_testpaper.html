@@ -1,22 +1,21 @@
 {% if user.id %}
     {% load home_extras %}
-    <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
     {% if mode == "main_testpaper" %}
         <p class="p_content_title"><a href="javascript:;" onclick="link_content({'link':'testpaper','tpid':'{{testpaper.id}}'})">{{ testpaper.title }}</a> <span class="span_content_subtitle">총 {{testpaper.get_questions|length}}문제가 있습니다.</span></p>
     {% elif mode == "main_testpaper_similar" %}
         <p class="p_content_title"><a href="javascript:;" onclick="link_content({'link':'testpaper_similar','tpid':'{{testpaper.id}}'})">{{ testpaper.title }}</a> <span class="span_content_subtitle">총 {{testpaper.get_questions|length}}문제가 있습니다.</span></p>
     {% endif %}
-    <div id="div_testpaper_mode">
-        {% if testpaper.user == user %}
-            {% if mode == "main_testpaper" %}
-                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_question"><i class="xi-paper"></i> 문제</button>
-                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_explain"><i class="xi-lecture"></i> 해설</button>
-                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_answer"><i class="xi-book-spread"></i> 답안</button>
-                <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_stats"><i class="xi-chart-circle"></i> 통계</button>
+    <div class="div_content_submenu">
+        <div id="div_testpaper_mode">
+            {% if testpaper.user == user %}
+                {% if mode == "main_testpaper" %}
+                    <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_question"><i class="xi-paper"></i> 문제</button>
+                    <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_explain"><i class="xi-lecture"></i> 해설</button>
+                    <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_answer"><i class="xi-book-spread"></i> 답안</button>
+                    <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_stats"><i class="xi-chart-circle"></i> 통계</button>
+                {% endif %}
             {% endif %}
-        {% endif %}
-    </div>
-    <div id="div_testpaper_select">
+        </div>
         {% if testpaper.user == user %}
             {% if mode == "main_testpaper" %}
                 {% if testpaper.is_exported == False %}
@@ -27,7 +26,7 @@
                 <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_remake"><i class="xi-refresh"></i> 재출제</button>
                 <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_print"><i class="xi-print"></i> 인쇄</button>
                 <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpaper_delete"><i class="xi-trash"></i> 삭제</button>
-                <button class="btn btn-default btn_testpaper_topbtn" onclick="link_content({'link':'home'})"><i class="xi-rollback"></i> 뒤로가기</button>
+                <button class="btn btn-default btn_testpaper_topbtn" onclick="link_content({'link':'inventory'})"><i class="xi-rollback"></i> 뒤로가기</button>
             {% elif mode == "main_testpaper_similar" %}
                 <button class="btn btn-default btn_testpaper_topbtn" id="btn_testpapersimilar_change"><i class="xi-refresh"></i> 전체변경</button>
                 <button class="btn btn-success btn_testpaper_topbtn" id="btn_testpapersimilar_save"><i class="xi-check-circleout"></i> 출제완료</button>

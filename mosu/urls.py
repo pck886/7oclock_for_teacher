@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^about/$', 'mosu.about.views.about'),
     url(r'^home/$', 'mosu.home.views.home'),
     url(r'^home/list/school/$', 'mosu.home.views.home_list_school'),
+    url(r'^home/list/union/$', 'mosu.home.views.home_list_union'),
     url(r'^user/$', 'mosu.home.views.user'),
     url(r'^user/login/$', 'mosu.home.views.user_login'),
     url(r'^user/logout/$', 'mosu.home.views.user_logout'),

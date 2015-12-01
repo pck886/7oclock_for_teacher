@@ -26,7 +26,7 @@ def main(request):
 
     unions = Union.objects.filter(id__in=union_list,is_active=True).order_by("is_paid")
 
-    if this_union == None :
+    if this_union == None and unions :
         this_union = unions[0]
 
     context = {

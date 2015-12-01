@@ -4,11 +4,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
+from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
-from mosu.home.models import UserProfile, Group, get_or_none, School
+from mosu.home.models import UserProfile, Group, get_or_none, School, Union
 
 
 def home(request):
@@ -30,6 +31,16 @@ def home_list_school(request):
         'schools':schools
     }
     return render(request, 'home_list_school.html', context)
+
+def home_list_union(request):
+    q = request.POST.get("q","")
+    if q != "": unions = Union.objects.filter(Q(title__contains=q)&Q(is_paid=True)&~Q(user=request.user))
+    else : unions = None
+    context = {
+        'user': request.user,
+        'unions':unions
+    }
+    return render(request, 'home_list_union.html', context)
 
 def user(request):
     return HttpResponse("%s"%request.user.first_name)

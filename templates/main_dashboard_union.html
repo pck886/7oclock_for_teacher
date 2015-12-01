@@ -1,9 +1,28 @@
 {% if union.id %}
-    <div class="col-sm-4 div_dashboard_inventory">
-        <div class="div_dashboard_element">
-            <p class="p_element_more" onclick="link_content({'link':'inventory','union_id':'{{ union.id }}'})"><i class="xi-plus"></i>더보기</p>
-            <p class="p_element_title">출제보관함</p>
+    {% load home_extras %}
+    {% if not union.is_paid %}
+        <div class="div_dashboard_element div_dashboard_addunion">
             <div class="div_element_content">
+                <i class="xi-community"></i>
+                <p class="p_addunion_msg">소속을 찾거나 등록해보세요.</p>
+            </div>
+        </div>
+    {% endif %}
+    <div class="div_dashboard_element div_dashboard_profile">
+        <div class="div_element_content">
+            <div class="div_profile_head">
+                <div class="div_profile_head_bg" style="background-image: url({{ user.profile.get_src }})"></div>
+                <div class="div_profile_head_pic" style="background-image: url({{ user.profile.get_src }})"></div>
+                <p class="div_profile_head_level">{{ user|get_level_by_union:union }}</p>
+                <p class="div_profile_head_name">{{ user.first_name }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="div_dashboard_element div_dashboard_inventory">
+        <p class="p_element_more" onclick="link_content({'link':'inventory','union_id':'{{ union.id }}'})"><i class="xi-plus"></i>더보기</p>
+        <p class="p_element_title">출제보관함</p>
+        <div class="div_element_content">
+            <div style="display: flex">
                 {% if testpapers %}
                     {% for testpaper in testpapers|slice:":3" %}
                         <div class="div_dashboard_testpaper" onclick="link_content({'link':'testpaper', 'tpid':'{{ testpaper.id }}'})">
@@ -28,6 +47,14 @@
                 'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
                 'tpid':tpid
             });
+        });
+
+        $(".div_dashboard_addunion").click(function(){
+            $("#div_header_union_tootip").tooltip('hide');
+            $('#div_header_union .dropdown-menu').dropdown('toggle');
+            $("#wrap #container #div_main_dark").show();
+            $('#div_header_union').css({"z-index":"1001"});
+            return false;
         });
     </script>
 {% endif %}

@@ -1,10 +1,9 @@
 {% if user.id %}
-    <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
     <p class="p_content_title"><a href="javascript:;" onclick="link_content({'link':'inventory','union_id':'{{ union.id }}'})">출제보관함</a> <span class="span_content_subtitle">"{{ union.title }}"의 보관함입니다.</span></p>
-    <div id="div_inventory_select">
-        <button class="btn btn-default btn_inventory_topbtn" onclick="link_content({'link':'dashboard'})"><i class="xi-rollback"></i> 뒤로가기</button>
-        <button class="btn btn-default btn_inventory_topbtn" onclick="link_content({'link':'select'})"><i class="xi-list-ol"></i> 선택출제</button>
+    <div class="div_content_submenu">
         <button class="btn btn-default btn_inventory_topbtn" onclick="link_content({'link':'progress'})"><i class="xi-chart-pyramid"></i> 진도출제</button>
+        <button class="btn btn-default btn_inventory_topbtn" onclick="link_content({'link':'select'})"><i class="xi-list-ol"></i> 선택출제</button>
+        <button class="btn btn-default btn_inventory_topbtn" onclick="link_content({'link':'dashboard'})"><i class="xi-rollback"></i> 뒤로가기</button>
     </div>
     <div class="div_content_board">
         <div id="div_inventory_board">

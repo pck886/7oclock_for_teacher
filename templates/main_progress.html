@@ -1,7 +1,6 @@
 {% if user.id %}
-    <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
     <p class="p_content_title"><a href="javascript:;"  onclick="link_content({'link':'progress'})">진도출제</a> <span class="span_content_subtitle">총 {{ testpapers|length }}개의 테스트가 있습니다.</span></p>
-    <div id="div_progress_select">
+    <div class="div_content_submenu">
         <select id="select_progress_year" class="select_progress_form">
             <option value="0">전체</option>
             {% for year in user.profile.group.get_years %}

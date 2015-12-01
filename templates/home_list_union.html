@@ -1,0 +1,18 @@
+<ul id="ul_union_list">
+    {% for union in unions|slice:":4" %}
+        <li class="li_list_union" uid="{{ union.id }}"><span class="span_union_name">{{ union.title }}</span> <span class="span_union_address">{{ union.address }}</span></li>
+    {% endfor %}
+    <li class="no-data">총 {{ unions|length }}개의 소속이 검색되었습니다.</li>
+</ul>
+<script>
+    $(".li_list_union").click(function(){
+        $('#div_modal_searchunion .div_list_union').hide();
+        $("#div_modal_searchunion #input_searchunion_ele_name").val($(this).children(".span_union_name").text());
+        $("#div_modal_searchunion #union_id").val($(this).attr('uid'));
+        if($('#div_modal_searchunion #union_id').val() != "0"){
+            $("#div_modal_searchunion #btn_searchunion_submit").removeAttr("disabled");
+        }else{
+            $("#div_modal_searchunion #btn_searchunion_submit").attr("disabled","disabled");
+        }
+    });
+</script>

@@ -4,63 +4,68 @@
 #wrap #container:after{display:block;clear:both;content:''}
 #wrap #container #header {width:100%; height: 50px;box-shadow: 0px 0px 5px 0px #ABABAB;}
 #wrap #container #header {background: -webkit-linear-gradient(left, #3ebdc4 , #43d2b2);background: -o-linear-gradient(right, #3ebdc4 , #43d2b2);background: -moz-linear-gradient(right, #3ebdc4 , #43d2b2);background: linear-gradient(to right, #3ebdc4 , #43d2b2); }
-#wrap #container #header .dropdown-menu {border-radius:0;border: 0;background-color: #68D6BE;margin: 0;}
+#wrap #container #header .dropdown-menu {width: 100%;border-radius:0;border: 0;background-color: #68D6BE;margin: 0;}
 #wrap #container #header .dropdown-menu li a {color:#fff}
 #wrap #container #header .dropdown-menu li a:hover {background-color: #4BC5AD;}
 #wrap #container #header .dropdown-menu .divider {background-color: #8EDECD;}
 #wrap #container #header #btn_head_home {position: absolute;top: 5px;left: 5px;width: 40px;line-height: 40px;padding: 0;color:#fff;font-size: 25px;background-color: transparent;border: 0;}
 #wrap #container #header #p_header_logo {position: absolute;left: 50%;margin-left: -48.5px;line-height: 50px;color: #fff;font-size: 24px;font-weight: 700;}
 #wrap #container #header #p_header_logo #img_header_logo {padding:5px 0;margin-top: -3px;}
-#wrap #container #header #div_header_union {position: relative;line-height: 50px;font-size: 14px;padding: 0 10px;margin: 0;color: #D1EDE7;background-color: RGBA(0,0,0,0.05);cursor: pointer;float: right;}
-#wrap #container #header #div_header_union:hover {background-color: RGBA(0,0,0,0.1);color:#fff}
+#wrap #container #header #div_header_union {position: relative;min-width: 160px;line-height: 50px;font-size: 14px;padding: 0 10px;margin: 0;color: #D1EDE7;background-color: #40C7AB;cursor: pointer;float: right;}
+#wrap #container #header #div_header_union:hover {background-color:#3CBCA2;color:#fff}
 #wrap #container #header #div_header_union #div_union_icon {width: 30px;height: 30px;line-height: 0;background-color: #FFF;margin: 10px 5px 0px 0px;border-radius: 30px;overflow: hidden;float: left;}
 #wrap #container #header #div_header_union #div_union_icon #div_icon_img {width:100%;height:auto;}
-#wrap #container #header #div_header_profile {position: relative;line-height: 50px;font-size: 14px;padding: 0 20px;margin: 0;color: #D1EDE7;background-color: RGBA(0,0,0,0.05);text-align: center;cursor: pointer;}
-#wrap #container #header #div_header_profile:hover {background-color: RGBA(0,0,0,0.1);color:#fff}
+#wrap #container #header #div_header_profile {position: relative;line-height: 50px;font-size: 14px;padding: 0 20px;margin: 0;color: #D1EDE7;background-color: #40C7AB;text-align: center;cursor: pointer;}
+#wrap #container #header #div_header_profile:hover {background-color: #3CBCA2;color:#fff}
 #wrap #container #header #div_header_profile #div_user_icon {width: 30px;height: 30px;line-height: 0;margin: 10px 5px 0px 0px;border-radius: 30px;overflow: hidden;float: left;}
 #wrap #container #header #div_header_profile #div_user_icon #div_user_img {width:100%;height:auto;}
 
 #wrap #container #content {position: absolute;top: 90px;left: 60px;right: 60px;bottom: 40px;}
-#wrap #container #content .p_content_search {position: relative;float:right;width: 250px;}
-#wrap #container #content .p_content_search #input_search_bar{width:100%;height: 40px;line-height: 40px;padding: 0 40px 0 10px;border: 1px solid #ccc;}
-#wrap #container #content .p_content_search #i_search_btn {position: absolute;top: 11px;right: 10px;font-size: 20px;color: #999;cursor:pointer}
-#wrap #container #content .p_content_search #i_search_btn:hover {color:#666}
-#wrap #container #content .p_content_title {font-size: 33px;font-weight: 400;color: #666;}
+#wrap #container #content .div_content_submenu {position: relative;text-align: right;margin-top: 10px;}
+#wrap #container #content .p_content_title {position: relative;font-size: 33px;font-weight: 400;color: #666;/* float: left; */margin-right: 20px;z-index: 1;}
 #wrap #container #content .p_content_title .span_content_subtitle {font-size: 20px;font-weight: 200;color: #bbb;margin-left: 15px;}
-#wrap #container #content .div_content_board {;position: absolute;      top: 132px;      left: 0;      right: 0;      bottom: 0;      border-bottom: 1px solid #ddd;      overflow-y: scroll;}
+#wrap #container #content .div_content_board {position: absolute;      top: 110px;      left: 0;      right: 0;      bottom: 0;      border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;      background-color: #fafafa;overflow-y: scroll;}
 #wrap #container #content #span_search_del {color: #ffcfcc;cursor:pointer;font-size: 13px;margin-left: 5px;}
 #wrap #container #content #span_search_del:hover {color:#ea6153}
 #wrap #container #content #div_testpaper_zoom {position:absolute;bottom: 40px;right: 40px;background-color: #fff;}
-#wrap #container #content #div_testpaper_group {position:absolute;top: 160px;left: 30px;background-color: #fff;}
+#wrap #container #content #div_testpaper_group {position:absolute;top: 140px;left: 30px;background-color: #fff;}
 #wrap #container #content #div_testpaper_group #btn_group_year {width: 100%;}
 #wrap #container #content #div_testpaper_group .btn_groups {width: 100%;border-top: 0;}
 
-#wrap #container #content #div_dashboard_select { padding:20px 0;border-bottom:1px solid #ddd ; height: 85px;}
-#wrap #container #content #div_dashboard_select .btn_dashboard_topbtn {float:right;margin-left: 5px;}
-#wrap #container #content .div_content_board_dashboard {position: absolute;top: 132px;left: 0;right: 0;bottom: 0;border-bottom: 1px solid #ddd;padding: 10px;overflow-y: scroll;overflow-x: hidden;}
+#wrap #container #content .div_content_board_dashboard {position: absolute;top: 110px;left: 0;right: 0;bottom: 0;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding: 10px;overflow-y: scroll;overflow-x: hidden;}
 #wrap #container #content .div_content_board_dashboard #div_dashboard_board {padding: 10px;word-wrap: break-word; }
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element {width:100%;background-color:#FFF;border-radius: 3px;border: 1px solid #d9d9d9;margin: 5px;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element {position: relative;width: 307px;height: 260px;background-color:#FFF;border-radius: 3px;border: 1px solid RGBA(0,0,0,0.15);margin: 10px 10px;float: left;}
 #wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .p_element_title {font-size:16px;padding: 8px 3px;margin: 0px 8px;border-bottom: 1px dotted #ccc;}
 #wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .p_element_more {float:right;margin: 12px;font-size: 12px;color: #ccc;cursor:pointer}
 #wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .p_element_more:hover{color:#666}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content {position: relative;width: 100%;height: 215px;padding: 10px;display: -webkit-inline-box;overflow: hidden;overflow-x: scroll;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content {position: relative;width:100%;}
 
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper {position: relative;width: 150px;height: 180px;margin: 0px 10px 0 0px;border: 1px solid RGBA(0,0,0,0.2);border-left: 4px solid RGBA(0,0,0,0.2);border-radius: 0 10px 10px 0;background-color: #517A92;overflow: hidden;cursor: pointer;}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper:hover {box-shadow: 0px 0px 10px 0px #47A794;}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_bg {position: absolute;top: 0;left: 0;width:100%;height:100%;opacity: 0.1;z-index: 1;}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_title {margin: 20px 20px 10px 20px;background-color:#fff;font-size: 16px;text-align: center;padding: 5px;z-index: 2;}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_date {font-size: 12px;text-align: center;color: #fff;z-index: 2;}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_purpose {font-size: 12px;text-align: center;color: #fff;z-index: 2;}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group {position:absolute;left: 20px;right: 20px;bottom: 10px;text-align: center;z-index: 3;}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group {font-size: 10px;padding: 0 5px;border-radius: 25px;height: 25px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group:hover {background-color: rgba(255, 255, 255, 0.4);}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group.select {background-color: rgb(60, 202, 164);color: #fff;border: 0;font-weight: 700;}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group.select:hover {background-color: rgb(49, 175, 141);}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_open {font-size: 10px;padding: 0px 5px;border-radius: 25px;height: 25px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_element .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_open:hover {background-color: rgb(49, 175, 141);}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_addunion {cursor: pointer;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_addunion .div_element_content {width:100%;height:100%;text-align: center;background-color: rgb(81, 122, 146);color: #FFF;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_addunion .div_element_content:hover {background-color: rgb(64, 101, 123);}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_addunion .div_element_content i {font-size:100px;margin-top: 50px;margin-bottom: 20px;}
 
-#wrap #container #content #div_inventory_select { padding:20px 0;border-bottom:1px solid #ddd ; height: 85px;}
-#wrap #container #content #div_inventory_select .btn_inventory_topbtn {float:right;margin-left: 5px;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_profile .div_element_content .div_profile_head {position: relative;width: 100%;height:180px;background-color: #fff;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_profile .div_element_content .div_profile_head .div_profile_head_bg {width:100%;height:100%;background-size: 100% auto;background-position: center center;opacity: 0.2;border-bottom: 5px solid RGBA(0,0,0,0.3);}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_profile .div_element_content .div_profile_head .div_profile_head_pic {position: absolute;top: 20px;left: 50%;margin-left: -50px;width: 100px;height: 100px;background-size: 100% auto;background-position: center center;border-radius: 100px;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_profile .div_element_content .div_profile_head .div_profile_head_level {position:absolute;width: 100%;top: 125px;font-size: 12px;color: #666;text-align: center;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_profile .div_element_content .div_profile_head .div_profile_head_name {position:absolute;width: 100%;top: 140px;font-size: 15px;font-weight: 700;color: #000;text-align: center;}
+
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content {padding:24px;overflow: hidden;overflow-x: scroll;display: flex;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper {position: relative;width: 120px;height: 150px;margin: 0px 10px 0 0px;border: 1px solid RGBA(0,0,0,0.2);border-left: 4px solid RGBA(0,0,0,0.2);border-radius: 0 10px 10px 0;background-color: #517A92;overflow: hidden;cursor: pointer;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper:hover {box-shadow: 0px 0px 10px 0px #47A794;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_bg {position: absolute;top: 0;left: 0;width:100%;height:100%;opacity: 0.1;z-index: 1;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_title {margin: 20px 20px 10px 20px;background-color:#fff;font-size: 16px;text-align: center;padding: 5px;z-index: 2;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_date {font-size: 10px;text-align: center;color: #fff;z-index: 2;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_purpose {font-size: 10px;text-align: center;color: #fff;z-index: 2;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group {position:absolute;left: 20px;right: 20px;bottom: 10px;text-align: center;z-index: 3;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group {font-size: 10px;padding: 0 5px;border-radius: 25px;height: 25px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group:hover {background-color: rgba(255, 255, 255, 0.4);}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group.select {background-color: rgb(60, 202, 164);color: #fff;border: 0;font-weight: 700;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_group.select:hover {background-color: rgb(49, 175, 141);}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_open {font-size: 10px;padding: 0px 5px;border-radius: 25px;height: 25px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_group .btn_testpaper_open:hover {background-color: rgb(49, 175, 141);}
+
 #wrap #container #content .div_content_board #div_inventory_board {padding: 10px;word-wrap: break-word; }
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper {position: relative;width: 267px;height: 320px;margin: 20px 30px;border: 1px solid RGBA(0,0,0,0.2);border-left: 4px solid RGBA(0,0,0,0.2);border-radius: 0 10px 10px 0;background-color: #517A92;overflow: hidden;float:left;cursor: pointer;}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper:hover {box-shadow: 0px 0px 20px 0px #47A794;}
@@ -76,42 +81,34 @@
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_open {font-size: 12px;padding: 0 10px;border-radius: 30px;height: 32px;background-color: rgba(255, 255, 255, 0.2);border: 0;color: #fff;}
 #wrap #container #content .div_content_board #div_inventory_board .div_inventory_testpaper .div_testpaper_group .btn_testpaper_open:hover {background-color: rgb(49, 175, 141);}
 
-#wrap #container #content #div_select_select { padding:20px 0;border-bottom:1px solid #ddd ; height: 85px;}
-#wrap #container #content #div_select_select .select_inventory_form { font-size: 16px; border: 1px solid #ccc; background-color: #fff; border-radius: 0; height: 40px;     line-height: 40px;     padding: 0 0px 0 10px;    }
-#wrap #container #content #div_select_select .btn_inventory_topbtn {float:right;margin-left: 5px;}
+#wrap #container #content .div_content_submenu .select_inventory_form { position: relative;font-size: 16px; border: 1px solid #ccc; background-color: #fff; border-radius: 0; height: 40px;     line-height: 40px;     padding: 0 0px 0 10px;    margin-right: 10px;float: left;}
 #wrap #container #content .div_content_board #div_select_board {width: 100%;height: 100%;padding: 10px;padding-right: 210px;word-wrap: break-word;}
-#wrap #container #content .div_content_board #div_select_board .div_select_question {position: relative;width: 350px;height: 230px;margin-right: 10px;margin-bottom: 10px;border: 1px solid #ddd;background-size: 100% auto;background-repeat: no-repeat;float:left;overflow: hidden;cursor: pointer;}
+#wrap #container #content .div_content_board #div_select_board .div_select_question {position: relative;width: 350px;height: 230px;margin-right: 10px;margin-bottom: 10px;background-size: 100% auto;background-repeat: no-repeat;background-color: #fff;border: 1px solid RGBA(0,0,0,0.15);float:left;overflow: hidden;cursor: pointer;}
 #wrap #container #content .div_content_board #div_select_board .div_select_question:hover {box-shadow: 0px 0px 10px 2px #DCF1ED;}
 #wrap #container #content .div_content_board #div_select_board .div_select_question.selected {box-shadow: 0px 0px 5px 0px #47A794;}
 #wrap #container #content .div_content_board #div_select_board .div_select_question .div_question_info {position: absolute;bottom: 0px;left: 0px;right: 0px;padding: 5px 10px;color: #666;text-align: left;background-color: #fafafa;box-shadow: 0 0 15px 0px #dadada;}
 #wrap #container #content .div_content_board #div_select_board .div_select_question .div_question_info .p_info_title {font-size: 12px;font-weight: 700;color: #333;}
 #wrap #container #content .div_content_board #div_select_board .div_select_question .div_question_info .p_info_count {font-size: 12px;}
 
-#wrap #container #content #div_testpaper_select { padding:20px 0;border-bottom:1px solid #ddd;text-align:right}
-#wrap #container #content #div_testpaper_select .btn_testpaper_topbtn {margin-left: 5px;}
-#wrap #container #content #div_testpaper_mode { padding:20px 0;border-bottom:1px solid #ddd;text-align:left;float:left}
-#wrap #container #content #div_testpaper_mode .btn_testpaper_topbtn {margin-left: 5px;}
-#wrap #container #content .div_content_board_testpaper {position: absolute;;top: 132px;left: 0;right: 0;bottom: 0;border-bottom: 1px solid #ddd;padding: 10px;text-align: center;background-color: rgba(247, 247, 247, 0.48);overflow: scroll;}
+#wrap #container #content .div_content_submenu #div_testpaper_mode { text-align:left;float:left}
+#wrap #container #content .div_content_submenu #div_testpaper_mode .btn_testpaper_topbtn {margin-left: 5px;}
+#wrap #container #content .div_content_board_testpaper {position: absolute;top: 110px;left: 0;right: 0;bottom: 0;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding: 10px;text-align: center;background-color: rgba(247, 247, 247, 0.48);overflow: scroll;}
 #wrap #container #content .div_content_board_testpaper .div_testpaper_board {display: inline-block;width: 900px;word-wrap: break-word;}
 #wrap #container #content .div_content_board_testpaper .div_testpaper_board .div_testpaper_paper {padding: 20px 30px;margin-bottom: 20px;border: 1px solid #eee;background-color: #fff;}
 #wrap #container #content .div_content_board_testpaper .div_testpaper_board .div_testpaper_paper .table_testpaper_page {height: 1272px !important;}
 #wrap #container #content .div_content_board_testpaper .div_testpaper_board .div_testpaper_paper .table_testpaper_page tr td img {width:100%}
 #wrap #container #content .div_content_board_testpaper .div_testpaper_board .div_testpaper_paper .p_testpaper_pagenum {margin-bottom:20px}
 #wrap #container #content .div_content_board_testpaper .div_testpaper_board .div_testpaper_paper .div_testpaper_chooser {width:100%;margin-top: 20px;}
-#wrap #container #content .div_content_board_testpaper .div_testpaper_board .div_testpaper_paper .div_testpaper_chooser .btn_chooser_info {font-size: 12px;padding: 0;line-height: 42px;width: 310px;}
+#wrap #container #content .div_content_board_testpaper .div_testpaper_board .div_testpaper_paper .div_testpaper_chooser .btn_chooser_info {font-size: 12px;padding: 0;line-height: 37px;width: 310px;color: #000;font-weight: 700;}
 
-#wrap #container #content #div_testpaperform_select { padding:20px 0;border-bottom:1px solid #ddd;text-align: right}
-#wrap #container #content #div_testpaperform_select .select_testpaperform_form { font-size: 16px; border: 1px solid #ccc; background-color: #fff; border-radius: 0; height: 40px;     line-height: 40px;     padding: 0 0px 0 10px;    }
-#wrap #container #content #div_testpaperform_select .btn_testpaperform_topbtn {margin-left: 5px;}
+#wrap #container #content .div_content_submenu .select_testpaperform_form { font-size: 16px; border: 1px solid #ccc; background-color: #fff; border-radius: 0; height: 40px;     line-height: 40px;     padding: 0 0px 0 10px;    }
 #wrap #container #content .div_content_board #div_testpaperform_board {width: 100%;height: 100%;padding: 10px;word-wrap: break-word;}
 #wrap #container #content .div_content_board #div_testpaperform_board .div_testpaperform_form {position: relative;width: 480px;height: 110px;margin: 0 5px;margin-bottom: 10px;border: 1px solid #ddd;background-size: 100% auto;background-repeat: no-repeat;float:left;cursor: pointer;}
 #wrap #container #content .div_content_board #div_testpaperform_board .div_testpaperform_form:hover {box-shadow: 0px 0px 10px 2px #DCF1ED;}
 #wrap #container #content .div_content_board #div_testpaperform_board .div_testpaperform_form.select {outline: 5px solid #0FF;}
 #wrap #container #content .div_content_board #div_testpaperform_board .div_testpaperform_form .p_form_title {position: absolute;bottom: 5px;right: 5px;padding: 5px 10px;margin-left: 5px;color: #fff;font-size: 12px;text-align: right;background-color: RGBA(0,0,0,0.6);}
 
-#wrap #container #content #div_progress_select { padding:20px 0;border-bottom:1px solid #ddd ; height: 85px;}
-#wrap #container #content #div_progress_select .select_progress_form { font-size: 16px; border: 1px solid #ccc; background-color: #fff; border-radius: 0; height: 40px;line-height: 40px;padding: 0 0px 0 10px;    }
-#wrap #container #content #div_progress_select .btn_progress_topbtn {float:right;margin-left: 5px;}
+#wrap #container #content .div_content_submenu .select_progress_form { font-size: 16px; border: 1px solid #ccc; background-color: #fff; border-radius: 0; height: 40px;line-height: 40px;padding: 0 0px 0 10px;    float: left;}
 #wrap #container #content .div_content_board #div_progress_board {width: 100%;height: 100%;padding: 10px;word-wrap: break-word;}
 #wrap #container #content .div_content_board #div_progress_board .div_progress_testpaper {position: relative;width: 267px;height: 320px;margin: 20px 30px;border: 1px solid RGBA(0,0,0,0.2);border-left: 4px solid RGBA(0,0,0,0.2);border-radius: 0 10px 10px 0;background-color: #CAB071;overflow: hidden;float:left;cursor: pointer;}
 #wrap #container #content .div_content_board #div_progress_board .div_progress_testpaper:hover {box-shadow: 0px 0px 20px 0px #F7E44F;}
@@ -120,9 +117,7 @@
 #wrap #container #content .div_content_board #div_progress_board .div_progress_testpaper .div_testpaper_date {font-size: 14px;text-align: center;color: #fff;z-index: 2;}
 #wrap #container #content .div_content_board #div_progress_board .div_progress_testpaper .div_testpaper_group {color:#fff;font-weight: 700;position:absolute;left: 20px;right: 20px;bottom: 20px;text-align: center;z-index: 3;}
 
-#wrap #container #content #div_groupuser_select { padding:20px 0; height: 85px;border-bottom: 1px solid #ddd;}
-#wrap #container #content #div_groupuser_select .btn_groupuser_topbtn {float:right;margin-left: 5px;}
-#wrap #container #content .div_content_board_groupuser .div_groupuser_board {width: 50%;height: 100%;padding: 10px;word-wrap: break-word;}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board {width: 48%;margin: 10px;padding: 30px;word-wrap: break-word;background-color: #fff;border: 1px solid #d9d9d9;}
 #wrap #container #content .div_content_board_groupuser .div_groupuser_board td {line-height: 30px}
 #wrap #container #content .div_content_board_groupuser .div_groupuser_board .img_groupuser_profilepic {height:30px;border-radius:30px;margin-right:10px}
 #wrap #container #content .div_content_board_groupuser .div_groupuser_board .i_groupuser_groupuser_move {color:#34495e;cursor:pointer;}
@@ -139,14 +134,14 @@
 
 #wrap #container #content .div_content_board_mypage {position: absolute;top: 60px;left: 0;right: 0;bottom: 0;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding: 10px;text-align: center;overflow-y: scroll;overflow-x: hidden;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board {padding: 0 15px;}
-#wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element {position: relative;height: 130px;background-color:#FFF;border: 1px solid #eee;padding: 30px;text-align: left;}
+#wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element {position: relative;height: 130px;background-color:#FFF;border: 1px solid RGBA(0,0,0,0.15);padding: 30px;text-align: left;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element:hover {box-shadow: 0px 0px 5px 0px #ddd;cursor: pointer;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element .p_element_icon {text-align:center;width: 70px;height: 70px;margin-right: 20px;color:#FFF;background-color:#aaa;border-radius: 70px;line-height: 75px;font-size: 40px;float: left;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element H1 {font-size: 18px;margin-top: 5px;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element p.con {font-size: 12px;margin-top: 5px;margin-right: 20px;}
 #wrap #container #content .div_content_board_mypage #div_mypage_board .div_mypage_element p.next {position: absolute;top: 43px;right: 15px;}
 
-#wrap #container #div_select_box {position: absolute;top: 230px;right: 85px;bottom: 52px;width: 300px;background-color: #fafafa;border: 1px solid #eee;box-shadow: 0px 0px 10px 2px #f0f0f0;overflow-x: hidden;overflow-y: hidden;display:none}
+#wrap #container #div_select_box {position: absolute;top: 210px;right: 85px;bottom: 52px;width: 300px;background-color: #fff;border: 1px solid RGBA(0,0,0,0.15);overflow-x: hidden;overflow-y: hidden;display:none;z-index: 1;}
 #wrap #container #div_select_box #div_box_contents {position: absolute;top: 0;bottom: 0;left: 0;right: 0;padding-bottom: 40px;overflow-y: scroll;}
 #wrap #container #div_select_box #div_box_contents .drag, .list{width: 100%;cursor:move;text-overflow: ellipsis;     white-space: nowrap;     overflow: hidden;}
 #wrap #container #div_select_box #div_box_contents .drag {z-index: 100;position:absolute;opacity: .50;filter: alpha(opacity=50);padding-left: 10px;line-height: 30px;}
@@ -160,12 +155,14 @@
 
 #wrap #container #div_main_loading {position: absolute;width: 100%;height: 100%;top: 0;text-align: center;background-color: RGBA(255,255,255,0.8);color: rgba(0, 0, 0, 0.21);font-size: 30px;z-index: 1000;}
 #wrap #container #div_main_loading i { position: absolute;  top: 50%; left:50%;  margin-top: -50px;  margin-left: -50px;}
+#wrap #container #div_main_dark {position: absolute;width: 100%;height: 100%;top: 0;background-color: RGBA(0,0,0,0.6);z-index: 1000;display: none}
 
 .modal .div_dashboard_progress { text-align:center; margin-bottom: 20px;color: #aaa;}
 .modal .div_dashboard_progress i {position: relative;top: 7px;font-size: 20px;}
 .modal .div_dashboard_progress i.xi-check-circle {color: #27ae60;}
 .modal .input_mypage_ele_form {border-radius: 0;margin-bottom:10px}
 .modal .input_dashboard_ele_form {border-radius: 0;margin-bottom:10px}
+.modal .input_searchunion_ele_form {border-radius: 0;margin-bottom:10px}
 
 #div_modal_welcome2 .label_dashboard_ele2_grade {width: 50px;margin: 7px 0;}
 #div_modal_welcome2 .checkbox-inline {margin-left: 0px;width: 132px;}
@@ -180,6 +177,13 @@
 #div_modal_welcome3 .div_page_contents {text-align:center}
 #div_modal_welcome3 .div_page_contents i{font-size: 100px;color:#27ae60}
 #div_modal_welcome3 .div_page_contents .p_w3_msg {font-size:15px;margin: 20px 0;}
+
+#div_modal_searchunion .div_list_union {position: absolute;top: 136px;width: 470px;z-index: 100;border:1px solid #bbb;background-color: #fff;display:none}
+#div_modal_searchunion .div_list_union li {font-size: 14px;font-weight: 700;line-height: 35px;padding: 0 10px;border-bottom: 1px solid #ddd;cursor: pointer;overflow: hidden;}
+#div_modal_searchunion .div_list_union li:hover {background-color: #f5f5f5;}
+#div_modal_searchunion .div_list_union li.no-data {text-align:center;border: 0;font-weight: normal;cursor: default;}
+#div_modal_searchunion .div_list_union li.no-data:hover {background-color: #fff;}
+#div_modal_searchunion .div_list_union li .span_union_address {width: 40%;font-size:12px;font-weight: normal;white-space: nowrap;display: inline-block;}
 
 #div_modal_maketest .input_maketest_form {border-radius: 0;}
 #div_modal_maketest #span_maketest_chkname {position: absolute;top: 111px;right: 23px;}

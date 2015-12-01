@@ -71,6 +71,22 @@ def get_groupuser_by_union(user, union):
     return arr_list
 
 @register.filter
+def get_level_by_union(user, union):
+    if union.user == user : return "소속 관리자"
+    else:
+        arr_list = []
+        unionuser = get_or_none(UnionUser,union=union, user=user)
+        group = Group.objects.filter(unionuser=unionuser)
+        for g in group :
+            arr_list.append(g)
+        for gu in GroupUser.objects.filter(unionuser=unionuser):
+            arr_list.append(gu.group)
+
+        if arr_list : return "그룹 관리자"
+
+    return "일반회원"
+
+@register.filter
 def search_user(arr, query):
     if arr :
         return arr.filter(user__first_name__icontains=query)

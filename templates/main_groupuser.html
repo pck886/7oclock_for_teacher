@@ -1,13 +1,12 @@
 {% if user.id %}
     {% load home_extras %}
-    <p class="p_content_search"><i id="i_search_btn" class="xi-magnifier" onclick="set_search();"></i><input type="text" id="input_search_bar" {% if query %}value="{{ query }}"{% endif %} placeholder="검색어를 입력해주세요." onkeypress="if(event.which == 13) {set_search();}"></p>
     <p class="p_content_title"><a href="javascript:;"  onclick="link_content({'link':'groupuser','group_id':'{{ this_group.id }}'})">회원관리페이지</a> <span class="span_content_subtitle">"{{ union.title }}"의 회원관리페이지입니다.</span></p>
-    <div id="div_groupuser_select">
+    <div class="div_content_submenu">
         <button class="btn btn-default btn_groupuser_topbtn" onclick="link_content({'link':'dashboard'})"><i class="xi-rollback"></i> 뒤로가기</button>
     </div>
     <div class="div_content_board div_content_board_groupuser">
         <div class="div_groupuser_board" id="div_groupuser_board_all">
-            <p class="p_groupuser_title">전체 회원</p>
+            <p class="p_groupuser_title">"{{ union.title }}"의 전체 회원</p>
             {% if query %}<div style="padding-bottom:20px;"><b>"{{ query }}"</b>에 대한 검색결과 <span id="span_search_del" onclick="del_search()">취소</span></div>{% endif %}
             <div class="div_groupuser_group">
                 <table class="table table-striped">
@@ -22,7 +21,7 @@
                                 <td class="text-center">{{ user_all.profile.get_grade }}</td>
                                 <td><img class="img_groupuser_profilepic" src="{{ user_all.profile.get_src }}">{{ user_all.first_name }}</td>
                                 <td class="text-center">{{ user_all.profile.get_gender }}</td>
-                                <td>{% for group in user_all|get_groupuser_by_union:union %}{{ group.title }}{% if forloop.counter < user_all.profile.get_groups|length %}, {% endif %}{% endfor %}</td>
+                                <td>{% for group in user_all|get_groupuser_by_union:union %}{{ group.title }}{% if forloop.counter < user_all|get_groupuser_by_union:union|length %}, {% endif %}{% endfor %}</td>
                                 <td class="text-center">
                                     {% if user != user_all and user == union.user %}<i class="xi-close i_groupuser_groupuser_delete" uid="{{ user_all.id }}" title="소속 탈퇴"></i>{% endif %}
                                     <i class="xi-arrow-right i_groupuser_groupuser_move" uid="{{ user_all.id }}" title="그룹 배치"></i>
@@ -42,7 +41,7 @@
                     {% for group in groups %}
                         <option value="{{ group.id }}" {% if group == this_group %}selected{% endif %}>{{ group.title }}</option>
                     {% endfor %}
-                </select> 그룹 회원</p>
+                </select> 그룹의 회원</p>
             {% if query %}<div style="padding-bottom:20px;"><b>"{{ query }}"</b>에 대한 검색결과 <span id="span_search_del" onclick="del_search()">취소</span></div>{% endif %}
             <div class="div_groupuser_group" group_id="{{ group.id }}">
                 <table class="table table-striped">
@@ -55,7 +54,7 @@
                         <td class="text-center text-danger">선생님</td>
                         <td><img class="img_groupuser_profilepic" src="{{ this_group.unionuser.user.profile.get_src }}">{{ this_group.unionuser.user.first_name }}</td>
                         <td class="text-center">{{ this_group.unionuser.user.profile.get_gender }}</td>
-                        <td>{% for group in this_group.unionuser.user|get_groupuser_by_union:union  %}{{ group.title }}{% if forloop.counter < this_group.unionuser.user.profile.get_groups|length %}, {% endif %}{% endfor %}</td>
+                        <td>{% for group in this_group.unionuser.user|get_groupuser_by_union:union  %}{{ group.title }}{% if forloop.counter < this_group.unionuser.user|get_groupuser_by_union:union|length %}, {% endif %}{% endfor %}</td>
                         <td class="text-center">-</td>
                     </tr>
                     {% if this_group.get_users %}
@@ -65,7 +64,7 @@
                                 <td class="text-center">{{ user_group.profile.get_grade }}</td>
                                 <td><img class="img_groupuser_profilepic" src="{{ user_group.profile.get_src }}">{{ user_group.first_name }}</td>
                                 <td class="text-center">{{ user_group.profile.get_gender }}</td>
-                                <td>{% for group in user_group|get_groupuser_by_union:union %}{{ group.title }}{% if forloop.counter < user_group.profile.get_groups|length %}, {% endif %}{% endfor %}</td>
+                                <td>{% for group in user_group|get_groupuser_by_union:union %}{{ group.title }}{% if forloop.counter < this_group.unionuser.user|get_groupuser_by_union:union|length %}, {% endif %}{% endfor %}</td>
                                 <td class="text-center">
                                     <i class="xi-close i_groupuser_groupuser_cancel" uid="{{ user_group.id }}" title="그룹 제외"></i>
                                     {% if user == union.user %}<i class="xi-lecture i_groupuser_groupuser_teacher" uid="{{ user_group.id }}" title="선생님 지정"></i>{% endif %}
