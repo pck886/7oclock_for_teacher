@@ -33,17 +33,25 @@
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/logout/">로그아웃</a></li>
                 </ul>
             </div>
-            {% if unions %}
+            {% if this_union %}
                 <div id="div_header_union" union_id="{{ this_union.id }}" class="dropdown navbar-right">
                     <div id="div_header_union_tootip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% if this_union.is_paid == False %} data-toggle="tooltip" data-placement="bottom" title="내 소속을 등록해보세요."{% endif %}>
                         <div id="div_union_icon"><img id="div_icon_img" src="{{ this_union.get_icon }}"></div> {{ this_union.title }} <span class="caret">
                     </div>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        {% for union_list in unions %}
-                            {% if union_list != this_union %}<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick="location.href='/main/?id={{ union_list.id }}';">{{ union_list.title }}</a></li>{% endif %}
+                        {% for unionuser in unionusers %}
+                            {% if unionuser.union != this_union %}
+                                <li role="presentation">
+                                    {% if unionuser.user|get_level_by_union:unionuser.union != 0 %}
+                                        <a role="menuitem" tabindex="-1" href="javascript:;" onclick="location.href='/main/?id={{ unionuser.union.id }}';">{{ unionuser.union.title }}</a>
+                                    {% else %}
+                                        <a role="menuitem" tabindex="-1" style="background-color:initial;color:rgba(255, 255, 255, 0.48);" title="선생님 권한이 필요합니다.">{{ unionuser.union.title }}</a>
+                                    {% endif %}
+                                </li>
+                            {% endif %}
                         {% endfor %}
                         <li role="presentation" class="divider"></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick="search_union()"><i class="xi-magnifier"></i> 소속 검색하기</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick="search_union()"><i class="xi-magnifier"></i> 소속 검색하기</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick="search_union()"><i class="xi-plus"></i> 소속 등록하기</a></li>
                     </ul>
                 </div>

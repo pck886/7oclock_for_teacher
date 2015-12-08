@@ -16,7 +16,7 @@ class UnionAdmin(admin.ModelAdmin):
     list_display = ('id','user','title','address','phone','is_active')
 
 class GroupUserAdmin(admin.ModelAdmin):
-    list_display = ('id','unionuser','group','is_active')
+    list_display = ('id','unionuser','group')
 
 class UnionUserAdmin(admin.ModelAdmin):
     list_display = ('id','union','user','is_active')

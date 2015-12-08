@@ -17,21 +17,17 @@ def main(request):
 
     this_union = get_or_none(Union,id=request.GET.get("id",0))
 
-    union_list = []
+    unionusers = UnionUser.objects.filter(user=request.user)
 
-    for u in Union.objects.filter(user=request.user,is_active=True):
-        union_list.append(u.id)
-    for u in Group.objects.filter(unionuser__user=request.user,is_active=True):
-        union_list.append(u.union.id)
+    if this_union == None and unionusers :
+        this_union = unionusers[0].union
 
-    unions = Union.objects.filter(id__in=union_list,is_active=True).order_by("is_paid")
-
-    if this_union == None and unions :
-        this_union = unions[0]
+    if get_or_none(UnionUser, union=this_union, user=request.user, is_active=True) == None :
+        return HttpResponseRedirect("/main/")
 
     context = {
         'user':request.user,
-        'unions':unions,
+        'unionusers':unionusers,
         'this_union':this_union,
         'appname':'main'
     }
@@ -422,9 +418,8 @@ def main_groupuser_post_groupuser_move(request):
     if this_group.unionuser != unionuser :
         gu, created = GroupUser.objects.get_or_create(unionuser=unionuser,group=this_group)
         if gu :
-            gu.in_group = True
-            gu.is_active = True
-            gu.save()
+            unionuser.is_active = True
+            unionuser.save()
     return main_groupuser(request)
 
 def main_groupuser_post_groupuser_delete(request):
@@ -555,3 +550,14 @@ def main_dashboard_post_school_register(request):
     )
 
     return HttpResponse("True")
+
+def main_dashboard_post_union_register(request):
+    user = request.user
+    union_id = int(request.POST.get("union_id",0))
+
+    union = get_or_none(Union,id=union_id)
+
+    if get_or_none(UnionUser, union=union, user=user) == None:
+        UnionUser.objects.get_or_create(union=union, user=user, is_active=False)
+        return HttpResponse("%d"%union.id)
+    return HttpResponse("0")

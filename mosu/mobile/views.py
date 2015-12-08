@@ -1,24 +1,22 @@
 # -*- coding: utf-8 -*-
 import json
-import operator
-from tempfile import NamedTemporaryFile
 import urllib2
+from tempfile import NamedTemporaryFile
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.core.files.base import ContentFile, File
-from django.db.models import Q, Count
+from django.core.files.base import File, ContentFile
+from django.db.models import Count
 from django.http import HttpResponse
-
-
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
-import sys
-from mosu.docs.models import QuestionUnit1, QuestionUnit2, QuestionUnit3, QuestionUnit4, QuestionUnit5, Question, \
-    QuestionFeedback
-from mosu.home.models import get_or_none, Group, UserProfile, Group, School, Union, UnionUser
+
+from mosu.docs.models import Question, QuestionUnit2, QuestionFeedback
+from mosu.home.models import get_or_none, UserProfile, Group, School, Union, UnionUser, GroupUser
+from mosu.home.templatetags.home_extras import get_level_by_union, get_title_by_level
 from mosu.main.models import TestPaper, TestPaperQuestion, TestPaperSubmit
 from mosu.mobile.models import QuestionInventory
+
 
 def get_user(request):
     userid = request.GET.get("user_id")
@@ -41,26 +39,59 @@ def get_user_info(request):
     uid = int(request.GET.get("uid",0))
     user = get_or_none(User,id=uid)
     if user.id :
-        shool_id, school_name, grade_code = 0, "", ""
+        shool_id, grade_code = 0, ""
         if user.profile.school :
             shool_id = user.profile.school.id
-            school_name = user.profile.school.name
         if user.profile.grade_code:
             grade_code = user.profile.grade_code
+        unionusers = UnionUser.objects.filter(user=user)
+        unions = []
+        for unionuser in unionusers :
+            union = unionuser.union
+            level = get_level_by_union(user,union)
+            unions.append({
+                'id':union.id
+                ,'title':union.title
+                ,'level':level
+                ,'level_title':get_title_by_level(level)
+                ,'icon':union.get_icon()
+                ,'logo':union.get_logo()
+            })
         arr = [{
             'id':user.id,
             'username':user.username,
             'email':user.email,
             'first_name':user.first_name,
             'shool_id':"%d"%shool_id,
-            'school_name':"%s"%school_name,
-            'school_year':"%d"%user.profile.year,
             'login_from':user.profile.login_from,
             'grade_code':"%s"%grade_code,
             'src':user.profile.get_src(),
             'phone':user.profile.phone,
-            'gender':user.profile.get_gender()
+            'gender':user.profile.get_gender(),
+            'union':unions
         }]
+        return HttpResponse(json.dumps(arr, default=date_handler), content_type="application/json")
+    else:
+        return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
+    return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
+
+def get_union_info(request):
+    uid = int(request.GET.get("uid",0))
+    user = get_or_none(User,id=uid)
+    arr = []
+    if user.id :
+        unionusers = UnionUser.objects.filter(user=user)
+        for unionuser in unionusers :
+            union = unionuser.union
+            level = get_level_by_union(user,union)
+            arr.append({
+                'id':union.id
+                ,'title':union.title
+                ,'level':level
+                ,'level_title':get_title_by_level(level)
+                ,'icon':union.get_icon()
+                ,'logo':union.get_logo()
+            })
         return HttpResponse(json.dumps(arr, default=date_handler), content_type="application/json")
     else:
         return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
@@ -101,28 +132,28 @@ def set_user(request):
             return HttpResponse(json.dumps(arr, default=date_handler), content_type="application/json")
     return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
 
-# def set_user_profilepic(request):
-#     pictures = request.FILES.getlist("picture")
-#     uid = int(request.GET.get("uid",0))
-#     user = get_or_none(User,id=uid)
-#     for picture in pictures:
-#         user.profile.src.save("%s.jpg"%picture.name, ContentFile(picture.read()))
-#     return get_user_info(request)
-#
-# def set_user_passwd(request):
-#     user_login = get_or_none(User,id=int(request.GET.get("uid",0)))
-#     pw_now = request.POST.get("pw_now","")
-#     pw_new = request.POST.get("pw_new","")
-#
-#     user = authenticate(username=user_login.username, password=pw_now)
-#
-#     if user :
-#         if pw_new :
-#             user.set_password(pw_new)
-#             user.save()
-#             return HttpResponse("True", status=200)
-#     return HttpResponse("False", status=401)
-#
+def set_user_profilepic(request):
+    pictures = request.FILES.getlist("picture")
+    uid = int(request.GET.get("uid",0))
+    user = get_or_none(User,id=uid)
+    for picture in pictures:
+        user.profile.src.save("%s.jpg"%picture.name, ContentFile(picture.read()))
+    return get_user_info(request)
+
+def set_user_passwd(request):
+    user_login = get_or_none(User,id=int(request.GET.get("uid",0)))
+    pw_now = request.POST.get("pw_now","")
+    pw_new = request.POST.get("pw_new","")
+
+    user = authenticate(username=user_login.username, password=pw_now)
+
+    if user :
+        if pw_new :
+            user.set_password(pw_new)
+            user.save()
+            return HttpResponse("True", status=200)
+    return HttpResponse("False", status=401)
+
 def set_user_info(request):
     user = get_or_none(User,id=int(request.GET.get("uid",0)))
     str_name = request.POST.get("name","")
@@ -275,197 +306,205 @@ def set_school_info(request):
 #
 #     return HttpResponse(json.dumps(arr_u1), content_type="application/json")
 #
-# def get_question_feedback(request):
-#     user = get_or_none(User,id=request.GET.get('uid',0))
-#     question = get_or_none(Question,id=request.GET.get('qid',0))
-#     feedback = get_or_none(QuestionFeedback,user=user,question=question)
-#     if feedback :
-#         return HttpResponse(json.dumps([{'question':feedback.question.id, 'is_good':feedback.is_good}], default=date_handler), content_type="application/json")
-#     return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
-#
-# def set_question_feedback(request):
-#     user = get_or_none(User,id=request.GET.get('uid',0))
-#     question = get_or_none(Question,id=request.GET.get('qid',0))
-#     is_good = request.GET.get('is_good','1')
-#
-#     feedback, created = QuestionFeedback.objects.get_or_create(question=question,user=user)
-#
-#     if is_good == '1' :
-#         is_good = True
-#     elif is_good == '-1' :
-#         feedback.delete()
-#         return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
-#     else :
-#         is_good = False
-#
-#     if feedback :
-#         feedback.is_good = is_good
-#         feedback.save()
-#         return HttpResponse(json.dumps([{'question':feedback.question.id, 'is_good':feedback.is_good}], default=date_handler), content_type="application/json")
-#     return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
-#
-# def get_testpaper_list(request):
-#     user = get_or_none(User,id=request.GET.get("uid",0))
-#
-#     arr = []
-#
-#     testpapers = TestPaper.objects.filter(groups__year=user.profile.group.year,groups__group=user.profile.group.group,Group=user.profile.group.group,is_shown=True,is_exported=True).order_by('-id')
-#
-#     for testpaper in testpapers :
-#         arr.append({'id':testpaper.id, 'title':testpaper.title, 'year':testpaper.year,
-#                     'date':set_date(testpaper.date_created), 'Group_name':testpaper.group.title, 'user':testpaper.user.first_name,
-#                     "purpose":testpaper.get_purpose(),"question_len":len(testpaper.get_questions())})
-#
-#     return HttpResponse(json.dumps(arr, default=date_handler), content_type="application/json")
-#
-# def get_testpaper_question_list(request):
-#     testpaper = get_or_none(TestPaper,id=request.GET.get('tpid',0))
-#     user = get_or_none(User,id=request.GET.get('uid',0))
-#     limit = request.GET.get('limit','')
-#
-#     arr = []
-#
-#     if limit == '':
-#         tpqs = TestPaperQuestion.objects.filter(testpaper_id=testpaper).order_by('-id')
-#     else :
-#         limit = limit.split(':')
-#         if limit : limit = [int(item) for item in limit]
-#         else : limit = [0,0]
-#         tpqs = TestPaperQuestion.objects.filter(testpaper_id=testpaper).order_by('-id')[limit[0]:limit[1]]
-#
-#     if testpaper.get_submit(user) : is_solved = 1
-#     else : is_solved = 0
-#
-#     for tpq in tpqs :
-#         if tpq.question :
-#             arr.append({
-#                 "id":tpq.question.id,"type":tpq.question.type,"unit":tpq.question.unit.id,"unit_title":tpq.question.unit.title,
-#                 "src":tpq.question.src.url,"explain":tpq.question.explain.url,"keyword":tpq.question.keyword,
-#                 "video":tpq.question.video,"answer":tpq.question.answer,"is_active":tpq.question.is_active,
-#                 "items":tpq.question.items,"answer_mobile":tpq.question.answer_mobile,"is_solved":is_solved,
-#                 "purpose":testpaper.purpose,"date_created":"%s"%set_date(tpq.question.date_created),
-#             })
-#
-#     return HttpResponse(json.dumps(arr), content_type="application/json")
-#
-# def set_invenroty(request):
-#     user = get_or_none(User,id=request.GET.get('uid',0))
-#     question = get_or_none(Question,id=request.GET.get('qid',0))
-#
-#     inventory = get_or_none(QuestionInventory, user=user,question=question)
-#
-#     if inventory :
-#         inventory.delete()
-#         return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
-#     else :
-#         inventory, created = QuestionInventory.objects.get_or_create(user=user,question=question)
-#         return HttpResponse(json.dumps([{'question':inventory.question.id}], default=date_handler), content_type="application/json")
-#
-# def get_invenroty(request):
-#     user = get_or_none(User,id=request.GET.get('uid',0))
-#     question = get_or_none(Question,id=request.GET.get('qid',0))
-#
-#     inventory = get_or_none(QuestionInventory, user=user,question=question)
-#
-#     if inventory : return HttpResponse(json.dumps([{'question':inventory.question.id}], default=date_handler), content_type="application/json")
-#     else : return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
-#
-#
-# def get_inventory_list(request):
-#     user = get_or_none(User,id=request.GET.get('uid',0))
-#     units = QuestionInventory.objects.filter(user=user).values('question__unit__unit__unit__unit').annotate(count=Count('question__unit__unit__unit__unit'))
-#
-#     arr = []
-#
-#     for unit in units:
-#         unit2 = get_or_none(QuestionUnit2,id=unit["question__unit__unit__unit__unit"], is_active=True)
-#         if unit2 :
-#             arr.append({"id":unit2.id,"title":unit2.title,'count':unit['count']})
-#
-#     return HttpResponse(json.dumps(arr), content_type="application/json")
-#
-# def get_inventory_question_list(request):
-#     user = get_or_none(User,id=request.GET.get('uid',0))
-#     unit_id = request.GET.get('unit_id',0)
-#     limit = request.GET.get('limit','')
-#
-#     arr = []
-#
-#     if limit == '':
-#         qis = QuestionInventory.objects.filter(user=user,question__unit__unit__unit__unit__id=unit_id).order_by('-id')
-#     else :
-#         limit = limit.split(':')
-#         if limit : limit = [int(item) for item in limit]
-#         else : limit = [0,0]
-#         qis = QuestionInventory.objects.filter(user=user,question__unit__unit__unit__unit__id=unit_id).order_by('-id')[limit[0]:limit[1]]
-#
-#     for qi in qis :
-#         if qi.question :
-#             arr.append({
-#                 "id":qi.question.id,"type":qi.question.type,"unit_id":qi.question.unit.id,"unit":qi.question.unit.title,"unit_title":qi.question.unit.title,"src":qi.question.src.url,"explain":qi.question.explain.url,"keyword":qi.question.keyword,
-#                 "video":qi.question.video,"answer":qi.question.answer,"is_active":qi.question.is_active,"date_created":"%s"%set_date(qi.question.date_created)
-#             })
-#
-#     return HttpResponse(json.dumps(arr), content_type="application/json")
-#
-# def get_testpaper_submit(request):
-#     user = get_or_none(User,id=request.GET.get("uid",0))
-#     testpaper = get_or_none(TestPaper,id=request.GET.get("tpid",0))
-#     testpaper_user = TestPaperSubmit.objects.filter(testpaper=testpaper,user__profile__Group=user.profile.group).values('user').annotate(Count('user'))
-#
-#     myrank = 0
-#
-#     if testpaper_user :
-#         arr_rank = []
-#         for tp_user in testpaper_user :
-#             tu = get_or_none(User,id=tp_user['user'])
-#             arr_rank.append({"uid":tu.id,"username":tu.first_name,"src":tu.profile.src.url,"score":testpaper.get_score_user(tu),"rank":0})
-#
-#         arr_rank.sort(key=sort_score, reverse=True)
-#         for i in range(0,len(arr_rank)):
-#             arr_rank[i]['rank'] = i+1
-#             if arr_rank[i]['uid'] == user.id : myrank = arr_rank[i]['rank']
-#
-#         arr_submit = []
-#
-#         for tq in testpaper.get_questions() :
-#             tps = get_or_none(TestPaperSubmit,user=user,testpaper=testpaper,question=tq)
-#             if tps:
-#                 arr_submit.append({
-#                     "tps_id":tps.id, "user_id":tps.user.id, "testpaper_id":tps.testpaper.id,
-#                     "answer_user":tps.answer, "answer_correct":tps.question.answer_mobile,
-#                     "id":tps.question.id,"type":tps.question.type,"unit_id":tps.question.unit.id,"unit":tps.question.unit.title,"unit_title":tps.question.unit.title,"src":tps.question.src.url,"explain":tps.question.explain.url,"keyword":tps.question.keyword,
-#                     "video":tps.question.video,"answer":tps.question.answer,"is_active":tps.question.is_active,"date_created":"%s"%set_date(tps.question.date_created)
-#                 })
-#
-#         return HttpResponse(json.dumps([{"submits":arr_submit,"ranks":[{
-#             "username":user.first_name,
-#             "src":user.profile.src.url,
-#             "uid":user.id,
-#             "score":testpaper.get_score_user(user),
-#             "rank":myrank,
-#             "scores":arr_rank}]}], default=date_handler), content_type="application/json")
-#     return HttpResponse(json.dumps([{}]), content_type="application/json")
-#
-# def set_testpaper_submit(request):
-#     user = get_or_none(User,id=request.GET.get("uid",0))
-#     testpaper = get_or_none(TestPaper,id=request.GET.get("tpid",0))
-#     answer = request.POST.get("answer","")
-#
-#     jo = json.loads(answer)
-#
-#     for tq in testpaper.get_questions() :
-#         TestPaperSubmit.objects.get_or_create(user=user,testpaper=testpaper,question=tq,answer=jo[str(tq.id)])
-#
-#     ts = list(TestPaperSubmit.objects.filter(user=user,testpaper=testpaper).values())
-#
-#     if ts : return HttpResponse(json.dumps({"state":1}), content_type="application/json")
-#     return HttpResponse(json.dumps({"state":0}), content_type="application/json")
-#
-# def redirect_market(request):
-#     response = HttpResponse("", status=302)
-#     response['Location'] = "market://details?id=net.sevenoclock.mobile"
-#     return response
+def get_question_feedback(request):
+    user = get_or_none(User,id=request.GET.get('uid',0))
+    question = get_or_none(Question,id=request.GET.get('qid',0))
+    feedback = get_or_none(QuestionFeedback,user=user,question=question)
+    if feedback :
+        return HttpResponse(json.dumps([{'question':feedback.question.id, 'is_good':feedback.is_good}], default=date_handler), content_type="application/json")
+    return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
+
+def set_question_feedback(request):
+    user = get_or_none(User,id=request.GET.get('uid',0))
+    question = get_or_none(Question,id=request.GET.get('qid',0))
+    is_good = request.GET.get('is_good','1')
+
+    feedback, created = QuestionFeedback.objects.get_or_create(question=question,user=user)
+
+    if is_good == '1' :
+        is_good = True
+    elif is_good == '-1' :
+        feedback.delete()
+        return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
+    else :
+        is_good = False
+
+    if feedback :
+        feedback.is_good = is_good
+        feedback.save()
+        return HttpResponse(json.dumps([{'question':feedback.question.id, 'is_good':feedback.is_good}], default=date_handler), content_type="application/json")
+    return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
+
+def get_testpaper_list(request):
+    user = get_or_none(User,id=request.GET.get("user_id",0))
+    union = get_or_none(Union,id=request.GET.get("union_id",0))
+    unionuser = get_or_none(UnionUser,union=union,user=user)
+
+    groups = []
+
+    for g in Group.objects.filter(unionuser=unionuser):
+        groups.append(g.id)
+
+    for gu in GroupUser.objects.filter(unionuser=unionuser):
+        groups.append(gu.group.id)
+
+    arr = []
+    testpapers = TestPaper.objects.filter(union=union,groups__in=groups,is_shown=True,is_exported=True).distinct().order_by('-id')
+
+    for testpaper in testpapers :
+        arr.append({'id':testpaper.id, 'title':testpaper.title, 'date':set_date(testpaper.date_created), 'user':testpaper.user.first_name,
+                    "purpose":testpaper.get_purpose(),"question_len":len(testpaper.get_questions())})
+
+    return HttpResponse(json.dumps(arr, default=date_handler), content_type="application/json")
+
+def get_testpaper_question_list(request):
+    testpaper = get_or_none(TestPaper,id=request.GET.get('tpid',0))
+    user = get_or_none(User,id=request.GET.get('uid',0))
+    limit = request.GET.get('limit','')
+
+    arr = []
+
+    if limit == '':
+        tpqs = TestPaperQuestion.objects.filter(testpaper_id=testpaper).order_by('-id')
+    else :
+        limit = limit.split(':')
+        if limit : limit = [int(item) for item in limit]
+        else : limit = [0,0]
+        tpqs = TestPaperQuestion.objects.filter(testpaper_id=testpaper).order_by('-id')[limit[0]:limit[1]]
+
+    if testpaper.get_submit(user) : is_solved = 1
+    else : is_solved = 0
+
+    for tpq in tpqs :
+        if tpq.question :
+            arr.append({
+                "id":tpq.question.id,"type":tpq.question.type,"unit":tpq.question.unit.id,"unit_title":tpq.question.unit.title,
+                "src":tpq.question.src.url,"explain":tpq.question.explain.url,"keyword":tpq.question.keyword,
+                "video":tpq.question.video,"answer":tpq.question.answer,"is_active":tpq.question.is_active,
+                "items":tpq.question.items,"answer_mobile":tpq.question.answer_mobile,"is_solved":is_solved,
+                "purpose":testpaper.purpose,"date_created":"%s"%set_date(tpq.question.date_created),
+            })
+
+    return HttpResponse(json.dumps(arr), content_type="application/json")
+
+def set_invenroty(request):
+    user = get_or_none(User,id=request.GET.get('uid',0))
+    question = get_or_none(Question,id=request.GET.get('qid',0))
+
+    inventory = get_or_none(QuestionInventory, user=user,question=question)
+
+    if inventory :
+        inventory.delete()
+        return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
+    else :
+        inventory, created = QuestionInventory.objects.get_or_create(user=user,question=question)
+        return HttpResponse(json.dumps([{'question':inventory.question.id}], default=date_handler), content_type="application/json")
+
+def get_invenroty(request):
+    user = get_or_none(User,id=request.GET.get('uid',0))
+    question = get_or_none(Question,id=request.GET.get('qid',0))
+
+    inventory = get_or_none(QuestionInventory, user=user,question=question)
+
+    if inventory : return HttpResponse(json.dumps([{'question':inventory.question.id}], default=date_handler), content_type="application/json")
+    else : return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
+
+
+def get_inventory_list(request):
+    user = get_or_none(User,id=request.GET.get('uid',0))
+    units = QuestionInventory.objects.filter(user=user).values('question__unit__unit__unit__unit').annotate(count=Count('question__unit__unit__unit__unit'))
+
+    arr = []
+
+    for unit in units:
+        unit2 = get_or_none(QuestionUnit2,id=unit["question__unit__unit__unit__unit"], is_active=True)
+        if unit2 :
+            arr.append({"id":unit2.id,"title":unit2.title,'count':unit['count']})
+
+    return HttpResponse(json.dumps(arr), content_type="application/json")
+
+def get_inventory_question_list(request):
+    user = get_or_none(User,id=request.GET.get('uid',0))
+    unit_id = request.GET.get('unit_id',0)
+    limit = request.GET.get('limit','')
+
+    arr = []
+
+    if limit == '':
+        qis = QuestionInventory.objects.filter(user=user,question__unit__unit__unit__unit__id=unit_id).order_by('-id')
+    else :
+        limit = limit.split(':')
+        if limit : limit = [int(item) for item in limit]
+        else : limit = [0,0]
+        qis = QuestionInventory.objects.filter(user=user,question__unit__unit__unit__unit__id=unit_id).order_by('-id')[limit[0]:limit[1]]
+
+    for qi in qis :
+        if qi.question :
+            arr.append({
+                "id":qi.question.id,"type":qi.question.type,"unit_id":qi.question.unit.id,"unit":qi.question.unit.title,"unit_title":qi.question.unit.title,"src":qi.question.src.url,"explain":qi.question.explain.url,"keyword":qi.question.keyword,
+                "video":qi.question.video,"answer":qi.question.answer,"is_active":qi.question.is_active,"date_created":"%s"%set_date(qi.question.date_created)
+            })
+
+    return HttpResponse(json.dumps(arr), content_type="application/json")
+
+def get_testpaper_submit(request):
+    user = get_or_none(User,id=request.GET.get("uid",0))
+    testpaper = get_or_none(TestPaper,id=request.GET.get("tpid",0))
+    testpaper_user = TestPaperSubmit.objects.filter(testpaper=testpaper,user=user).values('user').annotate(Count('user'))
+
+    myrank = 0
+
+    if testpaper_user :
+        arr_rank = []
+        for tp_user in testpaper_user :
+            tu = get_or_none(User,id=tp_user['user'])
+            arr_rank.append({"uid":tu.id,"username":tu.first_name,"src":tu.profile.src.url,"score":testpaper.get_score_user(tu),"rank":0})
+
+        arr_rank.sort(key=sort_score, reverse=True)
+        for i in range(0,len(arr_rank)):
+            arr_rank[i]['rank'] = i+1
+            if arr_rank[i]['uid'] == user.id : myrank = arr_rank[i]['rank']
+
+        arr_submit = []
+
+        for tq in testpaper.get_questions() :
+            tps = get_or_none(TestPaperSubmit,user=user,testpaper=testpaper,question=tq)
+            if tps:
+                arr_submit.append({
+                    "tps_id":tps.id, "user_id":tps.user.id, "testpaper_id":tps.testpaper.id,
+                    "answer_user":tps.answer, "answer_correct":tps.question.answer_mobile,
+                    "id":tps.question.id,"type":tps.question.type,"unit_id":tps.question.unit.id,"unit":tps.question.unit.title,"unit_title":tps.question.unit.title,"src":tps.question.src.url,"explain":tps.question.explain.url,"keyword":tps.question.keyword,
+                    "video":tps.question.video,"answer":tps.question.answer,"is_active":tps.question.is_active,"date_created":"%s"%set_date(tps.question.date_created)
+                })
+
+        return HttpResponse(json.dumps([{"submits":arr_submit,"ranks":[{
+            "username":user.first_name,
+            "src":user.profile.src.url,
+            "uid":user.id,
+            "score":testpaper.get_score_user(user),
+            "rank":myrank,
+            "scores":arr_rank}]}], default=date_handler), content_type="application/json")
+    return HttpResponse(json.dumps([{}]), content_type="application/json")
+
+def set_testpaper_submit(request):
+    user = get_or_none(User,id=request.GET.get("uid",0))
+    testpaper = get_or_none(TestPaper,id=request.GET.get("tpid",0))
+    answer = request.POST.get("answer","")
+
+    jo = json.loads(answer)
+
+    for tq in testpaper.get_questions() :
+        TestPaperSubmit.objects.get_or_create(user=user,testpaper=testpaper,question=tq,answer=jo[str(tq.id)])
+
+    ts = list(TestPaperSubmit.objects.filter(user=user,testpaper=testpaper).values())
+
+    if ts : return HttpResponse(json.dumps({"state":1}), content_type="application/json")
+    return HttpResponse(json.dumps({"state":0}), content_type="application/json")
+
+def redirect_market(request):
+    response = HttpResponse("", status=302)
+    response['Location'] = "market://details?id=net.sevenoclock.mobile"
+    return response
 
 @csrf_exempt
 def mobile(request):
@@ -473,14 +512,16 @@ def mobile(request):
         return get_user(request)
     elif request.GET.get("mode") == "get_user_info" :
         return get_user_info(request)
+    elif request.GET.get("mode") == "get_union_info" :
+        return get_union_info(request)
     elif request.GET.get("mode") == "get_school_name" :
         return get_school_name(request)
     elif request.GET.get("mode") == "set_user" :
         return set_user(request)
-    # elif request.GET.get("mode") == "set_user_profilepic" :
-    #     return set_user_profilepic(request)
-    # elif request.GET.get("mode") == "set_user_passwd" :
-    #     return set_user_passwd(request)
+    elif request.GET.get("mode") == "set_user_profilepic" :
+        return set_user_profilepic(request)
+    elif request.GET.get("mode") == "set_user_passwd" :
+        return set_user_passwd(request)
     elif request.GET.get("mode") == "set_user_info" :
         return set_user_info(request)
     elif request.GET.get("mode") == "set_school_info" :
@@ -491,28 +532,28 @@ def mobile(request):
     #     return get_question_list(request)
     # elif request.GET.get("mode") == "get_question_search" :
     #     return get_question_search(request)
-    # elif request.GET.get("mode") == "get_question_feedback" :
-    #     return get_question_feedback(request)
-    # elif request.GET.get("mode") == "set_question_feedback" :
-    #     return set_question_feedback(request)
-    # elif request.GET.get("mode") == "get_testpaper_list" :
-    #     return get_testpaper_list(request)
-    # elif request.GET.get("mode") == "get_testpaper_question_list" :
-    #     return get_testpaper_question_list(request)
-    # elif request.GET.get("mode") == "get_invenroty":
-    #     return get_invenroty(request)
-    # elif request.GET.get("mode") == "set_invenroty":
-    #     return set_invenroty(request)
-    # elif request.GET.get("mode") == "get_inventory_list":
-    #     return get_inventory_list(request)
-    # elif request.GET.get("mode") == "get_inventory_question_list":
-    #     return get_inventory_question_list(request)
-    # elif request.GET.get("mode") == "get_testpaper_submit":
-    #     return get_testpaper_submit(request)
-    # elif request.GET.get("mode") == "set_testpaper_submit":
-    #     return set_testpaper_submit(request)
-    # elif request.GET.get("mode") == "redirect_market":
-    #     return redirect_market(request)
+    elif request.GET.get("mode") == "get_question_feedback" :
+        return get_question_feedback(request)
+    elif request.GET.get("mode") == "set_question_feedback" :
+        return set_question_feedback(request)
+    elif request.GET.get("mode") == "get_testpaper_list" :
+        return get_testpaper_list(request)
+    elif request.GET.get("mode") == "get_testpaper_question_list" :
+        return get_testpaper_question_list(request)
+    elif request.GET.get("mode") == "get_invenroty":
+        return get_invenroty(request)
+    elif request.GET.get("mode") == "set_invenroty":
+        return set_invenroty(request)
+    elif request.GET.get("mode") == "get_inventory_list":
+        return get_inventory_list(request)
+    elif request.GET.get("mode") == "get_inventory_question_list":
+        return get_inventory_question_list(request)
+    elif request.GET.get("mode") == "get_testpaper_submit":
+        return get_testpaper_submit(request)
+    elif request.GET.get("mode") == "set_testpaper_submit":
+        return set_testpaper_submit(request)
+    elif request.GET.get("mode") == "redirect_market":
+        return redirect_market(request)
     return HttpResponse('0')
 
 def date_handler(obj):

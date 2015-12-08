@@ -35,7 +35,7 @@ Table of Contents:
 /////////////////////////////////////////////////////////////////////*/
 
 * {
- outline:0 !important
+    outline:0 !important
 
 }
 body {
@@ -96,7 +96,7 @@ ul {
 }
 .title-box {
     text-align:center;
-    margin-bottom:80px;
+    margin-bottom: 70px;
 }
 .title-box.text-left {
     text-align:left;
@@ -173,7 +173,7 @@ b, strong {
 }
 
 
-/* ///////////////////////////////////////////////////////////////////// 
+/* /////////////////////////////////////////////////////////////////////
 // 02 - Side Menu
 /////////////////////////////////////////////////////////////////////*/
 
@@ -267,7 +267,7 @@ b, strong {
 }
 
 
-/* ///////////////////////////////////////////////////////////////////// 
+/* /////////////////////////////////////////////////////////////////////
 // 03 - Preloader
 /////////////////////////////////////////////////////////////////////*/
 
@@ -283,7 +283,7 @@ b, strong {
 }
 
 
-/* ///////////////////////////////////////////////////////////////////// 
+/* /////////////////////////////////////////////////////////////////////
 // 04 - Header
 /////////////////////////////////////////////////////////////////////*/
 
@@ -331,7 +331,7 @@ b, strong {
 }
 
 
-/* ///////////////////////////////////////////////////////////////////// 
+/* /////////////////////////////////////////////////////////////////////
 // 05 - Banner
 /////////////////////////////////////////////////////////////////////*/
 
@@ -416,7 +416,7 @@ b, strong {
 
 
 
-/* ///////////////////////////////////////////////////////////////////// 
+/* /////////////////////////////////////////////////////////////////////
 // 06 - Video Preview
 /////////////////////////////////////////////////////////////////////*/
 
@@ -431,7 +431,7 @@ b, strong {
 }
 
 
-/* ///////////////////////////////////////////////////////////////////// 
+/* /////////////////////////////////////////////////////////////////////
 // 07 - Features
 /////////////////////////////////////////////////////////////////////*/
 
@@ -458,14 +458,18 @@ b, strong {
     top:0;
 }
 .item-list-right h3,.item-list-left h3 {
-    margin:0 0 25px 0;
+    margin: 0 0 10px 0;
     font-weight:300;
 }
 .item-list-right.item-list-big li {
-    padding:0 80px 60px 0;
+    font-size: 14px;
+    min-height: 230px;
+    padding: 0 80px 30px 0px;
 }
 .item-list-left.item-list-big li {
-    padding:0 0px 60px 80px;
+    font-size: 14px;
+    min-height: 230px;
+    padding: 0 0px 30px 80px;
 }
 .item-list-big li i {
     font-size:48px;
@@ -597,7 +601,7 @@ b, strong {
 
 
 
-/* ///////////////////////////////////////////////////////////////////// 
+/* /////////////////////////////////////////////////////////////////////
 // 08 - Speciality
 /////////////////////////////////////////////////////////////////////*/
 
@@ -628,7 +632,7 @@ b, strong {
 
 
 
-/* ///////////////////////////////////////////////////////////////////// 
+/* /////////////////////////////////////////////////////////////////////
 // 09 - Image-Content Blocks
 /////////////////////////////////////////////////////////////////////*/
 
@@ -641,28 +645,67 @@ b, strong {
 }
 .feature-list li {
     margin-bottom:26px;
+    font-size: 15px;
 }
 .feature-list li i {
     color:#41A1E1;
-    margin-right:10px;
+    padding: 0 10px;
     font-size:1.2em;
 }
 .mb50 {
     margin-bottom:50px;
 }
-#features-right-image {
+#features-left-image {
     background-color: #f8f8f8;
 }
 
+#features-right-image {
+    background-color: #fff;
+}
 
-/* ///////////////////////////////////////////////////////////////////// 
+
+/* /////////////////////////////////////////////////////////////////////
 // 10 - Screenshots
 /////////////////////////////////////////////////////////////////////*/
 
 #gallery {
-    
+    background-color: #f8f8f8;
 }
-#screenshots .item {
+#screenshot_devices {
+    text-align: center;
+}
+#screenshot_devices i {
+    display: inline-block;
+    padding: 10px 10px 10px 10px;
+    margin: 0px 20px 20px 20px;
+    font-family: xeicon;
+    speak: none;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    border-radius: 50px;
+    cursor: pointer;
+}
+#screenshot_devices i:hover{
+    color: #fff;
+    background: #f39c12;
+    border-color: #f39c12;
+}
+#screenshots_app .item {
+    padding:0px 0px;
+    margin:10px;
+    color:#FFF;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+    text-align:center;
+    display:block;
+}
+#screenshots_web .item {
     padding:0px 0px;
     margin:10px;
     color:#FFF;
@@ -673,6 +716,7 @@ b, strong {
     display:block;
 }
 .customNavigation {
+    font-size: 10px;
     text-align:center;
     margin-top:40px;
 }
@@ -689,7 +733,7 @@ b, strong {
     color:#41A1E1;
     font-size:2em;
     margin:0 6px;
-    padding:10px 19px;
+    padding: 5px;
     line-height:0;
     border:2px solid;
     border-radius:50%;
@@ -756,7 +800,7 @@ b, strong {
     display:block;
     width:30px;
     height:30px;
-    line-height:1.6;
+    line-height: 1.4;
     border-radius:50%;
     transition:0.5s ease all;
 }

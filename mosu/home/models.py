@@ -49,9 +49,8 @@ class Union(models.Model):
     def get_groups(self):
         return Group.objects.filter(union=self)
 
-    def get_users(self):
-        uu = UnionUser.objects.filter(union=self).values_list("user")
-        return User.objects.filter(id__in=uu)
+    def get_unionusers(self):
+        return UnionUser.objects.filter(union=self)
 
     def get_logo(self):
         if self.logo :
@@ -94,7 +93,6 @@ class Group(models.Model):
 class GroupUser(models.Model):
     group = models.ForeignKey(Group)
     unionuser = models.ForeignKey(UnionUser)
-    is_active = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "그룹 사용자(GroupUser)"

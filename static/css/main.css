@@ -51,7 +51,7 @@
 #wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_profile .div_element_content .div_profile_head .div_profile_head_level {position:absolute;width: 100%;top: 125px;font-size: 12px;color: #666;text-align: center;}
 #wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_profile .div_element_content .div_profile_head .div_profile_head_name {position:absolute;width: 100%;top: 140px;font-size: 15px;font-weight: 700;color: #000;text-align: center;}
 
-#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content {padding:24px;overflow: hidden;overflow-x: scroll;display: flex;}
+#wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content {height: 217px;padding:24px;overflow: hidden;display: flex;}
 #wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper {position: relative;width: 120px;height: 150px;margin: 0px 10px 0 0px;border: 1px solid RGBA(0,0,0,0.2);border-left: 4px solid RGBA(0,0,0,0.2);border-radius: 0 10px 10px 0;background-color: #517A92;overflow: hidden;cursor: pointer;}
 #wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper:hover {box-shadow: 0px 0px 10px 0px #47A794;}
 #wrap #container #content .div_content_board_dashboard #div_dashboard_board .div_dashboard_inventory .div_element_content .div_dashboard_testpaper .div_dashboard_testpaper_bg {position: absolute;top: 0;left: 0;width:100%;height:100%;opacity: 0.1;z-index: 1;}
@@ -120,6 +120,7 @@
 #wrap #container #content .div_content_board_groupuser .div_groupuser_board {width: 48%;margin: 10px;padding: 30px;word-wrap: break-word;background-color: #fff;border: 1px solid #d9d9d9;}
 #wrap #container #content .div_content_board_groupuser .div_groupuser_board td {line-height: 30px}
 #wrap #container #content .div_content_board_groupuser .div_groupuser_board .img_groupuser_profilepic {height:30px;border-radius:30px;margin-right:10px}
+#wrap #container #content .div_content_board_groupuser .div_groupuser_board .div_groupuser_profilepic {height:30px;width: 30px;line-height: 30px;font-size: 11px;text-align: center;border-radius:30px;margin-right:10px;background-color: #41CAB8;color: #FFF;float:left}
 #wrap #container #content .div_content_board_groupuser .div_groupuser_board .i_groupuser_groupuser_move {color:#34495e;cursor:pointer;}
 #wrap #container #content .div_content_board_groupuser .div_groupuser_board .i_groupuser_groupuser_move:hover {font-weight:700}
 #wrap #container #content .div_content_board_groupuser .div_groupuser_board .i_groupuser_groupuser_delete {color:#e74c3c;cursor:pointer;}

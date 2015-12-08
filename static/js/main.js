@@ -19,6 +19,17 @@ $(document).ready(function(){
         radioClass: 'iradio_square-green'
     });
 
+    $("#div_modal_searchunion #btn_searchunion_submit").click(function(){
+        var union_id = $("#div_modal_searchunion #union_id").val();
+
+        $.post("/main/dashboard/post/union/register/",{
+            'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
+            'union_id':union_id,
+        },function(data){
+            location.href="/main/?id="+data;
+        });
+    });
+
     $("#wrap #container #div_main_dark").click(function(){
         $("#wrap #container #div_main_dark").hide();
         $('#div_header_union').css({"z-index":"initial"});

@@ -58,6 +58,7 @@ urlpatterns = [
     url(r'^main/mypage/post/pw/change/$', 'mosu.main.views.main_mypage_post_pw_change'),
     url(r'^main/mypage/post/info/change/$', 'mosu.main.views.main_mypage_post_info_change'),
     url(r'^main/dashboard/post/school/register/$', 'mosu.main.views.main_dashboard_post_school_register'),
+    url(r'^main/dashboard/post/union/register/$', 'mosu.main.views.main_dashboard_post_union_register'),
     url(r'^mobile/$', 'mosu.mobile.views.mobile'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 ]

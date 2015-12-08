@@ -13,7 +13,7 @@
             <div class="div_profile_head">
                 <div class="div_profile_head_bg" style="background-image: url({{ user.profile.get_src }})"></div>
                 <div class="div_profile_head_pic" style="background-image: url({{ user.profile.get_src }})"></div>
-                <p class="div_profile_head_level">{{ user|get_level_by_union:union }}</p>
+                <p class="div_profile_head_level">{{ user|get_level_by_union:union|get_title_by_level }}</p>
                 <p class="div_profile_head_name">{{ user.first_name }}</p>
             </div>
         </div>
@@ -24,7 +24,7 @@
         <div class="div_element_content">
             <div style="display: flex">
                 {% if testpapers %}
-                    {% for testpaper in testpapers|slice:":3" %}
+                    {% for testpaper in testpapers|slice:":2" %}
                         <div class="div_dashboard_testpaper" onclick="link_content({'link':'testpaper', 'tpid':'{{ testpaper.id }}'})">
                             <div class="div_dashboard_testpaper_bg"></div>
                             <div class="div_dashboard_testpaper_title">{{testpaper.title}}</div>
