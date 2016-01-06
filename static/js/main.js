@@ -31,23 +31,30 @@ $(document).ready(function(){
     });
 
     $("#div_modal_makeunion #btn_makeunion_submit").click(function(){
-        var union_id = $("#div_modal_makeunion #union_id").val();
+        var union_id = $("#div_header_union").attr('union_id');;
 
         $.post("/main/dashboard/post/group/register/", {
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
             'union_id' : union_id,
-        }, function(result) {
-            if(result == "False") {
-                alert("결제를 진행하세요.");
-                $("#div_modal_makeunion").modal("hide");
-                return false;
+            'title' : $("#input_makeunion_ele_name").val(),
+            'adres' : $("#input_searchunion_ele_adres").val()
+        }, function(data, err) {
+            if(data == "False") {
+                alert("결제가 되지 않았습니다.");
             } else {
                 alert("소속 등록이 완료되었습니다.");
-                return false;
             }
+            location.reload(true);
             //location.href = "/main/?id="+data;
         });
     });
+
+     $("#div_modal_makeunion #input_searchunion_ele_adres").keyup(function(e){
+         var code = e.keyCode || e.which;
+
+         if(code == 9)
+            $("#div_modal_makeunion #input_searchunion_ele_adres").click();
+     });
 
     $("#div_modal_makeunion #input_searchunion_ele_adres").click(function(){
         new daum.Postcode({
@@ -397,17 +404,18 @@ function link_content(obj){
         $("#wrap #container #div_select_box").hide();
     }else if(obj.link == 'payment'){
         select_url = "/payment/?id=" + obj.group_id;
-
-        $("#content").load(select_url,{
+        $.post(select_url, {
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
             ,'union_id':union_id
-        },function(data, err){
-            if(data = 'False') {
+        }, function(data, err){
+            if(data == 'True') {
                 alert("무료 신청이 완료 되었습니다.");
+            } else if(data == 'False'){
+                alert("이미 무료 신청이 완료 되었습니다.");
             }
 
             $("#div_main_loading").fadeOut();
-            //if(err == "error") location.reload(true);
+            if(err == "error") location.reload(true);
         });
     }
 

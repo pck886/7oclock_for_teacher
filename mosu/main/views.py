@@ -17,7 +17,7 @@ def main(request):
 
     this_union = get_or_none(Union,id=request.GET.get("id",0))
 
-    unionusers = UnionUser.objects.filter(user=request.user)
+    unionusers = UnionUser.objects.filter(user=request.user, union__is_active=True).order_by("-id")
 
     if unionusers :
         if this_union == None :
@@ -566,34 +566,53 @@ def main_dashboard_post_union_register(request):
 
 def main_dashboard_post_group_register(request):
     user = request.user
+    #union_id = int(request.POST.get("union_id", 0))
+
+    if get_or_none(Union, user=user, is_paid=False):
+        if not get_or_none(Union, user=user, is_active=False):
+            unionUser = UnionUser.objects.get(user=user, is_active=True)
+            union = Union.objects.get(user=user, is_active=True)
+            group = Group.objects.get(union=union, is_active=True)
+            unionUser.is_active = False
+            union.is_active = False
+            group.is_active = False
+            unionUser.save()
+            union.save()
+            group.save()
+
+        title = request.POST.get("title", "")
+
+        union_obj, err = Union.objects.get_or_create(
+            user=user,
+            title=title,
+            address=request.POST.get("adres", ""),
+            phone=user.profile.phone,
+            icon="/static/img/main/icon_union_tmp.png",
+            is_paid=True,
+            is_active=True
+        )
+
+        unionuser_obj, err = UnionUser.objects.get_or_create(
+            union = union_obj,
+            user = user,
+            is_active = True
+        )
+
+        Group.objects.get_or_create(
+            union = union_obj,
+            unionuser = unionuser_obj,
+            title = u"유료그룹_" + title,
+            is_paid=True,
+            is_active=True
+        )
+        return HttpResponse("True")
+
+    return HttpResponse("False")
+
+def main_payment(request):
     union_id = int(request.POST.get("union_id", 0))
 
     union = get_or_none(Union, id=union_id)
 
-    if get_or_none(Group, union=union, is_paid=True) == None:
-        return HttpResponse("False")
-    else :
-        unionUser = UnionUser.objects.get(user=user, is_active=True)
-        union = Union.objects.get(user=user, is_active=True)
-        unionUser.is_active = False
-        union.is_active = False
-        unionUser.save()
-        union.save()
-        return HttpResponse("True")
-    #if get_or_none(UnionUser, union = union, user = user) == None:
 
-    return HttpResponse("0")
-
-def main_payment(request):
-    user = request.user
-    q = request.GET.get('q', '')
-    union = get_or_none(Union, id=request.POST.get('union_id',0))
-
-    if get_or_none(Group, union=union, is_paid=False) != None :
-        group = Group.objects.get(id=int(request.GET.get("id",0)), union=union)
-        group.is_paid = True
-        group.title = "유료회원"
-        group.save()
-        return HttpResponse("False")
-
-    return HttpResponse("True")
+    return HttpResponse('True')
