@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'mosu.about.views.about'),
     url(r'^about/$', 'mosu.about.views.about'),
+    url(r'^about/campaign', 'mosu.about.views.campaign'),
     url(r'^home/$', 'mosu.home.views.home'),
     url(r'^home/list/school/$', 'mosu.home.views.home_list_school'),
     url(r'^home/list/union/$', 'mosu.home.views.home_list_union'),
@@ -59,6 +60,9 @@ urlpatterns = [
     url(r'^main/mypage/post/info/change/$', 'mosu.main.views.main_mypage_post_info_change'),
     url(r'^main/dashboard/post/school/register/$', 'mosu.main.views.main_dashboard_post_school_register'),
     url(r'^main/dashboard/post/union/register/$', 'mosu.main.views.main_dashboard_post_union_register'),
+    url(r'^main/dashboard/post/group/register/$', 'mosu.main.views.main_dashboard_post_group_register'),
+    url(r'^payment/$', 'mosu.main.views.main_payment'),
+    #url(r'^show/', 'mosu.mobile.views.show'),
     url(r'^mobile/$', 'mosu.mobile.views.mobile'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 ]

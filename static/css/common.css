@@ -35,3 +35,7 @@ hr {  border: 0;  border-top: 1px dotted #CBCBCB;}
     .modal-dialog {width:500px}
     .modal-content {-webkit-box-shadow: 0 0px 10px 3px rgba(0,0,0,.1);box-shadow: 0 0px 10px 3px rgba(0,0,0,.1);}
 }
+
+/* 버튼정렬 */
+.btn_left {float:left;}
+.btn_right {float:right;}

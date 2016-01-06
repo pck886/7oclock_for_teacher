@@ -30,6 +30,75 @@ $(document).ready(function(){
         });
     });
 
+    $("#div_modal_makeunion #btn_makeunion_submit").click(function(){
+        var union_id = $("#div_modal_makeunion #union_id").val();
+
+        $.post("/main/dashboard/post/group/register/", {
+            'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
+            'union_id' : union_id,
+        }, function(result) {
+            if(result == "False") {
+                alert("결제를 진행하세요.");
+                $("#div_modal_makeunion").modal("hide");
+                return false;
+            } else {
+                alert("소속 등록이 완료되었습니다.");
+                return false;
+            }
+            //location.href = "/main/?id="+data;
+        });
+    });
+
+    $("#div_modal_makeunion #input_searchunion_ele_adres").click(function(){
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+                // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+                if(fullRoadAddr !== ''){
+                    fullRoadAddr += extraRoadAddr;
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                //document.getElementById('sample4_postcode').value = data.zonecode; //5자리 새우편번호 사용
+                document.getElementById('input_searchunion_ele_adres').value = fullRoadAddr;
+                //document.getElementById('sample4_jibunAddress').value = data.jibunAddress;
+
+                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                if(data.autoRoadAddress) {
+                    //예상되는 도로명 주소에 조합형 주소를 추가한다.
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    document.getElementById('guide').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+
+                } else if(data.autoJibunAddress) {
+                    var expJibunAddr = data.autoJibunAddress;
+                    document.getElementById('guide').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+
+                } else {
+                    document.getElementById('guide').innerHTML = '';
+                }
+            }
+        }).open();
+    });
+
     $("#wrap #container #div_main_dark").click(function(){
         $("#wrap #container #div_main_dark").hide();
         $('#div_header_union').css({"z-index":"initial"});
@@ -176,6 +245,12 @@ function search_union(){
     $("#div_modal_searchunion").modal("show");
 }
 
+function make_union(){
+    $("#wrap #container #div_main_dark").hide();
+    $('#div_header_union').css({"z-index":"initial"});
+    $("#div_modal_makeunion").modal("show");
+}
+
 function link_dashboard_union(){
     $("#div_main_loading").show();
     $(".div_content_board_dashboard #div_dashboard_board").load("/dashboard/union/",{
@@ -320,6 +395,20 @@ function link_content(obj){
             //if(err == "error") location.reload(true);
         });
         $("#wrap #container #div_select_box").hide();
+    }else if(obj.link == 'payment'){
+        select_url = "/payment/?id=" + obj.group_id;
+
+        $("#content").load(select_url,{
+            'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val()
+            ,'union_id':union_id
+        },function(data, err){
+            if(data = 'False') {
+                alert("무료 신청이 완료 되었습니다.");
+            }
+
+            $("#div_main_loading").fadeOut();
+            //if(err == "error") location.reload(true);
+        });
     }
 
 }

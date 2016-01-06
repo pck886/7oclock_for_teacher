@@ -19,11 +19,11 @@ def main(request):
 
     unionusers = UnionUser.objects.filter(user=request.user)
 
-    if this_union == None and unionusers :
-        this_union = unionusers[0].union
-
-    if get_or_none(UnionUser, union=this_union, user=request.user, is_active=True) == None :
-        return HttpResponseRedirect("/main/")
+    if unionusers :
+        if this_union == None :
+            this_union = unionusers[0].union
+        if get_or_none(UnionUser, union=this_union, user=request.user, is_active=True) == None :
+            return HttpResponseRedirect("/home/")
 
     context = {
         'user':request.user,
@@ -399,7 +399,9 @@ def main_groupuser(request):
     else :
         groups = Group.objects.filter(union=union,unionuser__user=user).order_by('id')
 
-    if this_group == None : this_group = groups[0]
+    if this_group == None :
+        if groups :
+            this_group = groups[0]
 
     context = {
         'user': user,
@@ -561,3 +563,37 @@ def main_dashboard_post_union_register(request):
         UnionUser.objects.get_or_create(union=union, user=user, is_active=False)
         return HttpResponse("%d"%union.id)
     return HttpResponse("0")
+
+def main_dashboard_post_group_register(request):
+    user = request.user
+    union_id = int(request.POST.get("union_id", 0))
+
+    union = get_or_none(Union, id=union_id)
+
+    if get_or_none(Group, union=union, is_paid=True) == None:
+        return HttpResponse("False")
+    else :
+        unionUser = UnionUser.objects.get(user=user, is_active=True)
+        union = Union.objects.get(user=user, is_active=True)
+        unionUser.is_active = False
+        union.is_active = False
+        unionUser.save()
+        union.save()
+        return HttpResponse("True")
+    #if get_or_none(UnionUser, union = union, user = user) == None:
+
+    return HttpResponse("0")
+
+def main_payment(request):
+    user = request.user
+    q = request.GET.get('q', '')
+    union = get_or_none(Union, id=request.POST.get('union_id',0))
+
+    if get_or_none(Group, union=union, is_paid=False) != None :
+        group = Group.objects.get(id=int(request.GET.get("id",0)), union=union)
+        group.is_paid = True
+        group.title = "유료회원"
+        group.save()
+        return HttpResponse("False")
+
+    return HttpResponse("True")

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
-from mosu.docs.models import Question
+from mosu.docs.models import Question, QuestionUnit2
 from mosu.home.models import Union, Group
 
 
@@ -87,3 +87,47 @@ class TestPaperSubmit(models.Model):
 
     def is_answer(self):
         return self.question.answer_mobile == self.answer
+
+class QnAQuestion(models.Model):
+    user = models.ForeignKey(User)
+    unit = models.ForeignKey(QuestionUnit2)
+    contents = models.TextField(default="")
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "질문(QnAQuestion)"
+
+    def __unicode__(self):
+        return u'[%d] %s:%s' %(self.id, self.user, self.contents)
+
+    def get_srcs(self):
+        arr= []
+        images = QnAQuestionImage.objects.filter(qnaquestion=self)
+        for image in images:
+            arr.append(image.src.url)
+        return arr
+
+class QnAQuestionImage(models.Model):
+    qnaquestion = models.ForeignKey(QnAQuestion)
+    src = models.FileField(upload_to="upload/",null=True,blank=True)
+
+class QnAAnswer(models.Model):
+    user = models.ForeignKey(User)
+    question = models.ForeignKey(QnAQuestion)
+    contents = models.TextField(default="")
+    is_selected = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "답변(QnAAnswer)"
+
+    def get_srcs(self):
+        arr= []
+        images = QnAAnswerImage.objects.filter(qnaanswer=self)
+        for image in images:
+            arr.append(image.src.url)
+        return arr
+
+class QnAAnswerImage(models.Model):
+    qnaanswer= models.ForeignKey(QnAAnswer)
+    src = models.FileField(upload_to="upload/",null=True,blank=True)

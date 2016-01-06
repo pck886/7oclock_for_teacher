@@ -42,7 +42,7 @@
                         {% for unionuser in unionusers %}
                             {% if unionuser.union != this_union %}
                                 <li role="presentation">
-                                    {% if unionuser.user|get_level_by_union:unionuser.union != 0 %}
+                                    {% if unionuser.user|get_level_by_union:unionuser.union == 1 or unionuser.user|get_level_by_union:unionuser.union == 2 %}
                                         <a role="menuitem" tabindex="-1" href="javascript:;" onclick="location.href='/main/?id={{ unionuser.union.id }}';">{{ unionuser.union.title }}</a>
                                     {% else %}
                                         <a role="menuitem" tabindex="-1" style="background-color:initial;color:rgba(255, 255, 255, 0.48);" title="선생님 권한이 필요합니다.">{{ unionuser.union.title }}</a>
@@ -52,7 +52,7 @@
                         {% endfor %}
                         <li role="presentation" class="divider"></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick="search_union()"><i class="xi-magnifier"></i> 소속 검색하기</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick="search_union()"><i class="xi-plus"></i> 소속 등록하기</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" onclick="make_union()"><i class="xi-plus"></i> 소속 등록하기</a></li>
                     </ul>
                 </div>
             {% endif %}
@@ -80,6 +80,7 @@
 <script type="text/javascript" src="/static/js/jQuery.print.js"></script>
 <script type="text/javascript" src="/static/js/common.js"></script>
 <script type="text/javascript" src="/static/js/main.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} });
 </script>

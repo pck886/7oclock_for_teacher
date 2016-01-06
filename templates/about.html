@@ -31,6 +31,8 @@
 
     <link rel="stylesheet" href="/static/about/css/colors/cyan.css">
 
+    <link rel="stylesheet" href="/static/about/css/about.css">
+
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic|Roboto+Condensed:300italic,400italic,700italic,400,300,700' rel='stylesheet' type='text/css'>
 
@@ -99,6 +101,66 @@
                         <span>앱 다운받기&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br/>
                         Google Play
                     </a>
+                    <a href="#credits" target="_blank" class="btn btn-store wow animated bounceInUp">
+                        <i class="fa fa-envelope-square"></i>
+                        <span>캠페인 참여&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br/>
+                        Campaign
+                    </a>
+                    <div id="credits" class="hidden">
+                        <form data-toggle="validator" id="frm_letter" role="form" method="post" action="/about/campaign">
+                            {% csrf_token %}
+                            <div class="control-group">
+                                <div class="form-group">
+                                    <label for="address" class="control-label">학교 주소</label>
+                                    <input type="text" class="form-control" id="address" placeholder="주소" data-error="주소를 입력하세요." required />
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fromNm" class="control-label">보내는 사람</label>
+                                    <input type="text" class="form-control" id="fromNm" placeholder="보내는 사람" data-error="보내는 사람 이름을 입력하세요." required />
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="toNm" class="control-label">받는 사람</label>
+                                    <input type="text" class="form-control" id="toNm" placeholder="받는 사람" data-error="받는 사람 이름을 입력하세요." required />
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="msgLetter" class="control-label">내용</label>
+                                    <textarea class="form-control form-fixer" id="msgLetter" rows="10" placeholder="내용" data-error="내용을 입력하세요." required></textarea>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary" id="btn_send_submit">보내기</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Campaign Modal -->
+                    <div class="modal fade" id="schoolModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">학교주소 찾기</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="control-group" id="1">
+                                        <ul id="2">
+                                            {% for school in schools|slice:":4" %}
+                                                <li class="" sid="{{ school.id }}"><span class="">{{ school.name }}</span> <span class="">{{ school.address }}</span></li>
+                                            {% endfor %}
+                                            <li class="no-data">총 {{ schools|length }}개의 학교가 검색되었습니다.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                                    <button type="button" class="btn btn-primary">적용</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
                 </div>
             </div>
             <div class="col-md-6 hidden-xs hidden-sm">
@@ -303,7 +365,7 @@
                     <div class="col-md-12">
                         <p class="mb50">WEB 상의 직관적인 UI를 통해 원하는 유형의 문제를 쉽게 찾아 출제할 수 있으며, 단 한번의 클릭으로 학생들의 스마트 폰에 출제문제를 연동시킬 수 있습니다. APP에서 지원되는 해설동영상으로 인해 특히 시험대비기간 쏟아지는 학생들의 질문에 대한 대처가 한결 쉬워집니다. 또한, 관심학교 등록기능으로 원하는 학교의 학생들의 질문에 답변을 해 줌으로서 자신의 학원홍보로 활용할 수도 있습니다.</p>
                         <ul class="feature-list text-right">
-                            <li>쉬운 유형문제 출제방식으로 온라인 문제선별과 출제의 시간을 절약할 수 있습니다. <i class="xi-time-forward"></i></li>
+                            <li>쉬운 문제 출제방식으로 온라인 문제선별과 출제의 시간을 절약할 수 있습니다. <i class="xi-time-forward"></i></li>
                             <li>단 한번의 클릭으로 스마트 폰으로 문제출제를 연동시킬 수 있습니다. <i class="xi-mobile"></i></li>
                             <li>관심학교 등록을 통해 자신의 학원홍보에 활용할 수 있습니다. <i class="xi-announce"></i></li>
                         </ul>
@@ -715,14 +777,16 @@
 
 <!-- All the scripts -->
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="/static/about/libs/bootstrap/js/bootstrap.min.js"></script>
-<script src="/static/about/js/wow.min.js"></script>
-<script src="/static/about/js/owl.carousel.js"></script>
-<script src="/static/about/js/nivo-lightbox.min.js"></script>
-<script src="/static/about/js/smoothscroll.js"></script>
-<script src="/static/about/js/jquery.ajaxchimp.min.js"></script>
-<script src="/static/about/js/script.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="/static/about/libs/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/about/js/wow.min.js"></script>
+<script type="text/javascript" src="/static/about/js/owl.carousel.js"></script>
+<script type="text/javascript" src="/static/about/js/nivo-lightbox.min.js"></script>
+<script type="text/javascript" src="/static/about/js/smoothscroll.js"></script>
+<script type="text/javascript" src="/static/about/js/jquery.ajaxchimp.min.js"></script>
+<script type="text/javascript" src="/static/about/js/script.js"></script>
+<script type="text/javascript" src="/static/about/js/about.js"></script>
+<script type="text/javascript" src="/static/about/js/validator.js"></script>
 
 </body>
 </html>
