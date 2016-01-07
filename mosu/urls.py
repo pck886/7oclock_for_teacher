@@ -62,6 +62,7 @@ urlpatterns = [
     url(r'^main/dashboard/post/union/register/$', 'mosu.main.views.main_dashboard_post_union_register'),
     url(r'^main/dashboard/post/group/register/$', 'mosu.main.views.main_dashboard_post_group_register'),
     url(r'^payment/$', 'mosu.main.views.main_payment'),
+    url(r'^photo/$', 'mosu.utils.views.single_photo'),
     #url(r'^show/', 'mosu.mobile.views.show'),
     url(r'^mobile/$', 'mosu.mobile.views.mobile'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),

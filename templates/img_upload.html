@@ -1,0 +1,32 @@
+<form name="csv_form" id="csv_form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" id="upload_file" name="upload_file" />
+    <button id="csv_file_upload_button" class="file-upload" onclick="FileUpload()">올리기</button>
+</form>
+
+<script type="text/javascript">
+    function FileUploadCallback(data, err){
+        if(data=="error"){
+            alert("파일전송중 오류가 발생하였습니다.\n다시한번 시도해주세요.");
+            return false;
+        }
+        alert("파일전송이 완료되었습니다.");
+    }
+
+    $(function(){
+        var frm = $("#csv_form");
+        frm.ajaxForm(FileUploadCallback);
+        frm.submit(function(){return false;});
+    });
+
+    function FileUpload(){
+        if(!$("#upload_file").val()){
+            alert("파일을 선택하세요.");
+            $("#upload_file").focus();
+            return;
+        }
+        var frm = $("#csv_form");
+        frm.attr("action", "/photo");
+        frm.submit();
+    }
+</script>
