@@ -39,6 +39,7 @@ class Union(models.Model):
     icon = models.FileField(upload_to="upload/",null=True,blank=True)
     is_paid = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "소속(Union)"
@@ -66,6 +67,7 @@ class UnionUser(models.Model):
     union = models.ForeignKey(Union)
     user = models.ForeignKey(User)
     is_active = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "소속 사용자(UnionUser)"
@@ -79,6 +81,7 @@ class Group(models.Model):
     title = models.CharField(max_length=64)
     is_paid = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "그룹(Group)"

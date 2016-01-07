@@ -10,16 +10,16 @@ class SchoolAdmin(admin.ModelAdmin):
     list_display = ('id','grade','city','region','name','founder','address')
 
 class GroupAdmin(admin.ModelAdmin):
-    list_display = ('id','union','unionuser','title','is_paid', 'is_active')
+    list_display = ('id','union','unionuser','title','is_paid', 'is_active','date_created')
 
 class UnionAdmin(admin.ModelAdmin):
-    list_display = ('id','user','title','address','phone','is_active','is_paid')
+    list_display = ('id','user','title','address','phone','is_active','is_paid','date_created')
 
 class GroupUserAdmin(admin.ModelAdmin):
     list_display = ('id','unionuser','group')
 
 class UnionUserAdmin(admin.ModelAdmin):
-    list_display = ('id','union','user','is_active')
+    list_display = ('id','union','user','is_active','date_created')
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile

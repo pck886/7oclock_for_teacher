@@ -37,7 +37,7 @@ $(document).ready(function(){
             'csrfmiddlewaretoken':$("#wrap > input[name=csrfmiddlewaretoken]").val(),
             'union_id' : union_id,
             'title' : $("#input_makeunion_ele_name").val(),
-            'adres' : $("#input_searchunion_ele_adres").val()
+            'adres' : $("#input_makeunion_ele_adres").val()
         }, function(data, err) {
             if(data == "False") {
                 alert("결제가 되지 않았습니다.");
@@ -49,14 +49,14 @@ $(document).ready(function(){
         });
     });
 
-     $("#div_modal_makeunion #input_searchunion_ele_adres").keyup(function(e){
+     $("#div_modal_makeunion #input_makeunion_ele_adres").keyup(function(e){
          var code = e.keyCode || e.which;
 
          if(code == 9)
-            $("#div_modal_makeunion #input_searchunion_ele_adres").click();
+            $("#div_modal_makeunion #input_makeunion_ele_adres").click();
      });
 
-    $("#div_modal_makeunion #input_searchunion_ele_adres").click(function(){
+    $("#div_modal_makeunion #input_makeunion_ele_adres").click(function(){
         new daum.Postcode({
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -86,7 +86,7 @@ $(document).ready(function(){
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 //document.getElementById('sample4_postcode').value = data.zonecode; //5자리 새우편번호 사용
-                document.getElementById('input_searchunion_ele_adres').value = fullRoadAddr;
+                document.getElementById('input_makeunion_ele_adres').value = fullRoadAddr;
                 //document.getElementById('sample4_jibunAddress').value = data.jibunAddress;
 
                 // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
@@ -256,6 +256,12 @@ function make_union(){
     $("#wrap #container #div_main_dark").hide();
     $('#div_header_union').css({"z-index":"initial"});
     $("#div_modal_makeunion").modal("show");
+}
+
+function setting_union(){
+    $("#wrap #container #div_main_dark").hide();
+    $('#div_header_union').css({"z-index":"initial"});
+    $("#div_modal_setunion").modal("show");
 }
 
 function link_dashboard_union(){
