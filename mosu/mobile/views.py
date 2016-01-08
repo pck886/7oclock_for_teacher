@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.core.files.base import File, ContentFile
 from django.db.models import Count
 from django.http import HttpResponse
+
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 
