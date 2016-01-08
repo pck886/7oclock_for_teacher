@@ -5,6 +5,17 @@ $(document).ready(function(){
         frm.submit(function(){return false;});
     });
 
+    $(function(){
+       jcrop_api.setOptions(this.checked? {
+            minSize: [ 80, 80 ],
+            maxSize: [ 350, 350 ]
+        }: {
+            minSize: [ 0, 0 ],
+            maxSize: [ 0, 0 ]
+        });
+        jcrop_api.focus();
+    });
+
     $("#img_union_upload").change(function(){
         readURL(this);
     });
@@ -37,13 +48,4 @@ $(document).ready(function(){
         frm.attr("action", "/photo");
         frm.submit();
     }
-
-    jcrop_api.setOptions(this.checked? {
-        minSize: [ 80, 80 ],
-        maxSize: [ 350, 350 ]
-    }: {
-        minSize: [ 0, 0 ],
-        maxSize: [ 0, 0 ]
-    });
-    jcrop_api.focus();
 });
