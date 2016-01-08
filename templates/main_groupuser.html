@@ -6,7 +6,12 @@
     </div>
     <div class="div_content_board div_content_board_groupuser">
         <div class="div_groupuser_board" id="div_groupuser_board_all">
-            <p class="p_groupuser_title">"{{ union.title }}"의 전체 회원</p>
+            <div class="form-inline">
+                <div class="form-group">
+                    <p class="p_groupuser_title">"{{ union.title }}"의 전체 회원</p>
+                </div>
+                <button class="btn btn-default pull-right" onclick="setting_union()"><i class="xi-paper"></i>소속 설정</button>
+            </div>
             {% if query %}<div style="padding-bottom:20px;"><b>"{{ query }}"</b>에 대한 검색결과 <span id="span_search_del" onclick="del_search()">취소</span></div>{% endif %}
             <div class="div_groupuser_group">
                 <table class="table table-striped">
@@ -36,12 +41,17 @@
             </div>
         </div>
         <div class="div_groupuser_board" id="div_groupuser_board_group">
-            <p class="p_groupuser_title">
-                <select id="select_groupuser_groups" class="select_groupuser_groups">
-                    {% for group in groups %}
-                        <option value="{{ group.id }}" {% if group == this_group %}selected{% endif %}>{{ group.title }}</option>
-                    {% endfor %}
-                </select> 그룹의 회원</p>
+            <div class="form-inline">
+                <div class="form-group">
+                    <p class="p_groupuser_title">
+                    <select id="select_groupuser_groups" class="select_groupuser_groups">
+                        {% for group in groups %}
+                            <option value="{{ group.id }}" {% if group == this_group %}selected{% endif %}>{{ group.title }}</option>
+                        {% endfor %}
+                    </select> 그룹의 회원</p>
+                </div>
+                <button class="btn btn-default pull-right" onclick="setting_group()"><i class="xi-paper"></i>소속 설정</button>
+            </div>
             {% if query %}<div style="padding-bottom:20px;"><b>"{{ query }}"</b>에 대한 검색결과 <span id="span_search_del" onclick="del_search()">취소</span></div>{% endif %}
             <div class="div_groupuser_group" group_id="{{ group.id }}">
                 <table class="table table-striped">
