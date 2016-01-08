@@ -13,15 +13,15 @@ from django.views.decorators.csrf import csrf_exempt
 
 from mosu.docs.models import Question, QuestionUnit2, QuestionFeedback
 from mosu.home.models import get_or_none, UserProfile, Group, School, Union, UnionUser, GroupUser
-from mosu.home.templatetags.home_extras import get_level_by_union, get_title_by_level
-from mosu.main.models import TestPaper, TestPaperQuestion, TestPaperSubmit
+from mosu.home.templatetags.home_extras import get_level_by_union, get_title_by_level, unixtime
+from mosu.main.models import TestPaper, TestPaperQuestion, TestPaperSubmit, QnAQuestion, QnAAnswer, QnAAnswerImage
 from mosu.mobile.models import QuestionInventory
 
 
 def get_user(request):
-    userid = request.GET.get("user_id")
-    password = request.GET.get("password")
-    login_from = int(request.GET.get("login_from",0))
+    userid = request.POST.get("user_id")
+    password = request.POST.get("password")
+    login_from = int(request.POST.get("login_from",0))
     if login_from != 0 :
         password = "%d_%s"%(login_from,password)
 
@@ -30,13 +30,13 @@ def get_user(request):
         arr = [{
             'id':user.id,
         }]
-        return HttpResponse(json.dumps(arr, default=date_handler), content_type="application/json")
+        return HttpResponse(json.dumps(arr, default=date_handler), content_type="application/json", status=200)
     else:
-        return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
-    return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
+        return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json", status=400)
+    return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json", status=400)
 
 def get_user_info(request):
-    uid = int(request.GET.get("uid",0))
+    uid = int(request.POST.get("id",0))
     user = get_or_none(User,id=uid)
     if user.id :
         shool_id, grade_code = 0, ""
@@ -59,10 +59,10 @@ def get_user_info(request):
             })
         arr = [{
             'id':user.id,
-            'username':user.username,
+            'user_id':user.username,
             'email':user.email,
             'first_name':user.first_name,
-            'shool_id':"%d"%shool_id,
+            'shool_id':shool_id,
             'login_from':user.profile.login_from,
             'grade_code':"%s"%grade_code,
             'src':user.profile.get_src(),
@@ -76,7 +76,7 @@ def get_user_info(request):
     return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
 
 def get_union_info(request):
-    uid = int(request.GET.get("uid",0))
+    uid = int(request.POST.get("id",0))
     user = get_or_none(User,id=uid)
     arr = []
     if user.id :
@@ -98,7 +98,7 @@ def get_union_info(request):
     return HttpResponse(json.dumps([{}], default=date_handler), content_type="application/json")
 
 def get_school_name(request):
-    q = request.GET.get('q')
+    q = request.POST.get('q')
     schools = list(School.objects.filter(name__contains=q)[:20].values())
     return HttpResponse(json.dumps(schools, default=date_handler), content_type="application/json")
 
@@ -152,7 +152,7 @@ def set_user_passwd(request):
             user.set_password(pw_new)
             user.save()
             return HttpResponse("True", status=200)
-    return HttpResponse("False", status=401)
+    return HttpResponse("False", status=400)
 
 def set_user_info(request):
     user = get_or_none(User,id=int(request.GET.get("uid",0)))
@@ -169,7 +169,7 @@ def set_user_info(request):
         user.save()
         user.profile.save()
         return HttpResponse("True", status=200)
-    return HttpResponse("False", status=401)
+    return HttpResponse("False", status=400)
 
 def set_school_info(request):
     user = get_or_none(User,id=int(request.POST.get("uid",0)))
@@ -209,7 +209,7 @@ def set_school_info(request):
             is_active=True
         )
         return HttpResponse("True", status=200)
-    return HttpResponse("False", status=401)
+    return HttpResponse("False", status=400)
 
 # def get_question_unit(request):
 #     u1 = int(request.GET.get('u1',0))
@@ -454,37 +454,35 @@ def get_testpaper_submit(request):
 
     myrank = 0
 
-    if testpaper_user :
-        arr_rank = []
-        for tp_user in testpaper_user :
-            tu = get_or_none(User,id=tp_user['user'])
-            arr_rank.append({"uid":tu.id,"username":tu.first_name,"src":tu.profile.src.url,"score":testpaper.get_score_user(tu),"rank":0})
+    arr_rank = []
+    for tp_user in testpaper_user :
+        tu = get_or_none(User,id=tp_user['user'])
+        arr_rank.append({"uid":tu.id,"username":tu.first_name,"src":tu.profile.src.url,"score":testpaper.get_score_user(tu),"rank":0})
 
-        arr_rank.sort(key=sort_score, reverse=True)
-        for i in range(0,len(arr_rank)):
-            arr_rank[i]['rank'] = i+1
-            if arr_rank[i]['uid'] == user.id : myrank = arr_rank[i]['rank']
+    arr_rank.sort(key=sort_score, reverse=True)
+    for i in range(0,len(arr_rank)):
+        arr_rank[i]['rank'] = i+1
+        if arr_rank[i]['uid'] == user.id : myrank = arr_rank[i]['rank']
 
-        arr_submit = []
+    arr_submit = []
 
-        for tq in testpaper.get_questions() :
-            tps = get_or_none(TestPaperSubmit,user=user,testpaper=testpaper,question=tq)
-            if tps:
-                arr_submit.append({
-                    "tps_id":tps.id, "user_id":tps.user.id, "testpaper_id":tps.testpaper.id,
-                    "answer_user":tps.answer, "answer_correct":tps.question.answer_mobile,
-                    "id":tps.question.id,"type":tps.question.type,"unit_id":tps.question.unit.id,"unit":tps.question.unit.title,"unit_title":tps.question.unit.title,"src":tps.question.src.url,"explain":tps.question.explain.url,"keyword":tps.question.keyword,
-                    "video":tps.question.video,"answer":tps.question.answer,"is_active":tps.question.is_active,"date_created":"%s"%set_date(tps.question.date_created)
-                })
+    for tq in testpaper.get_questions() :
+        tps = get_or_none(TestPaperSubmit,user=user,testpaper=testpaper,question=tq)
+        if tps:
+            arr_submit.append({
+                "tps_id":tps.id, "user_id":tps.user.id, "testpaper_id":tps.testpaper.id,
+                "answer_user":tps.answer, "answer_correct":tps.question.answer_mobile,
+                "id":tps.question.id,"type":tps.question.type,"unit_id":tps.question.unit.id,"unit":tps.question.unit.title,"unit_title":tps.question.unit.title,"src":tps.question.src.url,"explain":tps.question.explain.url,"keyword":tps.question.keyword,
+                "video":tps.question.video,"answer":tps.question.answer,"is_active":tps.question.is_active,"date_created":"%s"%set_date(tps.question.date_created)
+            })
 
-        return HttpResponse(json.dumps([{"submits":arr_submit,"ranks":[{
-            "username":user.first_name,
-            "src":user.profile.src.url,
-            "uid":user.id,
-            "score":testpaper.get_score_user(user),
-            "rank":myrank,
-            "scores":arr_rank}]}], default=date_handler), content_type="application/json")
-    return HttpResponse(json.dumps([{}]), content_type="application/json")
+    return HttpResponse(json.dumps([{"submits":arr_submit,"ranks":[{
+        "username":user.first_name,
+        "src":user.profile.src.url,
+        "uid":user.id,
+        "score":testpaper.get_score_user(user),
+        "rank":myrank,
+        "scores":arr_rank}]}], default=date_handler), content_type="application/json")
 
 def set_testpaper_submit(request):
     user = get_or_none(User,id=request.GET.get("uid",0))
@@ -500,6 +498,108 @@ def set_testpaper_submit(request):
 
     if ts : return HttpResponse(json.dumps({"state":1}), content_type="application/json")
     return HttpResponse(json.dumps({"state":0}), content_type="application/json")
+
+def get_qna_questions(request):
+    user = get_or_none(User,id=int(request.GET.get("uid",0)))
+    mode_qna = int(request.GET.get("mode_qna",0))
+
+    limit = request.GET.get("limit",None)
+    if limit : limit = limit.split(":")
+
+    questions = QnAQuestion.objects.filter(user=user).order_by('-id')
+    if mode_qna == 1 :
+        arr_groups = []
+        unionuser = UnionUser.objects.filter(user=user)
+        groups = Group.objects.filter(unionuser=unionuser)
+        for group in groups:
+            arr_groups.append(group)
+        groupusers = GroupUser.objects.filter(unionuser=unionuser)
+        for groupuser in groupusers:
+            arr_groups.append(groupuser.group)
+        arr_groups = list(set(arr_groups))
+
+        arr_users = []
+        for group in arr_groups:
+            arr_users.append(group.unionuser.user)
+        groupusers = GroupUser.objects.filter(group__in=arr_groups)
+        for groupuser in groupusers:
+            arr_users.append(groupuser.unionuser.user)
+        arr_users = list(set(arr_users))
+        questions = QnAQuestion.objects.filter(user__in=arr_users).order_by('-id')
+    elif mode_qna == 2 :
+        questions = QnAQuestion.objects.all().order_by('-id')
+
+    if limit : questions = questions[limit[0]:limit[1]]
+
+    arr = []
+
+    for question in questions :
+        arr.append({
+            'id':question.id
+            ,'user_src':question.user.profile.get_src()
+            ,'username':question.user.first_name
+            ,'user_id':question.user.id
+            ,'unit1':question.unit.unit.title
+            ,'unit2':question.unit.title
+            ,'src':question.get_srcs()
+            ,'contents':question.contents
+            ,'date_created':unixtime(question.date_created)
+        })
+
+    return HttpResponse(json.dumps(arr, default=date_handler), content_type="application/json")
+
+def get_qna_answers(request):
+    qnaquestion = get_or_none(QnAQuestion,id=int(request.GET.get("qid",0)))
+
+    limit = request.GET.get("limit",None)
+    if limit : limit = limit.split(":")
+
+    answers = QnAAnswer.objects.filter(question=qnaquestion).order_by('is_selected','-id')
+
+    if limit : questions = answers[limit[0]:limit[1]]
+
+    arr = []
+
+    for answer in answers :
+        arr.append({
+            'id':answer.id
+            ,'user_src':answer.user.profile.get_src()
+            ,'username':answer.user.first_name
+            ,'user_id':answer.user.id
+            ,'src':answer.get_srcs()
+            ,'contents':answer.contents
+            ,'is_selected':int(answer.is_selected)
+            ,'date_created':unixtime(answer.date_created)
+        })
+
+    return HttpResponse(json.dumps(arr, default=date_handler), content_type="application/json")
+
+def select_qna_answer(request):
+    answer = get_or_none(QnAAnswer,id=int(request.GET.get("answer_id",0)))
+    if answer :
+        if answer.is_selected : answer.is_selected = False
+        else : answer.is_selected = True
+        answer.save()
+        return HttpResponse("%s"%answer.is_selected, status=200)
+    return HttpResponse("Error", status=400)
+
+def set_qna_answer(request):
+    user = get_or_none(User,id=int(request.POST.get("user_id",0)))
+    question = get_or_none(QnAQuestion,id=int(request.POST.get("question_id",0)))
+    contents = request.POST.get("contents","")
+    images = request.FILES.getlist("image")
+
+    qnaanswer = QnAAnswer.objects.create(user=user, question=question, contents=contents, is_selected=False)
+    if qnaanswer :
+        for image in images:
+            qai = QnAAnswerImage.objects.create(qnaanswer=qnaanswer,src="/")
+            qai.src.save(image.name, ContentFile(image.read()))
+        return HttpResponse("OK", status=200)
+    return HttpResponse("Error", status=400)
+
+def show(request):
+
+    return HttpResponse()
 
 def redirect_market(request):
     response = HttpResponse("", status=302)
@@ -552,6 +652,14 @@ def mobile(request):
         return get_testpaper_submit(request)
     elif request.GET.get("mode") == "set_testpaper_submit":
         return set_testpaper_submit(request)
+    elif request.GET.get("mode") == "get_qna_questions":
+        return get_qna_questions(request)
+    elif request.GET.get("mode") == "get_qna_answers":
+        return get_qna_answers(request)
+    elif request.GET.get("mode") == "select_qna_answer":
+        return select_qna_answer(request)
+    elif request.GET.get("mode") == "set_qna_answer":
+        return set_qna_answer(request)
     elif request.GET.get("mode") == "redirect_market":
         return redirect_market(request)
     return HttpResponse('0')

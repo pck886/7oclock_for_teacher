@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.utils.dateformat import format
 from mosu.home.models import GroupUser, get_or_none, UnionUser, Group
 from mosu.main.models import TestPaperSubmit
 
@@ -40,7 +41,7 @@ def get_testpapersubmit_question(tp, qid):
 @register.filter
 def get_testpapersubmit_group(tps, group):
     if tps and group :
-        return tps.filter(union=group.union)
+        return tps.filter(testpaper__union=group.unionuser.union)
     return []
 
 @register.filter
@@ -94,3 +95,10 @@ def search_user(arr, query):
     if arr :
         return arr.filter(user__first_name__icontains=query)
     return None
+
+@register.filter
+def unixtime(value):
+    try:
+        return format(value, u'U')
+    except AttributeError:
+        return ''
